@@ -15,6 +15,56 @@
 </head>
 <body>
 
+  <!-- ==================== LOGIN SCREEN OVERLAY ==================== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="../assets/images/branding/tongwei_avatar.png" alt="TongWei Logo" class="login-logo">
+        <h2 class="login-title">TONG WEI (同味)</h2>
+        <div class="login-subtitle">Cổng Quản Trị Hệ Thống • CMS Portal</div>
+      </div>
+      <div class="login-body">
+        <div class="login-hint-box">
+          <div>
+            <strong>Tài khoản mặc định:</strong><br>
+            Tên: <code>admin</code> • Pass: <code>123456</code>
+          </div>
+          <button type="button" class="quick-fill-btn" onclick="quickFillLogin('admin', '123456')">
+            ⚡ Điền Mẫu
+          </button>
+        </div>
+
+        <div class="login-alert" id="loginAlert"></div>
+
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+          <div class="form-group" style="margin-bottom: 1.15rem;">
+            <label class="form-label" style="font-weight: 700; color: var(--color-indigo-dark);">Tên Đăng Nhập *</label>
+            <input type="text" class="form-control" id="loginUsername" placeholder="Nhập tên đăng nhập (vd: admin)" required autofocus>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label class="form-label" style="font-weight: 700; color: var(--color-indigo-dark); display: flex; justify-content: space-between;">
+              <span>Mật Khẩu *</span>
+            </label>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu (vd: 123456)" required>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="checkbox" id="rememberMe" checked>
+              <span>Ghi nhớ đăng nhập</span>
+            </label>
+            <a href="../index.html" style="color: var(--color-indigo); text-decoration: underline;">Về Trang Chủ</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);">
+            🔐 Đăng Nhập Quản Trị
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== SIDEBAR ==================== -->
   <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-header">
@@ -65,19 +115,35 @@
         <span class="menu-icon">🏭</span>
         <span>Cơ Sở & Xưởng HACCP</span>
       </a>
+
+      <div class="menu-section-label">Hệ Thống & Tài Khoản</div>
+      <a class="menu-item" data-tab="users">
+        <span class="menu-icon">👥</span>
+        <span>Quản Lý Người Dùng</span>
+        <span class="menu-badge" id="userCountBadge" style="background: var(--color-indigo-light);">3</span>
+      </a>
+      <a class="menu-item" data-tab="security">
+        <span class="menu-icon">🔐</span>
+        <span>Đổi Mật Khẩu</span>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="admin-user">
-        <div class="admin-avatar">AD</div>
+        <div class="admin-avatar" id="sidebarUserAvatar">AD</div>
         <div>
-          <div class="admin-name">Khuongnv</div>
-          <div class="admin-role">Quản Trị Viên Cấp Cao</div>
+          <div class="admin-name" id="sidebarUserName">admin</div>
+          <div class="admin-role" id="sidebarUserRole">Quản Trị Viên</div>
         </div>
       </div>
-      <a href="../index.html" target="_blank" class="live-link-btn" title="Mở trang khách hàng trong tab mới">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </a>
+      <div class="sidebar-footer-actions">
+        <a href="../index.html" target="_blank" class="live-link-btn" title="Mở trang khách hàng trong tab mới">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+        <button type="button" class="logout-icon-btn" onclick="handleLogout()" title="Đăng Xuất">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -567,6 +633,126 @@
         </div>
       </section>
 
+      <!-- ==================== TAB 9: QUẢN LÝ NGƯỜI DÙNG ==================== -->
+      <section class="tab-pane" id="pane-users">
+        <div class="pane-header">
+          <div>
+            <h2>Quản Lý Người Dùng & Phân Quyền Hệ Thống</h2>
+            <p>Kiểm soát tài khoản đăng nhập, vai trò quản lý bếp, thu ngân và phân quyền truy cập cổng TongWei.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddUserModal()">
+            ➕ Thêm Người Dùng Mới
+          </button>
+        </div>
+
+        <div class="card-container">
+          <div class="card-header">
+            <h3>Danh Sách Tài Khoản Quản Trị Viên</h3>
+            <span class="badge badge-indigo" id="usersListCountBadge">3 Tài khoản</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tài Khoản / Họ Tên</th>
+                  <th>Tên Đăng Nhập</th>
+                  <th>Vai Trò Quản Trị</th>
+                  <th>Trạng Thái</th>
+                  <th>Ngày Tạo</th>
+                  <th style="text-align: right;">Hành Động</th>
+                </tr>
+              </thead>
+              <tbody id="usersTbody">
+                <!-- Rendered dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 10: ĐỔI MẬT KHẨU & BẢO MẬT ==================== -->
+      <section class="tab-pane" id="pane-security">
+        <div class="pane-header">
+          <div>
+            <h2>Bảo Mật Tài Khoản & Đổi Mật Khẩu</h2>
+            <p>Thay đổi mật khẩu cá nhân cho tài khoản đang đăng nhập để đảm bảo an toàn tuyệt đối cho hệ thống.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem;">
+          <!-- Form Change Password Card -->
+          <div class="card-container">
+            <div class="card-header">
+              <h3>Đổi Mật Khẩu Hiện Tại</h3>
+            </div>
+            <div style="padding: 1.75rem;">
+              <form id="changePasswordForm" onsubmit="handleChangePasswordSubmit(event)">
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label class="form-label">Tài Khoản Đang Đăng Nhập</label>
+                  <input type="text" class="form-control" id="securityCurrentUsername" readonly style="background: #f1f5f9; font-weight: 700; color: var(--color-indigo);">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label class="form-label">Mật Khẩu Hiện Tại *</label>
+                  <input type="password" class="form-control" id="currentPasswordInput" placeholder="Nhập mật khẩu hiện tại đang dùng" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label class="form-label">Mật Khẩu Mới *</label>
+                  <input type="password" class="form-control" id="newPasswordInput" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.75rem;">
+                  <label class="form-label">Xác Nhận Mật Khẩu Mới *</label>
+                  <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu mới vừa nhập" minlength="6" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+                  🔑 Cập Nhật Mật Khẩu Mới
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Security Policy Info Card -->
+          <div class="card-container">
+            <div class="card-header">
+              <h3>Chính Sách & Hướng Dẫn Bảo Mật</h3>
+            </div>
+            <div style="padding: 1.75rem; font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <span style="font-size: 1.5rem;">🛡️</span>
+                <div>
+                  <strong style="color: var(--color-indigo-dark);">Mật khẩu tiêu chuẩn</strong>
+                  <p style="margin: 0.25rem 0 0; font-size: 0.85rem;">Mật khẩu nên chứa từ 6 ký tự trở lên, kết hợp chữ cái và số để đảm bảo tính an toàn cao.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <span style="font-size: 1.5rem;">👥</span>
+                <div>
+                  <strong style="color: var(--color-indigo-dark);">Phân quyền độc lập</strong>
+                  <p style="margin: 0.25rem 0 0; font-size: 0.85rem;">Tài khoản <code>admin</code> có toàn quyền thêm/xóa tài khoản khác. Bếp trưởng và Thu ngân chỉ truy cập các tính năng nghiệp vụ liên quan.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <span style="font-size: 1.5rem;">🚪</span>
+                <div>
+                  <strong style="color: var(--color-indigo-dark);">Đăng xuất sau ca làm việc</strong>
+                  <p style="margin: 0.25rem 0 0; font-size: 0.85rem;">Nhớ bấm nút Đăng Xuất ở góc dưới thanh điều hướng sau khi hoàn tất phiên làm việc trên các máy tính dùng chung tại nhà hàng.</p>
+                </div>
+              </div>
+
+              <div style="background: #fdf8ed; border-left: 3px solid var(--color-gold); padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.82rem; color: #7a5611; margin-top: 1.5rem;">
+                💡 <strong>Lưu ý:</strong> Thông tin tài khoản được lưu an toàn trên trình duyệt quản trị và đồng bộ trực tiếp với cơ sở dữ liệu hệ thống.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -895,6 +1081,79 @@
             💾 Lưu Gói Nhượng Quyền
           </button>
           <button type="button" class="btn btn-outline" onclick="closeModal('franchiseModal')">Hủy Bỏ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Add/Edit User Modal -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <button class="modal-close" onclick="closeModal('userModal')">✕</button>
+      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm Người Dùng Quản Trị</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.</p>
+
+      <form id="userForm" onsubmit="handleCreateUserSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1.15rem;">
+          <label class="form-label">Tên Đăng Nhập (Username - viết liền, không dấu) *</label>
+          <input type="text" class="form-control" id="newUsername" placeholder="VD: quanly_bep, letan_hn" pattern="[a-zA-Z0-9_]{3,20}" title="Từ 3-20 ký tự chữ, số hoặc gạch dưới" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.15rem;">
+          <label class="form-label">Họ Và Tên Hiển Thị *</label>
+          <input type="text" class="form-control" id="newFullName" placeholder="VD: Nguyễn Văn Hoàng (Bếp Phó)" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.15rem;">
+          <label class="form-label">Vai Trò & Phân Quyền *</label>
+          <select class="form-control" id="newRoleSelect" required>
+            <option value="admin">Quản Trị Viên Cấp Cao (Full quyền hệ thống)</option>
+            <option value="kitchen">Quản Lý Bếp & Thực Đơn (Chỉnh sửa món, công thức)</option>
+            <option value="cashier" selected>Vận Hành & Đặt Bàn (Tiếp nhận khách, CSKH)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.75rem;">
+          <label class="form-label">Mật Khẩu Ban Đầu *</label>
+          <input type="text" class="form-control" id="newPassword" value="123456" minlength="6" required>
+          <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; display: block;">Mặc định: <code>123456</code> (Nhân sự có thể đổi lại sau).</small>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">
+            ➕ Tạo Tài Khoản
+          </button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('userModal')">Hủy Bỏ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. Reset Password Modal -->
+  <div class="modal-overlay" id="resetPassModal">
+    <div class="modal-card" style="max-width: 480px;">
+      <button class="modal-close" onclick="closeModal('resetPassModal')">✕</button>
+      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Đặt Lại Mật Khẩu Tài Khoản</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cấp mật khẩu mới cho tài khoản <strong id="resetTargetUserTitle" style="color: var(--color-brand-red);">user</strong>.</p>
+
+      <form id="resetPassForm" onsubmit="handleResetPassSubmit(event)">
+        <input type="hidden" id="resetTargetUsername">
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label">Mật Khẩu Mới *</label>
+          <input type="password" class="form-control" id="adminResetNewPass" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" minlength="6" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.75rem;">
+          <label class="form-label">Nhập Lại Mật Khẩu Mới *</label>
+          <input type="password" class="form-control" id="adminResetConfirmPass" placeholder="Nhập lại để xác thực" minlength="6" required>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">
+            🔑 Cập Nhật Mật Khẩu
+          </button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('resetPassModal')">Hủy Bỏ</button>
         </div>
       </form>
     </div>

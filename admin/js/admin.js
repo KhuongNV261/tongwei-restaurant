@@ -19,7 +19,8 @@ const adminState = {
   jobs: [],
   franchiseLeads: [],
   franchisePackages: [],
-  branches: []
+  branches: [],
+  users: []
 };
 
 // Format currency
@@ -308,6 +309,52 @@ async function initializeData() {
     } catch(e) {}
   }
 
+  // 9. Users Initialization
+  const savedUsers = localStorage.getItem('tongwei_users');
+  if (savedUsers) {
+    try {
+      adminState.users = JSON.parse(savedUsers);
+    } catch(e) {}
+  }
+  if (!adminState.users || adminState.users.length === 0) {
+    adminState.users = [
+      {
+        id: 'usr_admin',
+        username: 'admin',
+        password: '123456',
+        fullName: 'Khuongnv (Quản Trị Viên)',
+        role: 'admin',
+        roleName: 'Quản Trị Viên Cấp Cao',
+        status: 'active',
+        createdAt: '2026-10-21',
+        avatar: 'AD'
+      },
+      {
+        id: 'usr_kitchen',
+        username: 'bep_truong',
+        password: '123456',
+        fullName: 'Lý Quốc Dũng (Bếp Trưởng)',
+        role: 'kitchen',
+        roleName: 'Quản Lý Bếp & Thực Đơn',
+        status: 'active',
+        createdAt: '2026-10-22',
+        avatar: 'QD'
+      },
+      {
+        id: 'usr_cashier',
+        username: 'thu_ngan',
+        password: '123456',
+        fullName: 'Trần Mỹ Linh (Lễ Tân/Thu Ngân)',
+        role: 'cashier',
+        roleName: 'Vận Hành Đặt Bàn & CSKH',
+        status: 'active',
+        createdAt: '2026-10-22',
+        avatar: 'ML'
+      }
+    ];
+    localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+  }
+
   // Refresh KPIs and Views
   refreshDashboardStats();
   renderDishesTable();
@@ -317,6 +364,8 @@ async function initializeData() {
   renderFranchiseView();
   renderCareersView();
   renderBranchesView();
+  renderUsersTable();
+  checkAuthState();
 }
 
 // ==================== DASHBOARD & KPIS ====================
@@ -1246,6 +1295,355 @@ function saveFactorySettings() {
   showToast(`Đã lưu cấu hình Xưởng Chế Biến Trung Tâm thành công!`);
 }
 window.saveFactorySettings = saveFactorySettings;
+
+// ==================== AUTHENTICATION & USER MANAGEMENT ====================
+function getCurrentAuthUser() {
+  const local = localStorage.getItem('tongwei_auth_user');
+  const sess = sessionStorage.getItem('tongwei_auth_user');
+  const raw = local || sess;
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    const found = adminState.users.find(u => u.username.toLowerCase() === parsed.username.toLowerCase());
+    return found || parsed;
+  } catch(e) {
+    return null;
+  }
+}
+
+function checkAuthState() {
+  const authUser = getCurrentAuthUser();
+  const screen = document.getElementById('loginScreen');
+  if (!screen) return;
+
+  if (authUser && authUser.status === 'active') {
+    screen.classList.add('hidden');
+    // Update sidebar profile
+    const nameEl = document.getElementById('sidebarUserName');
+    const roleEl = document.getElementById('sidebarUserRole');
+    const avatarEl = document.getElementById('sidebarUserAvatar');
+    const secUserEl = document.getElementById('securityCurrentUsername');
+
+    if (nameEl) nameEl.textContent = authUser.fullName || authUser.username;
+    if (roleEl) roleEl.textContent = authUser.roleName || authUser.role;
+    if (avatarEl) avatarEl.textContent = authUser.avatar || authUser.username.substring(0, 2).toUpperCase();
+    if (secUserEl) secUserEl.value = `${authUser.username} (${authUser.fullName})`;
+  } else {
+    screen.classList.remove('hidden');
+    const loginUsername = document.getElementById('loginUsername');
+    if (loginUsername) loginUsername.focus();
+  }
+}
+
+function quickFillLogin(username, password) {
+  const u = document.getElementById('loginUsername');
+  const p = document.getElementById('loginPassword');
+  const alertEl = document.getElementById('loginAlert');
+  if (u) u.value = username;
+  if (p) p.value = password;
+  if (alertEl) alertEl.style.display = 'none';
+}
+
+function handleLoginSubmit(e) {
+  e.preventDefault();
+  const u = (document.getElementById('loginUsername')?.value || '').trim().toLowerCase();
+  const p = document.getElementById('loginPassword')?.value || '';
+  const alertEl = document.getElementById('loginAlert');
+
+  const found = adminState.users.find(x => x.username.toLowerCase() === u);
+
+  if (!found || found.password !== p) {
+    if (alertEl) {
+      alertEl.innerHTML = '❌ Tên đăng nhập hoặc mật khẩu không chính xác! (Mặc định: <b>admin</b> / <b>123456</b>)';
+      alertEl.style.display = 'block';
+    }
+    return;
+  }
+
+  if (found.status === 'disabled') {
+    if (alertEl) {
+      alertEl.innerHTML = '🔒 Tài khoản này hiện đang bị tạm khóa. Vui lòng liên hệ quản trị viên cấp cao!';
+      alertEl.style.display = 'block';
+    }
+    return;
+  }
+
+  if (alertEl) alertEl.style.display = 'none';
+
+  const remember = document.getElementById('rememberMe')?.checked;
+  if (remember) {
+    localStorage.setItem('tongwei_auth_user', JSON.stringify(found));
+    sessionStorage.removeItem('tongwei_auth_user');
+  } else {
+    sessionStorage.setItem('tongwei_auth_user', JSON.stringify(found));
+    localStorage.removeItem('tongwei_auth_user');
+  }
+
+  checkAuthState();
+  showToast(`Xin chào ${found.fullName}! Đăng nhập cổng quản trị thành công.`);
+}
+
+function handleLogout() {
+  localStorage.removeItem('tongwei_auth_user');
+  sessionStorage.removeItem('tongwei_auth_user');
+  checkAuthState();
+  showToast('Đã đăng xuất khỏi phiên làm việc an toàn.', 'info');
+}
+
+function renderUsersTable() {
+  const tbody = document.getElementById('usersTbody');
+  if (!tbody) return;
+
+  const countBadge1 = document.getElementById('userCountBadge');
+  const countBadge2 = document.getElementById('usersListCountBadge');
+  if (countBadge1) countBadge1.textContent = adminState.users.length;
+  if (countBadge2) countBadge2.textContent = `${adminState.users.length} Tài khoản`;
+
+  const currentAuth = getCurrentAuthUser();
+
+  tbody.innerHTML = adminState.users.map(u => {
+    const isSelf = currentAuth && currentAuth.username.toLowerCase() === u.username.toLowerCase();
+    const isMasterAdmin = u.username.toLowerCase() === 'admin';
+    const roleClass = u.role === 'admin' ? 'role-admin' : (u.role === 'kitchen' ? 'role-kitchen' : 'role-cashier');
+    const statusHtml = u.status === 'active'
+      ? `<span class="badge" style="background: rgba(46, 125, 50, 0.12); color: #2e7d32;">✔ Hoạt Động</span>`
+      : `<span class="badge" style="background: rgba(198, 40, 40, 0.12); color: #c62828;">🔒 Tạm Khóa</span>`;
+
+    return `
+      <tr>
+        <td>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div class="user-avatar-badge">${u.avatar || u.username.substring(0, 2).toUpperCase()}</div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-indigo-dark);">${u.fullName}</div>
+              ${isSelf ? '<span style="font-size: 0.72rem; color: var(--color-brand-red); font-weight: 700;">(Đang đăng nhập)</span>' : ''}
+            </div>
+          </div>
+        </td>
+        <td><code>@${u.username}</code></td>
+        <td><span class="role-badge ${roleClass}">${u.roleName || u.role}</span></td>
+        <td>${statusHtml}</td>
+        <td style="color: var(--text-muted); font-size: 0.85rem;">${u.createdAt || '2026-10-21'}</td>
+        <td style="text-align: right;">
+          <div style="display: inline-flex; gap: 0.4rem;">
+            <button class="btn btn-outline btn-sm" onclick="openResetPassModal('${u.username}')" title="Đặt lại mật khẩu">
+              🔑 Đổi Pass
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="toggleUserStatus('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể khóa tài khoản này"' : `title="${u.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa'}"`}>
+              ${u.status === 'active' ? '🔒' : '🔓'}
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể xóa tài khoản này"' : 'title="Xóa tài khoản"'} style="color: var(--status-danger);">
+              🗑️
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openAddUserModal() {
+  document.getElementById('userForm')?.reset();
+  const passEl = document.getElementById('newPassword');
+  if (passEl) passEl.value = '123456';
+  openModal('userModal');
+}
+
+function handleCreateUserSubmit(e) {
+  e.preventDefault();
+  const username = (document.getElementById('newUsername')?.value || '').trim().toLowerCase();
+  const fullName = (document.getElementById('newFullName')?.value || '').trim();
+  const role = document.getElementById('newRoleSelect')?.value || 'cashier';
+  const password = document.getElementById('newPassword')?.value || '123456';
+
+  if (!username || !fullName) return;
+
+  if (adminState.users.some(u => u.username.toLowerCase() === username)) {
+    showToast('Tên đăng nhập này đã tồn tại! Vui lòng chọn tên khác.', 'danger');
+    return;
+  }
+
+  const roleNameMap = {
+    admin: 'Quản Trị Viên Cấp Cao',
+    kitchen: 'Quản Lý Bếp & Thực Đơn',
+    cashier: 'Vận Hành & Đặt Bàn'
+  };
+
+  // Avatar initials from full name
+  const nameParts = fullName.split(' ').filter(Boolean);
+  const avatar = nameParts.length >= 2
+    ? (nameParts[nameParts.length - 2][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+    : username.substring(0, 2).toUpperCase();
+
+  const newUser = {
+    id: `usr_${Date.now()}`,
+    username,
+    fullName,
+    role,
+    roleName: roleNameMap[role] || 'Nhân Sự',
+    password,
+    status: 'active',
+    createdAt: new Date().toISOString().split('T')[0],
+    avatar
+  };
+
+  adminState.users.push(newUser);
+  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+  renderUsersTable();
+  closeModal('userModal');
+  showToast(`🎉 Đã tạo thành công tài khoản @${username} (${fullName})!`);
+}
+
+function openResetPassModal(username) {
+  const user = adminState.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+  if (!user) return;
+
+  document.getElementById('resetPassForm')?.reset();
+  document.getElementById('resetTargetUsername').value = user.username;
+  document.getElementById('resetTargetUserTitle').textContent = `${user.fullName} (@${user.username})`;
+  openModal('resetPassModal');
+}
+
+function handleResetPassSubmit(e) {
+  e.preventDefault();
+  const username = document.getElementById('resetTargetUsername')?.value;
+  const newPass = document.getElementById('adminResetNewPass')?.value;
+  const confirmPass = document.getElementById('adminResetConfirmPass')?.value;
+
+  if (!newPass || newPass.length < 6) {
+    showToast('Mật khẩu mới phải có tối thiểu 6 ký tự!', 'danger');
+    return;
+  }
+
+  if (newPass !== confirmPass) {
+    showToast('Mật khẩu nhập lại không khớp!', 'danger');
+    return;
+  }
+
+  const user = adminState.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+  if (!user) return;
+
+  user.password = newPass;
+  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+
+  // If resetting password for current logged-in user, update session
+  const currentAuth = getCurrentAuthUser();
+  if (currentAuth && currentAuth.username.toLowerCase() === username.toLowerCase()) {
+    currentAuth.password = newPass;
+    if (localStorage.getItem('tongwei_auth_user')) {
+      localStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+    } else {
+      sessionStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+    }
+  }
+
+  closeModal('resetPassModal');
+  renderUsersTable();
+  showToast(`🔑 Đã cập nhật mật khẩu mới cho tài khoản @${username}!`);
+}
+
+function toggleUserStatus(userId) {
+  const user = adminState.users.find(u => u.id === userId);
+  if (!user) return;
+
+  if (user.username.toLowerCase() === 'admin') {
+    showToast('Không thể khóa tài khoản quản trị viên tối cao!', 'danger');
+    return;
+  }
+
+  const currentAuth = getCurrentAuthUser();
+  if (currentAuth && currentAuth.id === user.id) {
+    showToast('Không thể tự khóa tài khoản bạn đang đăng nhập!', 'danger');
+    return;
+  }
+
+  user.status = user.status === 'active' ? 'disabled' : 'active';
+  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+  renderUsersTable();
+  showToast(`Đã ${user.status === 'active' ? 'mở khóa' : 'tạm khóa'} tài khoản @${user.username}.`);
+}
+
+function deleteUser(userId) {
+  const user = adminState.users.find(u => u.id === userId);
+  if (!user) return;
+
+  if (user.username.toLowerCase() === 'admin') {
+    showToast('Không thể xóa tài khoản quản trị viên tối cao!', 'danger');
+    return;
+  }
+
+  const currentAuth = getCurrentAuthUser();
+  if (currentAuth && currentAuth.id === user.id) {
+    showToast('Không thể xóa tài khoản bạn đang đăng nhập!', 'danger');
+    return;
+  }
+
+  if (!confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản @${user.username} (${user.fullName})?`)) return;
+
+  adminState.users = adminState.users.filter(u => u.id !== userId);
+  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+  renderUsersTable();
+  showToast(`Đã xóa vĩnh viễn tài khoản @${user.username}!`);
+}
+
+function handleChangePasswordSubmit(e) {
+  e.preventDefault();
+  const currentAuth = getCurrentAuthUser();
+  if (!currentAuth) {
+    showToast('Phiên làm việc hết hạn. Vui lòng đăng nhập lại!', 'danger');
+    checkAuthState();
+    return;
+  }
+
+  const currentPass = document.getElementById('currentPasswordInput')?.value;
+  const newPass = document.getElementById('newPasswordInput')?.value;
+  const confirmPass = document.getElementById('confirmPasswordInput')?.value;
+
+  // Verify current password
+  if (currentPass !== currentAuth.password) {
+    showToast('Mật khẩu hiện tại không chính xác! Vui lòng kiểm tra lại.', 'danger');
+    return;
+  }
+
+  if (!newPass || newPass.length < 6) {
+    showToast('Mật khẩu mới phải có ít nhất 6 ký tự!', 'danger');
+    return;
+  }
+
+  if (newPass !== confirmPass) {
+    showToast('Mật khẩu xác nhận không khớp với mật khẩu mới!', 'danger');
+    return;
+  }
+
+  // Update in users array
+  const userInState = adminState.users.find(u => u.username.toLowerCase() === currentAuth.username.toLowerCase());
+  if (userInState) userInState.password = newPass;
+
+  currentAuth.password = newPass;
+  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+
+  if (localStorage.getItem('tongwei_auth_user')) {
+    localStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+  } else {
+    sessionStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+  }
+
+  document.getElementById('changePasswordForm')?.reset();
+  document.getElementById('securityCurrentUsername').value = `${currentAuth.username} (${currentAuth.fullName})`;
+  renderUsersTable();
+  showToast('🎉 Đổi mật khẩu thành công! Mật khẩu mới đã có hiệu lực ngay lập tức.');
+}
+
+window.quickFillLogin = quickFillLogin;
+window.handleLoginSubmit = handleLoginSubmit;
+window.handleLogout = handleLogout;
+window.openAddUserModal = openAddUserModal;
+window.handleCreateUserSubmit = handleCreateUserSubmit;
+window.openResetPassModal = openResetPassModal;
+window.handleResetPassSubmit = handleResetPassSubmit;
+window.toggleUserStatus = toggleUserStatus;
+window.deleteUser = deleteUser;
+window.handleChangePasswordSubmit = handleChangePasswordSubmit;
 
 // ==================== SYNC TO LIVE WEBSITE ====================
 function syncDataToLiveWebsite() {
