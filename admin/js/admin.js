@@ -314,6 +314,14 @@ async function initializeData() {
   if (savedUsers) {
     try {
       adminState.users = JSON.parse(savedUsers);
+      // Normalize roleName casing for existing users
+      adminState.users.forEach(u => {
+        if (u.role === 'admin') u.roleName = 'Quản trị viên cấp cao';
+        else if (u.role === 'kitchen') u.roleName = 'Quản lý bếp & thực đơn';
+        else if (u.role === 'cashier') u.roleName = 'Vận hành đặt bàn & CSKH';
+        if (u.username === 'admin') u.fullName = 'Khuongnv (Quản trị viên)';
+      });
+      localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
     } catch(e) {}
   }
   if (!adminState.users || adminState.users.length === 0) {
@@ -322,9 +330,9 @@ async function initializeData() {
         id: 'usr_admin',
         username: 'admin',
         password: '123456',
-        fullName: 'Khuongnv (Quản Trị Viên)',
+        fullName: 'Khuongnv (Quản trị viên)',
         role: 'admin',
-        roleName: 'Quản Trị Viên Cấp Cao',
+        roleName: 'Quản trị viên cấp cao',
         status: 'active',
         createdAt: '2026-10-21',
         avatar: 'AD'
@@ -333,9 +341,9 @@ async function initializeData() {
         id: 'usr_kitchen',
         username: 'bep_truong',
         password: '123456',
-        fullName: 'Lý Quốc Dũng (Bếp Trưởng)',
+        fullName: 'Lý Quốc Dũng (Bếp trưởng)',
         role: 'kitchen',
-        roleName: 'Quản Lý Bếp & Thực Đơn',
+        roleName: 'Quản lý bếp & thực đơn',
         status: 'active',
         createdAt: '2026-10-22',
         avatar: 'QD'
@@ -344,9 +352,9 @@ async function initializeData() {
         id: 'usr_cashier',
         username: 'thu_ngan',
         password: '123456',
-        fullName: 'Trần Mỹ Linh (Lễ Tân/Thu Ngân)',
+        fullName: 'Trần Mỹ Linh (Lễ tân / Thu ngân)',
         role: 'cashier',
-        roleName: 'Vận Hành Đặt Bàn & CSKH',
+        roleName: 'Vận hành đặt bàn & CSKH',
         status: 'active',
         createdAt: '2026-10-22',
         avatar: 'ML'
@@ -399,7 +407,7 @@ function refreshDashboardStats() {
           <td><span class="badge badge-indigo">${displayArea}</span></td>
           <td>
             <span class="badge ${b.status === 'confirmed' ? 'badge-success' : 'badge-warning'}">
-              ${b.status === 'confirmed' ? 'Đã Xác Nhận' : 'Chờ Phản Hồi'}
+              ${b.status === 'confirmed' ? 'Đã xác nhận' : 'Chờ phản hồi'}
             </span>
           </td>
         </tr>
@@ -443,7 +451,7 @@ function renderDishesTable() {
   // 1. Render Table
   tbody.innerHTML = list.map(dish => {
     const spicyPills = dish.spicy > 0 ? `${'🌶️'.repeat(dish.spicy)}` : '🌱 Thanh';
-    const statusText = dish.isAvailable !== false ? 'Còn Món' : 'Tạm Hết';
+    const statusText = dish.isAvailable !== false ? 'Còn món' : 'Tạm hết';
     const statusClass = dish.isAvailable !== false ? 'badge-success' : 'badge-danger';
     const isHome = dish.showOnHome !== false;
     const imageSrc = dish.image.startsWith('assets') ? `../${dish.image}` : dish.image;
@@ -462,7 +470,7 @@ function renderDishesTable() {
         <td><span style="font-size: 0.85rem;">${spicyPills}</span></td>
         <td>
           <button class="badge ${isHome ? 'badge-success' : 'badge-warning'}" style="cursor: pointer; border: 1px solid currentColor; font-weight: 700;" onclick="toggleDishHomeDisplay('${dish.id}')" title="Bấm để bật hoặc tắt hiển thị trên Trang Chủ">
-            ${isHome ? '☑ Hiện Trang Chủ' : '☐ Đang Ẩn'}
+            ${isHome ? '☑ Hiện trang chủ' : '☐ Đang ẩn'}
           </button>
         </td>
         <td>
@@ -495,7 +503,7 @@ function renderDishesTable() {
         <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem; margin-bottom: 0.25rem;">${dish.name}</div>
         <div style="font-weight: 800; color: var(--color-brand-red); margin-bottom: 0.35rem;">${formatVND(dish.price)}</div>
         <button class="badge ${isHome ? 'badge-success' : 'badge-warning'}" style="cursor: pointer; border: 1px solid currentColor; font-weight: 700; width: 100%; justify-content: center; margin-bottom: 0.5rem;" onclick="toggleDishHomeDisplay('${dish.id}')">
-          ${isHome ? '☑ Hiện Trang Chủ' : '☐ Đang Ẩn'}
+          ${isHome ? '☑ Hiện trang chủ' : '☐ Đang ẩn'}
         </button>
         <div style="display: flex; gap: 0.4rem; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">
           <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="editDish('${dish.id}')">Sửa</button>
@@ -514,12 +522,12 @@ function toggleDishViewMode() {
     adminState.dishViewMode = 'grid';
     table.style.display = 'none';
     grid.style.display = 'grid';
-    btn.textContent = 'Chuyển Xem Bảng 📋';
+    btn.textContent = 'Chuyển xem danh sách 📋';
   } else {
     adminState.dishViewMode = 'table';
     table.style.display = 'block';
     grid.style.display = 'none';
-    btn.textContent = 'Chuyển Xem Lưới Ảnh 🔲';
+    btn.textContent = 'Chuyển xem lưới ảnh 🔲';
   }
 }
 
@@ -529,7 +537,7 @@ function toggleDishAvailability(id) {
   dish.isAvailable = dish.isAvailable === false ? true : false;
   localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
   renderDishesTable();
-  showToast(`Đã đổi trạng thái món <b>${dish.name}</b> thành <b>${dish.isAvailable ? 'Còn Món' : 'Tạm Hết'}</b>!`);
+  showToast(`Đã đổi trạng thái món <b>${dish.name}</b> thành <b>${dish.isAvailable ? 'Còn món' : 'Tạm hết'}</b>!`);
 }
 
 window.toggleDishHomeDisplay = function(id) {
@@ -538,7 +546,7 @@ window.toggleDishHomeDisplay = function(id) {
   dish.showOnHome = dish.showOnHome === false ? true : false;
   localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
   renderDishesTable();
-  const label = dish.showOnHome ? 'HIỂN THỊ trên Trang Chủ' : 'ẨN khỏi Trang Chủ';
+  const label = dish.showOnHome ? 'Hiển thị trên trang chủ' : 'Ẩn khỏi trang chủ';
   showToast(`Món <b>${dish.name}</b> đã được chuyển sang: <b>${label}</b>!`);
 };
 
@@ -548,7 +556,7 @@ window.setAllDishesHomeVisibility = function(shouldShow) {
   });
   localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
   renderDishesTable();
-  showToast(shouldShow ? 'Đã BẬT hiển thị TẤT CẢ món ăn trên Trang Chủ!' : 'Đã ẨN toàn bộ món ăn khỏi Trang Chủ!');
+  showToast(shouldShow ? 'Đã bật hiển thị tất cả món ăn trên trang chủ!' : 'Đã ẩn toàn bộ món ăn khỏi trang chủ!');
 };
 
 function openDishModal(editId = null) {
@@ -562,7 +570,7 @@ function openDishModal(editId = null) {
   if (editId) {
     const dish = adminState.dishes.find(d => d.id === editId);
     if (!dish) return;
-    title.textContent = `Chỉnh Sửa: ${dish.name}`;
+    title.textContent = `Chỉnh sửa: ${dish.name}`;
     idInput.value = dish.id;
     document.getElementById('dishName').value = dish.name;
     document.getElementById('dishChinese').value = dish.chinese;
@@ -575,7 +583,7 @@ function openDishModal(editId = null) {
     if (homeCheck) homeCheck.checked = dish.showOnHome !== false;
     preview.src = dish.image.startsWith('assets') ? `../${dish.image}` : dish.image;
   } else {
-    title.textContent = 'Thêm Món Ăn Mới';
+    title.textContent = 'Thêm món ăn mới';
     idInput.value = '';
     document.getElementById('dishImage').value = 'assets/images/dishes/Bánh bao kim sa.png';
     if (homeCheck) homeCheck.checked = true;
@@ -899,9 +907,9 @@ function renderBookingsTable() {
   tbody.innerHTML = adminState.bookings.map(b => {
     const isConf = b.status === 'confirmed';
     const isDone = b.status === 'completed';
-    const statusLabel = isConf ? 'Đã Xác Nhận' : (isDone ? 'Đã Tiếp Đón' : 'Chờ Phản Hồi');
+    const statusLabel = isConf ? 'Đã xác nhận' : (isDone ? 'Đã đón khách' : 'Chờ phản hồi');
     const badgeClass = isConf ? 'badge-success' : (isDone ? 'badge-indigo' : 'badge-warning');
-    const displayName = b.name || b.customer || 'Khách Đặt Bàn';
+    const displayName = b.name || b.customer || 'Khách đặt bàn';
     const displayPhone = b.phone || 'Chưa cung cấp';
     const displayTime = b.time ? `${b.time} ${b.date ? `(${b.date})` : ''}` : (b.date || 'Hôm nay');
     const displayBranch = b.branch ? `<div style="font-size: 0.78rem; color: var(--color-indigo); font-weight: 600;">📍 ${b.branch}</div>` : '';
@@ -916,7 +924,7 @@ function renderBookingsTable() {
         <td><a href="tel:${displayPhone}" style="color: var(--color-brand-red); font-weight: 700;">${displayPhone}</a></td>
         <td><b>${displayTime}</b></td>
         <td>${b.guests || '4 Khách'}</td>
-        <td><span class="badge badge-indigo">${b.area || 'Sảnh Tiêu Chuẩn'}</span></td>
+        <td><span class="badge badge-indigo">${b.area || 'Sảnh tiêu chuẩn'}</span></td>
         <td style="max-width: 240px; font-size: 0.85rem; color: var(--text-secondary);">${b.preOrder || 'Không gọi trước'}</td>
         <td>
           <span class="badge ${badgeClass}">${statusLabel}</span>
@@ -924,7 +932,7 @@ function renderBookingsTable() {
         <td style="text-align: right;">
           <div style="display: flex; gap: 0.35rem; justify-content: flex-end;">
             <button class="btn btn-outline btn-sm" onclick="cycleBookingStatus('${b.id}')" title="Chuyển trạng thái">
-              Đổi Trạng Thái ⇄
+              Đổi trạng thái ⇄
             </button>
             <button class="btn btn-danger btn-sm" onclick="deleteBooking('${b.id}')">✕</button>
           </div>
@@ -997,7 +1005,7 @@ function renderFranchiseView() {
       return `
         <div class="card-container" style="padding: 1.5rem; margin: 0; display: flex; flex-direction: column;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-brand-red); text-transform: uppercase; letter-spacing: 0.05em;">MÔ HÌNH NHƯỢNG QUYỀN</span>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-brand-red); text-transform: uppercase; letter-spacing: 0.05em;">Mô hình nhượng quyền</span>
             ${pkg.badge ? `<span class="badge badge-indigo" style="font-size: 0.72rem;">${pkg.badge}</span>` : ''}
           </div>
           <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin: 0.2rem 0 0.5rem; font-size: 1.35rem;">${pkg.name}</h3>
@@ -1016,7 +1024,7 @@ function renderFranchiseView() {
             </ul>
           </div>
           <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="openFranchiseModal('${pkg.id}')">
-            ✏️ Điều Chỉnh Thông Tin Gói Này
+            ✏️ Điều chỉnh thông tin gói này
           </button>
         </div>
       `;
@@ -1034,7 +1042,7 @@ function renderFranchiseView() {
         <td>${lead.date}</td>
         <td style="text-align: right;">
           <span class="badge ${lead.status === 'meeting' ? 'badge-success' : 'badge-warning'}">
-            ${lead.status === 'meeting' ? 'Đã Hẹn Gặp' : (lead.status === 'contacted' ? 'Đã Gọi Điện' : 'Mới Đăng Ký')}
+            ${lead.status === 'meeting' ? 'Đã hẹn gặp' : (lead.status === 'contacted' ? 'Đã gọi điện' : 'Mới đăng ký')}
           </span>
         </td>
       </tr>
@@ -1095,9 +1103,9 @@ function renderCareersView() {
         <td>${j.type}</td>
         <td><b style="color: var(--color-brand-red);">${j.salary}</b></td>
         <td>${j.exp}</td>
-        <td><span class="badge badge-success">Đang Tuyển</span></td>
+        <td><span class="badge badge-success">Đang tuyển</span></td>
         <td style="text-align: right;">
-          <button class="btn btn-outline btn-sm" onclick="editJobSalary('${j.id}')">Sửa Lương</button>
+          <button class="btn btn-outline btn-sm" onclick="editJobSalary('${j.id}')">Sửa lương</button>
         </td>
       </tr>
     `).join('');
@@ -1113,7 +1121,7 @@ function renderCareersView() {
         <td>${c.date}</td>
         <td style="text-align: right;">
           <button class="btn btn-outline btn-sm" onclick="cycleCandidateStatus('${c.name}')">
-            ${c.status === 'hired' ? '✔ Đã Trúng Tuyển' : (c.status === 'interview' ? '📅 Đang Phỏng Vấn' : '📩 Mới Nhận')}
+            ${c.status === 'hired' ? '✔ Đã trúng tuyển' : (c.status === 'interview' ? '📅 Đang phỏng vấn' : '📩 Mới nhận')}
           </button>
         </td>
       </tr>
@@ -1178,7 +1186,7 @@ function renderBranchesView() {
       <td style="font-size: 0.85rem; color: var(--text-secondary);">${b.hours}</td>
       <td>
         <span class="badge ${b.status === 'upcoming' ? 'badge-warning' : 'badge-success'}">
-          ${b.status === 'upcoming' ? '⏳ Sắp Khai Trương' : '✔ Đang Hoạt Động'}
+          ${b.status === 'upcoming' ? '⏳ Sắp khai trương' : '✔ Đang hoạt động'}
         </span>
       </td>
       <td style="text-align: right;">
@@ -1205,7 +1213,7 @@ function openBranchModal(editId = null) {
   if (editId) {
     const b = adminState.branches.find(item => item.id === editId);
     if (!b) return;
-    if (title) title.textContent = `Chỉnh Sửa: ${b.shortName || b.name}`;
+    if (title) title.textContent = `Chỉnh sửa: ${b.shortName || b.name}`;
     if (idInput) idInput.value = b.id;
     document.getElementById('modalBranchName').value = b.name || '';
     document.getElementById('modalBranchShortName').value = b.shortName || '';
@@ -1215,7 +1223,7 @@ function openBranchModal(editId = null) {
     document.getElementById('modalBranchScale').value = b.scale || '';
     document.getElementById('modalBranchStatus').value = b.status || 'active';
   } else {
-    if (title) title.textContent = 'Thêm Cơ Sở Chi Nhánh Mới';
+    if (title) title.textContent = 'Thêm cơ sở chi nhánh mới';
     if (idInput) idInput.value = '';
     document.getElementById('modalBranchHours').value = '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)';
     document.getElementById('modalBranchStatus').value = 'active';
@@ -1406,8 +1414,8 @@ function renderUsersTable() {
     const isMasterAdmin = u.username.toLowerCase() === 'admin';
     const roleClass = u.role === 'admin' ? 'role-admin' : (u.role === 'kitchen' ? 'role-kitchen' : 'role-cashier');
     const statusHtml = u.status === 'active'
-      ? `<span class="badge" style="background: rgba(46, 125, 50, 0.12); color: #2e7d32;">✔ Hoạt Động</span>`
-      : `<span class="badge" style="background: rgba(198, 40, 40, 0.12); color: #c62828;">🔒 Tạm Khóa</span>`;
+      ? `<span class="badge" style="background: rgba(46, 125, 50, 0.12); color: #2e7d32;">✔ Hoạt động</span>`
+      : `<span class="badge" style="background: rgba(198, 40, 40, 0.12); color: #c62828;">🔒 Tạm khóa</span>`;
 
     return `
       <tr>
@@ -1427,7 +1435,7 @@ function renderUsersTable() {
         <td style="text-align: right;">
           <div style="display: inline-flex; gap: 0.4rem;">
             <button class="btn btn-outline btn-sm" onclick="openResetPassModal('${u.username}')" title="Đặt lại mật khẩu">
-              🔑 Đổi Pass
+              🔑 Đổi pass
             </button>
             <button class="btn btn-outline btn-sm" onclick="toggleUserStatus('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể khóa tài khoản này"' : `title="${u.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa'}"`}>
               ${u.status === 'active' ? '🔒' : '🔓'}
@@ -1464,9 +1472,9 @@ function handleCreateUserSubmit(e) {
   }
 
   const roleNameMap = {
-    admin: 'Quản Trị Viên Cấp Cao',
-    kitchen: 'Quản Lý Bếp & Thực Đơn',
-    cashier: 'Vận Hành & Đặt Bàn'
+    admin: 'Quản trị viên cấp cao',
+    kitchen: 'Quản lý bếp & thực đơn',
+    cashier: 'Vận hành & đặt bàn'
   };
 
   // Avatar initials from full name
@@ -1645,22 +1653,191 @@ window.toggleUserStatus = toggleUserStatus;
 window.deleteUser = deleteUser;
 window.handleChangePasswordSubmit = handleChangePasswordSubmit;
 
-// ==================== SYNC TO LIVE WEBSITE ====================
-function syncDataToLiveWebsite() {
+// ==================== LOCAL STAGING & GITHUB PUBLISH ENGINE ====================
+const publishState = {
+  isPublishing: false,
+  lastPublished: localStorage.getItem('tongwei_last_published') || null,
+  scheduleTime: localStorage.getItem('tongwei_schedule_time') || '16:40',
+  autoPublish: localStorage.getItem('tongwei_auto_publish') !== 'false',
+  lastAutoFiredKey: localStorage.getItem('tongwei_last_auto_fired_key') || ''
+};
+
+function getBackendApiUrl(endpoint) {
+  // If running on local server, relative path works
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return endpoint;
+  }
+  // If accessed online (GitHub Pages), talk to local Node server on port 8088
+  return `http://localhost:8088${endpoint}`;
+}
+
+function updatePublishUI() {
+  const timeDisplay = document.getElementById('scheduleTimeDisplay');
+  if (timeDisplay) {
+    timeDisplay.textContent = publishState.autoPublish ? publishState.scheduleTime : 'Tắt';
+  }
+
+  const modalPreview = document.getElementById('modalSchedulePreview');
+  if (modalPreview) {
+    modalPreview.textContent = publishState.scheduleTime;
+  }
+
+  const timeInput = document.getElementById('scheduleTimeInput');
+  if (timeInput) {
+    timeInput.value = publishState.scheduleTime;
+  }
+
+  const autoToggle = document.getElementById('autoPublishToggle');
+  if (autoToggle) {
+    autoToggle.checked = publishState.autoPublish;
+  }
+}
+
+function openScheduleModal() {
+  updatePublishUI();
+  openModal('scheduleModal');
+}
+window.openScheduleModal = openScheduleModal;
+
+async function handleScheduleFormSubmit(e) {
+  if (e) e.preventDefault();
+  const timeInput = document.getElementById('scheduleTimeInput');
+  const toggle = document.getElementById('autoPublishToggle');
+  if (!timeInput) return;
+
+  publishState.scheduleTime = timeInput.value || '16:40';
+  publishState.autoPublish = toggle ? toggle.checked : true;
+
+  localStorage.setItem('tongwei_schedule_time', publishState.scheduleTime);
+  localStorage.setItem('tongwei_auto_publish', publishState.autoPublish);
+
+  updatePublishUI();
+  closeModal('scheduleModal');
+
+  // Sync schedule config with local server if running
+  try {
+    const url = getBackendApiUrl('/api/set-schedule');
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        scheduledTime: publishState.scheduleTime,
+        autoPublishEnabled: publishState.autoPublish
+      })
+    });
+  } catch (err) {
+    console.warn('Could not sync schedule with local server:', err);
+  }
+
+  showToast(`⏰ Đã lưu lịch hẹn: ${publishState.autoPublish ? `Tự động đẩy lúc ${publishState.scheduleTime}` : 'Đã tắt tự động'}!`);
+}
+window.handleScheduleFormSubmit = handleScheduleFormSubmit;
+
+async function triggerPublishToGithub(isAuto = false) {
+  if (publishState.isPublishing) {
+    showToast('⏳ Hệ thống đang tiến hành đẩy lên GitHub, vui lòng đợi trong giây lát...', 'info');
+    return;
+  }
+
+  const btn = document.getElementById('btnPublishOnline');
+  const origBtnContent = btn ? btn.innerHTML : '';
+
+  try {
+    publishState.isPublishing = true;
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳ Đang đẩy code lên GitHub...</span>`;
+    }
+
+    // Always make sure local client website has latest data
+    syncDataToLiveWebsite(false);
+
+    showToast(isAuto ? `⏰ Lịch hẹn ${publishState.scheduleTime}: Đang tự động xuất bản lên GitHub...` : '🚀 Đang bắt đầu đẩy các thay đổi lên GitHub Pages...', 'info');
+
+    const url = getBackendApiUrl('/api/publish-github');
+    const payload = {
+      dishes: adminState.dishes,
+      events: adminState.events,
+      branches: adminState.branches,
+      franchisePackages: adminState.franchisePackages
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success) {
+      const nowStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      publishState.lastPublished = nowStr;
+      localStorage.setItem('tongwei_last_published', nowStr);
+      showToast(`🎉 Xuất bản thành công! Toàn bộ thay đổi đã được đẩy lên GitHub. Website online sẽ cập nhật sau 1-2 phút.`);
+
+      const stagingBadge = document.querySelector('.staging-badge span:last-child');
+      if (stagingBadge) {
+        stagingBadge.textContent = `Đã online (${nowStr})`;
+        setTimeout(() => {
+          stagingBadge.textContent = 'Lưu cục bộ (Local)';
+        }, 8000);
+      }
+    } else {
+      throw new Error(data.message || data.error || 'Server trả về lỗi không xác định');
+    }
+  } catch (err) {
+    console.error('Publish error:', err);
+    showToast(`❌ Không thể xuất bản: ${err.message || 'Lỗi kết nối'}. Vui lòng kiểm tra server local (http://localhost:8088/) có đang chạy không.`, 'danger');
+  } finally {
+    publishState.isPublishing = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origBtnContent;
+    }
+  }
+}
+window.triggerPublishToGithub = triggerPublishToGithub;
+
+// Background Timer for 16:40 or configured time
+function checkAutoPublishSchedule() {
+  if (!publishState.autoPublish) return;
+
+  const now = new Date();
+  const currentHour = String(now.getHours()).padStart(2, '0');
+  const currentMinute = String(now.getMinutes()).padStart(2, '0');
+  const currentTime = `${currentHour}:${currentMinute}`;
+  const todayStr = now.toISOString().split('T')[0];
+  const fireKey = `${todayStr}_${currentTime}`;
+
+  if (currentTime === publishState.scheduleTime && publishState.lastAutoFiredKey !== fireKey) {
+    publishState.lastAutoFiredKey = fireKey;
+    localStorage.setItem('tongwei_last_auto_fired_key', fireKey);
+    console.log(`[TongWei Scheduler] Kích hoạt tự động xuất bản đúng giờ hẹn ${currentTime}`);
+    triggerPublishToGithub(true);
+  }
+}
+
+// ==================== SYNC TO LIVE WEBSITE (LOCAL CLIENT) ====================
+function syncDataToLiveWebsite(showFeedback = true) {
   localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
   localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
   localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
   localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
   localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
   localStorage.setItem('tongwei_franchise_packages', JSON.stringify(adminState.franchisePackages));
-  showToast(`🚀 Đã đồng bộ toàn bộ dữ liệu (Món ăn, Cơ sở, Gói nhượng quyền, Đặt bàn) sang Website khách hàng! Bấm "Xem Trang Chủ" để kiểm tra.`);
+  if (showFeedback) {
+    showToast(`🚀 Đã đồng bộ toàn bộ dữ liệu (Món ăn, Cơ sở, Gói nhượng quyền, Đặt bàn) sang Website khách hàng! Bấm "Xem web ↗" để kiểm tra.`);
+  }
 }
-
 window.syncDataToLiveWebsite = syncDataToLiveWebsite;
 
 // ==================== EVENT LISTENERS & SETUP ====================
 document.addEventListener('DOMContentLoaded', () => {
   initializeData();
+  updatePublishUI();
+
+  // Run auto-publish timer check every 15 seconds
+  setInterval(checkAutoPublishSchedule, 15000);
 
   // Sidebar Menu Clicks
   document.querySelectorAll('.sidebar-menu .menu-item').forEach(btn => {

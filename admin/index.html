@@ -76,55 +76,55 @@
     </div>
 
     <nav class="sidebar-menu">
-      <div class="menu-section-label">Tổng Quan</div>
+      <div class="menu-section-label">Tổng quan</div>
       <a class="menu-item active" data-tab="dashboard">
         <span class="menu-icon">📊</span>
-        <span>Bảng Điều Khiển</span>
+        <span>Bảng điều khiển</span>
       </a>
 
-      <div class="menu-section-label">Ẩm Thực & Tiếp Thị</div>
+      <div class="menu-section-label">Ẩm thực & tiếp thị</div>
       <a class="menu-item" data-tab="dishes">
         <span class="menu-icon">🥟</span>
-        <span>Quản Lý Món Ăn</span>
+        <span>Quản lý món ăn</span>
         <span class="menu-badge" id="menuCountBadge">28</span>
       </a>
       <a class="menu-item" data-tab="events">
         <span class="menu-icon">📰</span>
-        <span>Sự Kiện & Tin Tức</span>
+        <span>Sự kiện & tin tức</span>
       </a>
       <a class="menu-item" data-tab="media">
         <span class="menu-icon">🖼️</span>
-        <span>Thư Viện Ảnh (25)</span>
+        <span>Thư viện ảnh (25)</span>
       </a>
 
-      <div class="menu-section-label">Kinh Doanh & Vận Hành</div>
+      <div class="menu-section-label">Kinh doanh & vận hành</div>
       <a class="menu-item" data-tab="bookings">
         <span class="menu-icon">🛎️</span>
-        <span>Lịch Đặt Bàn</span>
+        <span>Lịch đặt bàn</span>
         <span class="menu-badge" style="background: var(--status-success);" id="bookingCountBadge">3</span>
       </a>
       <a class="menu-item" data-tab="franchise">
         <span class="menu-icon">🤝</span>
-        <span>Nhượng Quyền & Leads</span>
+        <span>Nhượng quyền & đối tác</span>
       </a>
       <a class="menu-item" data-tab="careers">
         <span class="menu-icon">💼</span>
-        <span>Tuyển Dụng & Ứng Viên</span>
+        <span>Tuyển dụng & ứng viên</span>
       </a>
       <a class="menu-item" data-tab="branches">
         <span class="menu-icon">🏭</span>
-        <span>Cơ Sở & Xưởng HACCP</span>
+        <span>Cơ sở & xưởng HACCP</span>
       </a>
 
-      <div class="menu-section-label">Hệ Thống & Tài Khoản</div>
+      <div class="menu-section-label">Hệ thống & tài khoản</div>
       <a class="menu-item" data-tab="users">
         <span class="menu-icon">👥</span>
-        <span>Quản Lý Người Dùng</span>
+        <span>Quản lý người dùng</span>
         <span class="menu-badge" id="userCountBadge" style="background: var(--color-indigo-light);">3</span>
       </a>
       <a class="menu-item" data-tab="security">
         <span class="menu-icon">🔐</span>
-        <span>Đổi Mật Khẩu</span>
+        <span>Đổi mật khẩu</span>
       </a>
     </nav>
 
@@ -133,14 +133,14 @@
         <div class="admin-avatar" id="sidebarUserAvatar">AD</div>
         <div>
           <div class="admin-name" id="sidebarUserName">admin</div>
-          <div class="admin-role" id="sidebarUserRole">Quản Trị Viên</div>
+          <div class="admin-role" id="sidebarUserRole">Quản trị viên</div>
         </div>
       </div>
       <div class="sidebar-footer-actions">
         <a href="../index.html" target="_blank" class="live-link-btn" title="Mở trang khách hàng trong tab mới">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
         </a>
-        <button type="button" class="logout-icon-btn" onclick="handleLogout()" title="Đăng Xuất">
+        <button type="button" class="logout-icon-btn" onclick="handleLogout()" title="Đăng xuất">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
         </button>
       </div>
@@ -159,15 +159,25 @@
         </div>
       </div>
 
-      <div class="header-actions">
-        <button class="btn btn-outline btn-sm" onclick="syncDataToLiveWebsite()" title="Đồng bộ ngay sang giao diện chính">
-          🔄 Đồng Bộ Live Web
+      <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="staging-badge" title="Tất cả chỉnh sửa đang lưu ở môi trường cục bộ (Local Staging)">
+          <span class="dot"></span>
+          <span>Lưu cục bộ (Local)</span>
+        </div>
+
+        <div class="timer-pill" id="schedulePill" onclick="openScheduleModal()" title="Bấm để xem hoặc đổi lịch hẹn tự động xuất bản">
+          <span>⏰ Tự động: <strong id="scheduleTimeDisplay">16:40</strong></span>
+        </div>
+
+        <button class="btn-publish-online" id="btnPublishOnline" onclick="triggerPublishToGithub()" title="Bấm để đẩy toàn bộ thay đổi lên GitHub Pages online">
+          <span>🚀 Xuất bản lên online</span>
         </button>
+
         <button class="btn btn-primary btn-sm" onclick="openDishModal()">
-          + Thêm Món Mới
+          + Thêm món mới
         </button>
-        <a href="../index.html" target="_blank" class="btn btn-indigo btn-sm">
-          👁️ Xem Trang Chủ ↗
+        <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
+          👁️ Xem web ↗
         </a>
       </div>
     </header>
@@ -179,7 +189,7 @@
       <section class="tab-pane active" id="pane-dashboard">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Bảng Điều Khiển Tổng Quan</h1>
+            <h1>Bảng điều khiển tổng quan</h1>
             <p class="page-subtitle">Hệ thống giám sát thực đơn, khách đặt bàn và đối tác nhượng quyền thời gian thực.</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
@@ -191,7 +201,7 @@
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-info">
-              <span>Tổng Số Món Ăn</span>
+              <span>Tổng số món ăn</span>
               <div class="stat-number" id="kpiDishesCount">28</div>
             </div>
             <div class="stat-icon-wrap">🥟</div>
@@ -199,7 +209,7 @@
 
           <div class="stat-card">
             <div class="stat-info">
-              <span>Đơn Đặt Bàn Hôm Nay</span>
+              <span>Đơn đặt bàn hôm nay</span>
               <div class="stat-number" id="kpiBookingsCount" style="color: var(--status-success);">14</div>
             </div>
             <div class="stat-icon-wrap" style="color: var(--status-success); background: #dcfce7;">🛎️</div>
@@ -207,7 +217,7 @@
 
           <div class="stat-card">
             <div class="stat-info">
-              <span>Hồ Sơ Ứng Tuyển Mới</span>
+              <span>Hồ sơ ứng tuyển mới</span>
               <div class="stat-number" id="kpiApplicantsCount" style="color: var(--color-brand-red);">5</div>
             </div>
             <div class="stat-icon-wrap" style="color: var(--color-brand-red); background: #fee2e2;">💼</div>
@@ -215,7 +225,7 @@
 
           <div class="stat-card">
             <div class="stat-info">
-              <span>Đối Tác Nhượng Quyền</span>
+              <span>Đối tác nhượng quyền</span>
               <div class="stat-number" id="kpiFranchiseCount" style="color: var(--color-gold);">8</div>
             </div>
             <div class="stat-icon-wrap" style="color: var(--color-gold); background: #fef3c7;">🤝</div>
@@ -227,18 +237,18 @@
           <!-- Left: Recent Bookings -->
           <div class="card-container">
             <div class="card-header">
-              <h3>Lịch Đặt Bàn Gần Đây Nhất</h3>
-              <button class="btn btn-outline btn-sm" onclick="switchTab('bookings')">Xem Tất Cả ↗</button>
+              <h3>Lịch đặt bàn gần đây</h3>
+              <button class="btn btn-outline btn-sm" onclick="switchTab('bookings')">Xem tất cả ↗</button>
             </div>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Khách Hàng</th>
-                    <th>Thời Gian</th>
-                    <th>Số Khách</th>
-                    <th>Khu Vực</th>
-                    <th>Trạng Thái</th>
+                    <th>Khách hàng</th>
+                    <th>Thời gian</th>
+                    <th>Số khách</th>
+                    <th>Khu vực</th>
+                    <th>Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody id="dashboardBookingsTbody">
@@ -251,23 +261,23 @@
           <!-- Right: Quick Actions Card -->
           <div class="card-container">
             <div class="card-header">
-              <h3>Thao Tác Nhanh Quản Trị</h3>
+              <h3>Thao tác nhanh</h3>
             </div>
             <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 0.85rem;">
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="openDishModal()">
-                <span>🥟 Thêm Món Dimsum / Hải Sản Mới</span>
+                <span>🥟 Thêm món dimsum / hải sản</span>
               </button>
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="openEventModal()">
-                <span>📰 Đăng Sự Kiện & Khuyến Mãi Mới</span>
+                <span>📰 Đăng sự kiện & ưu đãi mới</span>
               </button>
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="switchTab('media')">
-                <span>🖼️ Quản Trị & Thay Đổi 25 Ảnh Concept</span>
+                <span>🖼️ Quản trị 25 ảnh concept</span>
               </button>
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="switchTab('branches')">
-                <span>🏭 Cập Nhật Giờ Mở Cửa & Hotline Cơ Sở</span>
+                <span>🏭 Cập nhật cơ sở & xưởng HACCP</span>
               </button>
               <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
-                💡 <b>Mẹo quản trị:</b> Mọi chỉnh sửa ở trang này đều được đồng bộ tức thời sang website khách hàng. Bấm nút <b>"Xem Trang Chủ ↗"</b> để kiểm tra ngay.
+                💡 <b>Môi trường lưu cục bộ:</b> Mọi chỉnh sửa được lưu ngay trong trình duyệt. Khi sẵn sàng, bấm <b>"Xuất bản lên online"</b> để đẩy lên GitHub Pages.
               </div>
             </div>
           </div>
@@ -278,15 +288,15 @@
       <section class="tab-pane" id="pane-dishes">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Quản Lý Thực Đơn & Món Ăn</h1>
+            <h1>Quản lý thực đơn & món ăn</h1>
             <p class="page-subtitle">Cập nhật giá bán, hình ảnh món tách nền, tên tiếng Hoa và tình trạng phục vụ.</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
             <button class="btn btn-outline btn-sm" id="btnToggleViewMode" onclick="toggleDishViewMode()">
-              Chuyển Xem Lưới Ảnh 🔲
+              Chuyển xem lưới ảnh 🔲
             </button>
             <button class="btn btn-primary" onclick="openDishModal()">
-              + Thêm Món Ăn Mới
+              + Thêm món ăn mới
             </button>
           </div>
         </div>
@@ -294,13 +304,13 @@
         <div class="card-container">
           <div class="card-header">
             <div class="table-controls" id="dishFilterControls">
-              <button class="table-filter-btn active" data-filter="all">Tất Cả Món (<span id="countAllDishes">28</span>)</button>
-              <button class="table-filter-btn" data-filter="dimsum">Điểm Tâm & Dimsum</button>
-              <button class="table-filter-btn" data-filter="main">Món Chính</button>
-              <button class="table-filter-btn" data-filter="seafood">Cá Lăng & Hải Sản</button>
-              <button class="table-filter-btn" data-filter="claypot">Nồi Đất & Món Xào</button>
-              <button class="table-filter-btn" data-filter="soup">Canh Tiềm Dưỡng Sinh</button>
-              <button class="table-filter-btn" data-filter="drinks">Thức Uống</button>
+              <button class="table-filter-btn active" data-filter="all">Tất cả (<span id="countAllDishes">28</span>)</button>
+              <button class="table-filter-btn" data-filter="dimsum">Điểm tâm & dimsum</button>
+              <button class="table-filter-btn" data-filter="main">Món chính</button>
+              <button class="table-filter-btn" data-filter="seafood">Cá lăng & hải sản</button>
+              <button class="table-filter-btn" data-filter="claypot">Nồi đất & món xào</button>
+              <button class="table-filter-btn" data-filter="soup">Canh tiềm dưỡng sinh</button>
+              <button class="table-filter-btn" data-filter="drinks">Thức uống</button>
             </div>
             <div>
               <input type="text" class="form-control" id="dishSearchInput" placeholder="Tìm tên món ăn..." style="width: 220px; padding: 0.45rem 0.85rem; font-size: 0.85rem;">
@@ -311,14 +321,14 @@
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.75rem;">
             <div style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;">
               <span>🌐</span>
-              <span>Tích chọn để quyết định món ăn nào <b>được phép hiển thị trên Trang Chủ</b> của khách hàng:</span>
+              <span>Tích chọn để quyết định món ăn nào <b>được phép hiển thị trên trang chủ</b> của khách hàng:</span>
             </div>
             <div style="display: flex; gap: 0.5rem;">
               <button class="btn btn-outline btn-sm" onclick="setAllDishesHomeVisibility(true)" style="background: #ffffff; color: var(--status-success); border-color: #86efac; font-weight: 700;">
-                ☑ Bật Tất Cả Lên Trang Chủ
+                ☑ Bật tất cả lên trang chủ
               </button>
               <button class="btn btn-outline btn-sm" onclick="setAllDishesHomeVisibility(false)" style="background: #ffffff; color: var(--text-secondary); font-weight: 700;">
-                ☐ Ẩn Tất Cả
+                ☐ Ẩn tất cả
               </button>
             </div>
           </div>
@@ -328,14 +338,14 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Ảnh Món</th>
-                  <th>Tên Món Ăn (Việt - Hoa)</th>
-                  <th>Danh Mục</th>
-                  <th>Đơn Giá</th>
-                  <th>Độ Cay</th>
-                  <th style="min-width: 140px;">Hiện Trang Chủ</th>
-                  <th>Kho Món</th>
-                  <th style="text-align: right;">Hành Động</th>
+                  <th>Ảnh món</th>
+                  <th>Tên món (Việt - Hoa)</th>
+                  <th>Danh mục</th>
+                  <th>Đơn giá</th>
+                  <th>Độ cay</th>
+                  <th style="min-width: 140px;">Hiện trang chủ</th>
+                  <th>Trạng thái món</th>
+                  <th style="text-align: right;">Hành động</th>
                 </tr>
               </thead>
               <tbody id="dishesTbody">
@@ -355,11 +365,11 @@
       <section class="tab-pane" id="pane-events">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Quản Lý Sự Kiện & Tin Tức</h1>
+            <h1>Quản lý sự kiện & tin tức</h1>
             <p class="page-subtitle">Quản lý các chương trình ưu đãi, sự kiện khai trương và menu mùa mới hiển thị trên website.</p>
           </div>
           <button class="btn btn-primary" onclick="openEventModal()">
-            + Đăng Sự Kiện Mới
+            + Đăng sự kiện mới
           </button>
         </div>
 
@@ -368,12 +378,12 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Ảnh Bìa</th>
-                  <th>Tiêu Đề Sự Kiện</th>
-                  <th>Thời Gian & Địa Điểm</th>
-                  <th>Huy Hiệu (Badge)</th>
-                  <th>Nội Dung Tóm Tắt</th>
-                  <th style="text-align: right;">Thao Tác</th>
+                  <th>Ảnh bìa</th>
+                  <th>Tiêu đề sự kiện</th>
+                  <th>Thời gian & địa điểm</th>
+                  <th>Huy hiệu</th>
+                  <th>Nội dung tóm tắt</th>
+                  <th style="text-align: right;">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="eventsTbody">
@@ -388,23 +398,23 @@
       <section class="tab-pane" id="pane-media">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Thư Viện Ảnh & Concept Lookbook</h1>
+            <h1>Thư viện ảnh & concept lookbook</h1>
             <p class="page-subtitle">Quản trị toàn bộ 25 bức ảnh concept ẩm thực nghệ nhân tải từ Google Drive của TongWei.</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-outline btn-sm" onclick="openMediaUploader()">Tải Thêm Ảnh Mới 📁</button>
+            <button class="btn btn-outline btn-sm" onclick="openMediaUploader()">Tải thêm ảnh mới 📁</button>
           </div>
         </div>
 
         <div class="card-container">
           <div class="card-header">
             <div class="table-controls" id="mediaFilterControls">
-              <button class="table-filter-btn active" data-cat="all">Tất Cả 25 Ảnh</button>
-              <button class="table-filter-btn" data-cat="banquet">Bàn Tiệc Đại Yến</button>
-              <button class="table-filter-btn" data-cat="dimsum">Dimsum Nghệ Nhân</button>
-              <button class="table-filter-btn" data-cat="bbq">Món Quay & Nướng</button>
-              <button class="table-filter-btn" data-cat="appetizer">Khai Vị & Súp</button>
-              <button class="table-filter-btn" data-cat="drinks">Thức Uống</button>
+              <button class="table-filter-btn active" data-cat="all">Tất cả 25 ảnh</button>
+              <button class="table-filter-btn" data-cat="banquet">Bàn tiệc đại yến</button>
+              <button class="table-filter-btn" data-cat="dimsum">Dimsum nghệ nhân</button>
+              <button class="table-filter-btn" data-cat="bbq">Món quay & nướng</button>
+              <button class="table-filter-btn" data-cat="appetizer">Khai vị & súp</button>
+              <button class="table-filter-btn" data-cat="drinks">Thức uống</button>
             </div>
             <span style="font-size: 0.85rem; color: var(--text-secondary);">Nhấp vào ảnh để chỉnh sửa thông tin hoặc xem ảnh phóng to</span>
           </div>
@@ -419,11 +429,11 @@
       <section class="tab-pane" id="pane-bookings">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Quản Lý Lịch Đặt Bàn</h1>
+            <h1>Quản lý lịch đặt bàn</h1>
             <p class="page-subtitle">Theo dõi khách đặt bàn trực tuyến, giờ hẹn đến và thực đơn chọn trước.</p>
           </div>
           <button class="btn btn-primary" onclick="openNewBookingModal()">
-            + Tiếp Nhận Đặt Bàn Mới
+            + Tiếp nhận đặt bàn mới
           </button>
         </div>
 
@@ -432,15 +442,15 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Mã Bàn</th>
-                  <th>Họ Tên Khách</th>
-                  <th>Số Điện Thoại</th>
-                  <th>Ngày & Giờ Đến</th>
-                  <th>Số Lượng</th>
-                  <th>Khu Vực Ngồi</th>
-                  <th>Món Gọi Trước</th>
-                  <th>Trạng Thái</th>
-                  <th style="text-align: right;">Hành Động</th>
+                  <th>Mã bàn</th>
+                  <th>Họ tên khách</th>
+                  <th>Số điện thoại</th>
+                  <th>Ngày & giờ đến</th>
+                  <th>Số lượng</th>
+                  <th>Khu vực ngồi</th>
+                  <th>Món gọi trước</th>
+                  <th>Trạng thái</th>
+                  <th style="text-align: right;">Hành động</th>
                 </tr>
               </thead>
               <tbody id="bookingsTbody">
@@ -455,13 +465,13 @@
       <section class="tab-pane" id="pane-franchise">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Quản Lý Nhượng Quyền & Nhà Đầu Tư</h1>
+            <h1>Quản lý nhượng quyền & đối tác</h1>
             <p class="page-subtitle">Cấu hình 3 gói đầu tư nhượng quyền và danh sách đối tác đăng ký thẩm định thị trường.</p>
           </div>
         </div>
 
         <!-- 3 Packages Settings -->
-        <h3 style="margin-bottom: 1rem; color: var(--color-indigo-dark); font-family: var(--font-heading);">Cấu Hình Các Gói Hợp Tác</h3>
+        <h3 style="margin-bottom: 1rem; color: var(--color-indigo-dark); font-family: var(--font-heading);">Cấu hình các gói hợp tác</h3>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem;" id="franchiseSettingsCards">
           <!-- Filled by JS -->
         </div>
@@ -469,20 +479,20 @@
         <!-- Partner Leads Table -->
         <div class="card-container">
           <div class="card-header">
-            <h3>Danh Sách Nhà Đầu Tư Đăng Ký Tư Vấn</h3>
+            <h3>Danh sách nhà đầu tư đăng ký tư vấn</h3>
             <span class="badge badge-indigo" id="leadCountBadge">Đã nhận 8 hồ sơ</span>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Họ Tên Đối Tác</th>
-                  <th>Số Điện Thoại</th>
-                  <th>Tỉnh / Thành Phố</th>
-                  <th>Mức Ngân Sách</th>
-                  <th>Ghi Chú Mặt Bằng</th>
-                  <th>Thời Gian Đăng Ký</th>
-                  <th style="text-align: right;">Trạng Thái</th>
+                  <th>Họ tên đối tác</th>
+                  <th>Số điện thoại</th>
+                  <th>Tỉnh / thành phố</th>
+                  <th>Mức ngân sách</th>
+                  <th>Ghi chú mặt bằng</th>
+                  <th>Thời gian đăng ký</th>
+                  <th style="text-align: right;">Trạng thái</th>
                 </tr>
               </thead>
               <tbody id="franchiseLeadsTbody">
@@ -497,30 +507,30 @@
       <section class="tab-pane" id="pane-careers">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Quản Lý Tuyển Dụng & Hồ Sơ Ứng Viên</h1>
+            <h1>Quản lý tuyển dụng & hồ sơ ứng viên</h1>
             <p class="page-subtitle">Cập nhật vị trí việc làm F&B và quản lý hồ sơ ứng tuyển gửi từ website.</p>
           </div>
           <button class="btn btn-primary" onclick="openJobModal()">
-            + Thêm Vị Trí Tuyển Dụng
+            + Thêm vị trí tuyển dụng
           </button>
         </div>
 
         <!-- Jobs List -->
         <div class="card-container" style="margin-bottom: 2rem;">
           <div class="card-header">
-            <h3>Các Vị Trí Đang Tuyển Dụng</h3>
+            <h3>Các vị trí đang tuyển dụng</h3>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Vị Trí Công Việc</th>
-                  <th>Địa Điểm</th>
-                  <th>Hình Thức</th>
-                  <th>Mức Thu Nhập</th>
-                  <th>Yêu Cầu Kinh Nghiệm</th>
-                  <th>Trạng Thái</th>
-                  <th style="text-align: right;">Hành Động</th>
+                  <th>Vị trí công việc</th>
+                  <th>Địa điểm</th>
+                  <th>Hình thức</th>
+                  <th>Mức thu nhập</th>
+                  <th>Yêu cầu kinh nghiệm</th>
+                  <th>Trạng thái</th>
+                  <th style="text-align: right;">Hành động</th>
                 </tr>
               </thead>
               <tbody id="jobsTbody">
@@ -533,19 +543,19 @@
         <!-- Candidates Inbox -->
         <div class="card-container">
           <div class="card-header">
-            <h3>Hộp Thư Hồ Sơ Ứng Viên Nộp Trực Tuyến</h3>
+            <h3>Hồ sơ ứng viên nộp trực tuyến</h3>
             <span class="badge badge-success">5 Hồ sơ mới</span>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Họ Tên Ứng Viên</th>
-                  <th>Số Điện Thoại</th>
-                  <th>Vị Trí Ứng Tuyển</th>
-                  <th>Kinh Nghiệm / Ghi Chú</th>
-                  <th>Ngày Nộp</th>
-                  <th style="text-align: right;">Quy Trình Xử Lý</th>
+                  <th>Họ tên ứng viên</th>
+                  <th>Số điện thoại</th>
+                  <th>Vị trí ứng tuyển</th>
+                  <th>Kinh nghiệm / Ghi chú</th>
+                  <th>Ngày nộp</th>
+                  <th style="text-align: right;">Quy trình xử lý</th>
                 </tr>
               </thead>
               <tbody id="candidatesTbody">
@@ -560,31 +570,31 @@
       <section class="tab-pane" id="pane-branches">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Hệ Thống Cơ Sở & Xưởng Trung Tâm</h1>
+            <h1>Hệ thống cơ sở & xưởng trung tâm</h1>
             <p class="page-subtitle">Thêm mới chi nhánh nhà hàng, chỉnh sửa hotline, địa chỉ và tiêu chuẩn xưởng HACCP.</p>
           </div>
           <button class="btn btn-primary" onclick="openBranchModal()">
-            + Thêm Cơ Sở Mới
+            + Thêm cơ sở mới
           </button>
         </div>
 
         <!-- Branches Table -->
         <div class="card-container" style="margin-bottom: 2rem;">
           <div class="card-header">
-            <h3>Danh Sách Chi Nhánh Nhà Hàng TongWei</h3>
+            <h3>Danh sách chi nhánh nhà hàng TongWei</h3>
             <span class="badge badge-indigo" id="branchCountBadge">2 Chi nhánh</span>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Mã CS</th>
-                  <th>Tên Cơ Sở & Khu Vực</th>
-                  <th>Địa Chỉ Thực Tế</th>
-                  <th>Hotline Đặt Bàn</th>
-                  <th>Giờ Phục Vụ</th>
-                  <th>Trạng Thái</th>
-                  <th style="text-align: right;">Hành Động</th>
+                  <th>Mã cơ sở</th>
+                  <th>Tên cơ sở & khu vực</th>
+                  <th>Địa chỉ thực tế</th>
+                  <th>Hotline đặt bàn</th>
+                  <th>Giờ phục vụ</th>
+                  <th>Trạng thái</th>
+                  <th style="text-align: right;">Hành động</th>
                 </tr>
               </thead>
               <tbody id="branchesTbody">
@@ -597,34 +607,34 @@
         <!-- Factory Configuration Card -->
         <div class="card-container">
           <div class="card-header">
-            <h3>Cấu Hình Xưởng Chế Biến Trung Tâm Chuẩn HACCP & ISO 22000</h3>
-            <button class="btn btn-outline btn-sm" onclick="saveFactorySettings()">💾 Lưu Thông Tin Xưởng</button>
+            <h3>Cấu hình xưởng chế biến trung tâm HACCP & ISO 22000</h3>
+            <button class="btn btn-outline btn-sm" onclick="saveFactorySettings()">💾 Lưu thông tin xưởng</button>
           </div>
           <div style="padding: 1.5rem;">
             <form id="factoryForm">
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
                 <div class="form-group">
-                  <label class="form-label">Tên Nhà Xưởng</label>
+                  <label class="form-label">Tên nhà xưởng</label>
                   <input type="text" class="form-control" id="factoryName" value="Xưởng Chế Biến Trung Tâm HACCP & ISO 22000">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Hotline Cung Ứng & Bán Buôn</label>
+                  <label class="form-label">Hotline cung ứng & bán buôn</label>
                   <input type="text" class="form-control" id="factoryHotline" value="0912 888 999">
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Địa Chỉ Nhà Xưởng</label>
+                <label class="form-label">Địa chỉ nhà xưởng</label>
                 <input type="text" class="form-control" id="factoryAddress" value="Cụm Công Nghiệp Thực Phẩm Sạch Hà Nội">
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
                 <div class="form-group">
-                  <label class="form-label">Năng Lực Cung Ứng Thực Tế</label>
+                  <label class="form-label">Năng lực cung ứng thực tế</label>
                   <input type="text" class="form-control" id="factoryCapacity" value="Cung ứng 28+ sản phẩm dimsum tươi & đông lạnh IQF toàn quốc">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Tiêu Chuẩn Đạt Chuẩn</label>
+                  <label class="form-label">Tiêu chuẩn đạt chuẩn</label>
                   <input type="text" class="form-control" id="factoryStandards" value="HACCP Codex 2020, ISO 22000:2018, Cấp đông IQF -40°C">
                 </div>
               </div>
@@ -637,17 +647,17 @@
       <section class="tab-pane" id="pane-users">
         <div class="pane-header">
           <div>
-            <h2>Quản Lý Người Dùng & Phân Quyền Hệ Thống</h2>
+            <h2>Quản lý người dùng & phân quyền</h2>
             <p>Kiểm soát tài khoản đăng nhập, vai trò quản lý bếp, thu ngân và phân quyền truy cập cổng TongWei.</p>
           </div>
           <button class="btn btn-primary" onclick="openAddUserModal()">
-            ➕ Thêm Người Dùng Mới
+            ➕ Thêm người dùng mới
           </button>
         </div>
 
         <div class="card-container">
           <div class="card-header">
-            <h3>Danh Sách Tài Khoản Quản Trị Viên</h3>
+            <h3>Danh sách tài khoản quản trị</h3>
             <span class="badge badge-indigo" id="usersListCountBadge">3 Tài khoản</span>
           </div>
 
@@ -655,12 +665,12 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Tài Khoản / Họ Tên</th>
-                  <th>Tên Đăng Nhập</th>
-                  <th>Vai Trò Quản Trị</th>
-                  <th>Trạng Thái</th>
-                  <th>Ngày Tạo</th>
-                  <th style="text-align: right;">Hành Động</th>
+                  <th>Tài khoản / Họ tên</th>
+                  <th>Tên đăng nhập</th>
+                  <th>Vai trò</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày tạo</th>
+                  <th style="text-align: right;">Hành động</th>
                 </tr>
               </thead>
               <tbody id="usersTbody">
@@ -675,7 +685,7 @@
       <section class="tab-pane" id="pane-security">
         <div class="pane-header">
           <div>
-            <h2>Bảo Mật Tài Khoản & Đổi Mật Khẩu</h2>
+            <h2>Bảo mật tài khoản & đổi mật khẩu</h2>
             <p>Thay đổi mật khẩu cá nhân cho tài khoản đang đăng nhập để đảm bảo an toàn tuyệt đối cho hệ thống.</p>
           </div>
         </div>
@@ -684,32 +694,32 @@
           <!-- Form Change Password Card -->
           <div class="card-container">
             <div class="card-header">
-              <h3>Đổi Mật Khẩu Hiện Tại</h3>
+              <h3>Đổi mật khẩu hiện tại</h3>
             </div>
             <div style="padding: 1.75rem;">
               <form id="changePasswordForm" onsubmit="handleChangePasswordSubmit(event)">
                 <div class="form-group" style="margin-bottom: 1.25rem;">
-                  <label class="form-label">Tài Khoản Đang Đăng Nhập</label>
+                  <label class="form-label">Tài khoản đang đăng nhập</label>
                   <input type="text" class="form-control" id="securityCurrentUsername" readonly style="background: #f1f5f9; font-weight: 700; color: var(--color-indigo);">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1.25rem;">
-                  <label class="form-label">Mật Khẩu Hiện Tại *</label>
+                  <label class="form-label">Mật khẩu hiện tại *</label>
                   <input type="password" class="form-control" id="currentPasswordInput" placeholder="Nhập mật khẩu hiện tại đang dùng" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1.25rem;">
-                  <label class="form-label">Mật Khẩu Mới *</label>
+                  <label class="form-label">Mật khẩu mới *</label>
                   <input type="password" class="form-control" id="newPasswordInput" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1.75rem;">
-                  <label class="form-label">Xác Nhận Mật Khẩu Mới *</label>
+                  <label class="form-label">Xác nhận mật khẩu mới *</label>
                   <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu mới vừa nhập" minlength="6" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
-                  🔑 Cập Nhật Mật Khẩu Mới
+                  🔑 Cập nhật mật khẩu mới
                 </button>
               </form>
             </div>
@@ -718,7 +728,7 @@
           <!-- Security Policy Info Card -->
           <div class="card-container">
             <div class="card-header">
-              <h3>Chính Sách & Hướng Dẫn Bảo Mật</h3>
+              <h3>Chính sách & hướng dẫn bảo mật</h3>
             </div>
             <div style="padding: 1.75rem; font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
               <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -746,7 +756,7 @@
               </div>
 
               <div style="background: #fdf8ed; border-left: 3px solid var(--color-gold); padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.82rem; color: #7a5611; margin-top: 1.5rem;">
-                💡 <strong>Lưu ý:</strong> Thông tin tài khoản được lưu an toàn trên trình duyệt quản trị và đồng bộ trực tiếp với cơ sở dữ liệu hệ thống.
+                💡 <strong>Lưu ý:</strong> Mọi thay đổi được lưu trữ cục bộ trên máy. Nhấn <b>"Xuất bản lên online"</b> hoặc chờ lịch tự động lúc <b>16:40</b> để cập nhật lên GitHub Pages.
               </div>
             </div>
           </div>
@@ -762,7 +772,7 @@
   <div class="modal-overlay" id="dishModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('dishModal')">✕</button>
-      <h3 id="dishModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm Món Ăn Mới</h3>
+      <h3 id="dishModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm món ăn mới</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Điền thông tin món ăn để cập nhật trực tiếp vào thực đơn TongWei.</p>
 
       <form id="dishForm">
@@ -770,36 +780,36 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Tên Món Ăn (Tiếng Việt) *</label>
+            <label class="form-label">Tên món ăn (Tiếng Việt) *</label>
             <input type="text" class="form-control" id="dishName" placeholder="VD: Bánh bao kim sa" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Tên Tiếng Hoa (廣東菜名) *</label>
+            <label class="form-label">Tên tiếng Hoa (廣東菜名) *</label>
             <input type="text" class="form-control" id="dishChinese" placeholder="VD: 黄金流沙包" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Danh Mục Phân Loại *</label>
+            <label class="form-label">Danh mục phân loại *</label>
             <select class="form-control" id="dishCategory" required>
-              <option value="dimsum">Điểm Tâm & Dimsum</option>
-              <option value="main">Món Chính Quảng Đông</option>
-              <option value="seafood">Hải Sản & Cá Lăng</option>
-              <option value="claypot">Nồi Đất & Món Xào</option>
-              <option value="soup">Canh Tiềm Dưỡng Sinh</option>
-              <option value="drinks">Thức Uống</option>
+              <option value="dimsum">Điểm tâm & dimsum</option>
+              <option value="main">Món chính Quảng Đông</option>
+              <option value="seafood">Hải sản & cá lăng</option>
+              <option value="claypot">Nồi đất & món xào</option>
+              <option value="soup">Canh tiềm dưỡng sinh</option>
+              <option value="drinks">Thức uống</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Đơn Giá (VNĐ) *</label>
+            <label class="form-label">Đơn giá (VNĐ) *</label>
             <input type="number" class="form-control" id="dishPrice" placeholder="68000" min="10000" step="1000" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Mức Độ Cay (0 - 3)</label>
+            <label class="form-label">Mức độ cay (0 - 3)</label>
             <select class="form-control" id="dishSpicy">
               <option value="0">0 - Thanh đạm, không cay</option>
               <option value="1">1 - Cay dịu (🌶️)</option>
@@ -808,16 +818,16 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Thẻ Tag (cách nhau bằng dấu phẩy)</label>
+            <label class="form-label">Thẻ tag phân loại (cách nhau bằng dấu phẩy)</label>
             <input type="text" class="form-control" id="dishTags" placeholder="Bán chạy, Nghệ nhân, Signature">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Đường Dẫn Ảnh Món Ăn (PNG Tách Nền)</label>
+          <label class="form-label">Đường dẫn ảnh món ăn (PNG tách nền)</label>
           <div style="display: flex; gap: 0.5rem;">
             <input type="text" class="form-control" id="dishImage" placeholder="assets/images/dishes/Bánh bao kim sa.png" required>
-            <button type="button" class="btn btn-outline btn-sm" onclick="openMediaSelectorForDish()" style="flex-shrink: 0;">Chọn Ảnh Có Sẵn</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openMediaSelectorForDish()" style="flex-shrink: 0;">Chọn ảnh có sẵn</button>
           </div>
         </div>
 
@@ -825,19 +835,19 @@
         <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
           <img src="../assets/images/dishes/Bánh bao kim sa.png" alt="Preview" id="dishPreviewImg" style="width: 60px; height: 60px; object-fit: contain;">
           <div>
-            <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-indigo);">XEM TRƯỚC HÌNH ẢNH MÓN</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-indigo);">Xem trước hình ảnh món</div>
             <div style="font-size: 0.78rem; color: var(--text-secondary);">Ảnh tách nền PNG sẽ hiển thị trên nền men sứ nổi bật</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mô Tả Hương Vị & Kỹ Thuật Nghệ Nhân *</label>
+          <label class="form-label">Mô tả hương vị & kỹ thuật nghệ nhân *</label>
           <textarea class="form-control" id="dishDesc" rows="3" placeholder="Vỏ bánh mềm xốp như mây, bọc trọn nhân trứng muối vàng óng tan chảy..." required></textarea>
         </div>
 
         <div class="form-group" style="background: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
           <div>
-            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">Hiển Thị Món Ăn Trên Trang Chính (Website)</div>
+            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">Hiển thị món ăn trên trang chính (Website)</div>
             <div style="font-size: 0.78rem; color: var(--text-secondary);">Tích chọn để món ăn này xuất hiện trên thực đơn chính cho khách hàng xem và đặt món</div>
           </div>
           <input type="checkbox" id="dishShowOnHome" style="width: 22px; height: 22px; cursor: pointer;" checked>
@@ -845,9 +855,9 @@
 
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Lưu Thông Tin Món Ăn
+            💾 Lưu thông tin món ăn
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('dishModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('dishModal')">Hủy bỏ</button>
         </div>
       </form>
     </div>
@@ -857,51 +867,51 @@
   <div class="modal-overlay" id="eventModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('eventModal')">✕</button>
-      <h3 id="eventModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Soạn Sự Kiện Mới</h3>
+      <h3 id="eventModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Soạn sự kiện mới</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Đăng chương trình ưu đãi, tiệc mùa mới lên website chính.</p>
 
       <form id="eventForm">
         <input type="hidden" id="eventEditId">
 
         <div class="form-group">
-          <label class="form-label">Tiêu Đề Sự Kiện *</label>
+          <label class="form-label">Tiêu đề sự kiện *</label>
           <input type="text" class="form-control" id="eventTitle" placeholder="Đại Tiệc Khai Trương TongWei Hà Nội" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Thời Gian & Địa Điểm *</label>
+            <label class="form-label">Thời gian & địa điểm *</label>
             <input type="text" class="form-control" id="eventDate" placeholder="15 Tháng 06, 2026 • Chi Nhánh Hà Nội" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Huy Hiệu (Badge Tag)</label>
-            <input type="text" class="form-control" id="eventBadge" placeholder="Sự Kiện Nổi Bật" required>
+            <label class="form-label">Huy hiệu (Badge tag)</label>
+            <input type="text" class="form-control" id="eventBadge" placeholder="Sự kiện nổi bật" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Đường Dẫn Ảnh Bìa Sự Kiện</label>
+          <label class="form-label">Đường dẫn ảnh bìa sự kiện</label>
           <div style="display: flex; gap: 0.5rem;">
             <input type="text" class="form-control" id="eventImg" placeholder="assets/images/concept/concept_12.jpg" required>
-            <button type="button" class="btn btn-outline btn-sm" onclick="openMediaSelectorForEvent()" style="flex-shrink: 0;">Chọn 25 Concept</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openMediaSelectorForEvent()" style="flex-shrink: 0;">Chọn từ thư viện ảnh</button>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Nội Dung Tóm Tắt (Hiển thị ngoài card) *</label>
+          <label class="form-label">Nội dung tóm tắt (Hiển thị ngoài card) *</label>
           <textarea class="form-control" id="eventDesc" rows="2" placeholder="Tưng bừng khai trương cơ sở chính tại 68A Trần Hưng Đạo..." required></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Chi Tiết Ưu Đãi (Hiển thị khi mở popup)</label>
+          <label class="form-label">Chi tiết ưu đãi (Hiển thị khi mở popup)</label>
           <textarea class="form-control" id="eventDetail" rows="3" placeholder="- Ưu đãi 20% thực đơn dimsum&#10;- Tặng xửng bánh bao kim sa&#10;- Thưởng trà Thiết Quan Âm miễn phí"></textarea>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Xuất Bản Sự Kiện
+            💾 Lưu sự kiện
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('eventModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('eventModal')">Hủy bỏ</button>
         </div>
       </form>
     </div>
@@ -911,7 +921,7 @@
   <div class="modal-overlay" id="photoModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal('photoModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Chỉnh Sửa Ảnh Concept</h3>
+      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Chỉnh sửa ảnh concept</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật tiêu đề, danh mục và lời bình cho bức ảnh nghệ thuật.</p>
 
       <form id="photoForm">
@@ -922,29 +932,29 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Tiêu Đề Ảnh *</label>
+          <label class="form-label">Tiêu đề ảnh *</label>
           <input type="text" class="form-control" id="photoTitle" required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Phân Loại Album</label>
+          <label class="form-label">Phân loại album</label>
           <select class="form-control" id="photoCategory">
-            <option value="banquet">Bàn Tiệc Đại Yến</option>
-            <option value="dimsum">Dimsum Nghệ Nhân</option>
-            <option value="bbq">Món Quay & Nướng</option>
-            <option value="appetizer">Khai Vị & Súp</option>
-            <option value="drinks">Thức Uống</option>
+            <option value="banquet">Bàn tiệc đại yến</option>
+            <option value="dimsum">Dimsum nghệ nhân</option>
+            <option value="bbq">Món quay & nướng</option>
+            <option value="appetizer">Khai vị & súp</option>
+            <option value="drinks">Thức uống</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mô Tả & Lời Bình Ẩm Thực *</label>
+          <label class="form-label">Mô tả & lời bình ẩm thực *</label>
           <textarea class="form-control" id="photoDesc" rows="3" required></textarea>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Lưu Thông Tin Ảnh
+            💾 Lưu thông tin ảnh
           </button>
           <button type="button" class="btn btn-outline" onclick="closeModal('photoModal')">Đóng</button>
         </div>
@@ -956,7 +966,7 @@
   <div class="modal-overlay" id="mediaPickerModal">
     <div class="modal-card" style="max-width: 800px;">
       <button class="modal-close" onclick="closeModal('mediaPickerModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-indigo-dark); margin-bottom: 0.5rem;">Chọn Ảnh Từ Thư Viện Hệ Thống</h3>
+      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-indigo-dark); margin-bottom: 0.5rem;">Chọn ảnh từ thư viện hệ thống</h3>
       <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Nhấp vào ảnh bất kỳ để gán ngay đường dẫn vào ô nhập liệu.</p>
 
       <div style="max-height: 400px; overflow-y: auto;">
@@ -971,7 +981,7 @@
   <div class="modal-overlay" id="branchModal">
     <div class="modal-card" style="max-width: 650px;">
       <button class="modal-close" onclick="closeModal('branchModal')">✕</button>
-      <h3 id="branchModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm Cơ Sở Mới</h3>
+      <h3 id="branchModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm cơ sở mới</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật thông tin chi nhánh nhà hàng để hiển thị trên website đặt bàn và liên hệ.</p>
 
       <form id="branchForm">
@@ -979,50 +989,50 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Tên Cơ Sở Chi Nhánh *</label>
+            <label class="form-label">Tên cơ sở chi nhánh *</label>
             <input type="text" class="form-control" id="modalBranchName" placeholder="VD: Nhà Hàng TongWei - Cơ Sở Cầu Giấy" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Tên Rút Gọn (Hiển thị form đặt bàn) *</label>
-            <input type="text" class="form-control" id="modalBranchShortName" placeholder="VD: Cơ Sở 2 (Cầu Giấy)" required>
+            <label class="form-label">Tên rút gọn (Hiển thị form đặt bàn) *</label>
+            <input type="text" class="form-control" id="modalBranchShortName" placeholder="VD: Cơ sở 2 (Cầu Giấy)" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Địa Chỉ Thực Tế Đầy Đủ *</label>
+          <label class="form-label">Địa chỉ thực tế đầy đủ *</label>
           <input type="text" class="form-control" id="modalBranchAddress" placeholder="VD: 12 Duy Tân, P. Dịch Vọng Hậu, Cầu Giấy, Hà Nội" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Hotline Đặt Bàn / CSKH *</label>
+            <label class="form-label">Hotline đặt bàn / CSKH *</label>
             <input type="text" class="form-control" id="modalBranchPhone" placeholder="VD: 0988 567 890 / 024 3888 9999" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Giờ Mở Cửa Phục Vụ *</label>
+            <label class="form-label">Giờ mở cửa phục vụ *</label>
             <input type="text" class="form-control" id="modalBranchHours" value="10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Quy Mô & Tiện Ích</label>
+            <label class="form-label">Quy mô & tiện ích</label>
             <input type="text" class="form-control" id="modalBranchScale" placeholder="VD: 140 Chỗ ngồi • 3 Phòng VIP • Bãi đỗ xe ô tô">
           </div>
           <div class="form-group">
-            <label class="form-label">Trạng Thái Hoạt Động</label>
+            <label class="form-label">Trạng thái hoạt động</label>
             <select class="form-control" id="modalBranchStatus">
-              <option value="active">✔ Đang Hoạt Động</option>
-              <option value="upcoming">⏳ Sắp Khai Trương</option>
+              <option value="active">✔ Đang hoạt động</option>
+              <option value="upcoming">⏳ Sắp khai trương</option>
             </select>
           </div>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Lưu Chi Nhánh
+            💾 Lưu chi nhánh
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('branchModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('branchModal')">Hủy bỏ</button>
         </div>
       </form>
     </div>
@@ -1032,7 +1042,7 @@
   <div class="modal-overlay" id="franchiseModal">
     <div class="modal-card" style="max-width: 650px;">
       <button class="modal-close" onclick="closeModal('franchiseModal')">✕</button>
-      <h3 id="franchiseModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Chỉnh Sửa Gói Nhượng Quyền</h3>
+      <h3 id="franchiseModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Chỉnh sửa gói nhượng quyền</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật chi phí đầu tư, quy mô diện tích và quyền lợi đối tác hiển thị trên website.</p>
 
       <form id="franchisePackageForm">
@@ -1040,47 +1050,47 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Tên Gói Nhượng Quyền *</label>
+            <label class="form-label">Tên gói nhượng quyền *</label>
             <input type="text" class="form-control" id="pkgName" placeholder="TongWei Standard" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Ruy-băng / Nhãn Nổi Bật (Nếu có)</label>
-            <input type="text" class="form-control" id="pkgBadge" placeholder="Khuyên Dùng • Tối Ưu Lợi Nhuận">
+            <label class="form-label">Nhãn nổi bật (Nếu có)</label>
+            <input type="text" class="form-control" id="pkgBadge" placeholder="Khuyên dùng • Tối ưu lợi nhuận">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Mức Vốn Đầu Tư (Hiển thị) *</label>
+            <label class="form-label">Mức vốn đầu tư (Hiển thị) *</label>
             <input type="text" class="form-control" id="pkgCost" placeholder="1.9 Tỷ" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Phụ Đề Vốn</label>
+            <label class="form-label">Phụ đề mức vốn</label>
             <input type="text" class="form-control" id="pkgCostSub" value="/ trọn gói setup">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Quy Mô Diện Tích & Chỗ Ngồi *</label>
+            <label class="form-label">Quy mô diện tích & chỗ ngồi *</label>
             <input type="text" class="form-control" id="pkgScale" placeholder="Diện tích: 120 - 200m² | 80 - 120 Chỗ ngồi" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Thời Gian Hoàn Vốn Dự Kiến</label>
+            <label class="form-label">Thời gian hoàn vốn dự kiến</label>
             <input type="text" class="form-control" id="pkgPayback" placeholder="7 - 10 tháng" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Các Quyền Lợi / Đặc Điểm Nổi Bật (Mỗi dòng một gạch đầu dòng) *</label>
+          <label class="form-label">Quyền lợi & đặc điểm nổi bật (Mỗi dòng một gạch đầu dòng) *</label>
           <textarea class="form-control" id="pkgPerks" rows="4" placeholder="Nhà hàng ẩm thực tiêu chuẩn mặt phố đắc địa&#10;Phục vụ đầy đủ 28+ món dimsum, hải sản cá lăng & món xào&#10;Bàn giao hệ thống phần mềm quản trị, CRM & đào tạo nhân sự&#10;Chiến dịch Marketing khai trương cam kết doanh số ấn tượng" required></textarea>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Lưu Gói Nhượng Quyền
+            💾 Lưu gói nhượng quyền
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('franchiseModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('franchiseModal')">Hủy bỏ</button>
         </div>
       </form>
     </div>
@@ -1090,40 +1100,40 @@
   <div class="modal-overlay" id="userModal">
     <div class="modal-card" style="max-width: 520px;">
       <button class="modal-close" onclick="closeModal('userModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm Người Dùng Quản Trị</h3>
+      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm người dùng quản trị</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.</p>
 
       <form id="userForm" onsubmit="handleCreateUserSubmit(event)">
         <div class="form-group" style="margin-bottom: 1.15rem;">
-          <label class="form-label">Tên Đăng Nhập (Username - viết liền, không dấu) *</label>
+          <label class="form-label">Tên đăng nhập (Username - viết liền, không dấu) *</label>
           <input type="text" class="form-control" id="newUsername" placeholder="VD: quanly_bep, letan_hn" pattern="[a-zA-Z0-9_]{3,20}" title="Từ 3-20 ký tự chữ, số hoặc gạch dưới" required>
         </div>
 
         <div class="form-group" style="margin-bottom: 1.15rem;">
-          <label class="form-label">Họ Và Tên Hiển Thị *</label>
+          <label class="form-label">Họ và tên hiển thị *</label>
           <input type="text" class="form-control" id="newFullName" placeholder="VD: Nguyễn Văn Hoàng (Bếp Phó)" required>
         </div>
 
         <div class="form-group" style="margin-bottom: 1.15rem;">
-          <label class="form-label">Vai Trò & Phân Quyền *</label>
+          <label class="form-label">Vai trò & phân quyền *</label>
           <select class="form-control" id="newRoleSelect" required>
-            <option value="admin">Quản Trị Viên Cấp Cao (Full quyền hệ thống)</option>
-            <option value="kitchen">Quản Lý Bếp & Thực Đơn (Chỉnh sửa món, công thức)</option>
-            <option value="cashier" selected>Vận Hành & Đặt Bàn (Tiếp nhận khách, CSKH)</option>
+            <option value="admin">Quản trị viên cấp cao (Toàn quyền hệ thống)</option>
+            <option value="kitchen">Quản lý bếp & thực đơn (Chỉnh sửa món, công thức)</option>
+            <option value="cashier" selected>Vận hành & đặt bàn (Tiếp nhận khách, CSKH)</option>
           </select>
         </div>
 
         <div class="form-group" style="margin-bottom: 1.75rem;">
-          <label class="form-label">Mật Khẩu Ban Đầu *</label>
+          <label class="form-label">Mật khẩu ban đầu *</label>
           <input type="text" class="form-control" id="newPassword" value="123456" minlength="6" required>
           <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; display: block;">Mặc định: <code>123456</code> (Nhân sự có thể đổi lại sau).</small>
         </div>
 
         <div style="display: flex; gap: 1rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            ➕ Tạo Tài Khoản
+            ➕ Tạo tài khoản
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('userModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('userModal')">Hủy bỏ</button>
         </div>
       </form>
     </div>
@@ -1133,27 +1143,68 @@
   <div class="modal-overlay" id="resetPassModal">
     <div class="modal-card" style="max-width: 480px;">
       <button class="modal-close" onclick="closeModal('resetPassModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Đặt Lại Mật Khẩu Tài Khoản</h3>
+      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Đặt lại mật khẩu tài khoản</h3>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cấp mật khẩu mới cho tài khoản <strong id="resetTargetUserTitle" style="color: var(--color-brand-red);">user</strong>.</p>
 
       <form id="resetPassForm" onsubmit="handleResetPassSubmit(event)">
         <input type="hidden" id="resetTargetUsername">
 
         <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label class="form-label">Mật Khẩu Mới *</label>
+          <label class="form-label">Mật khẩu mới *</label>
           <input type="password" class="form-control" id="adminResetNewPass" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" minlength="6" required>
         </div>
 
         <div class="form-group" style="margin-bottom: 1.75rem;">
-          <label class="form-label">Nhập Lại Mật Khẩu Mới *</label>
+          <label class="form-label">Nhập lại mật khẩu mới *</label>
           <input type="password" class="form-control" id="adminResetConfirmPass" placeholder="Nhập lại để xác thực" minlength="6" required>
         </div>
 
         <div style="display: flex; gap: 1rem;">
           <button type="submit" class="btn btn-primary" style="flex: 1;">
-            🔑 Cập Nhật Mật Khẩu
+            🔑 Cập nhật mật khẩu
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('resetPassModal')">Hủy Bỏ</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('resetPassModal')">Hủy bỏ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. Schedule Modal (Hẹn Giờ Xuất Bản GitHub) -->
+  <div class="modal-overlay" id="scheduleModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <button class="modal-close" onclick="closeModal('scheduleModal')">✕</button>
+      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Hẹn giờ tự động xuất bản</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Hệ thống sẽ giữ mọi chỉnh sửa ở môi trường cục bộ (local) và chỉ tự động đẩy lên GitHub Pages vào đúng khung giờ bạn chọn.</p>
+
+      <form id="scheduleForm" onsubmit="handleScheduleFormSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label">Khung giờ hẹn tự động đẩy code hàng ngày *</label>
+          <input type="time" class="form-control" id="scheduleTimeInput" value="16:40" required style="font-size: 1.25rem; font-weight: 700; color: var(--color-indigo-dark); text-align: center;">
+          <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; display: block;">Mặc định: <strong>16:40 (4h40 chiều)</strong></small>
+        </div>
+
+        <div class="form-group" style="background: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+          <div>
+            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">Bật chế độ tự động xuất bản</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">Khi đến giờ hẹn, server sẽ tự động chạy git commit & push lên GitHub</div>
+          </div>
+          <input type="checkbox" id="autoPublishToggle" style="width: 22px; height: 22px; cursor: pointer;" checked>
+        </div>
+
+        <div style="background: #eef2ff; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--color-indigo-dark); line-height: 1.6;">
+          <div style="font-weight: 700; margin-bottom: 0.25rem;">ℹ️ Cơ chế hoạt động:</div>
+          <div>• Tất cả chỉnh sửa (món ăn, cơ sở, nhượng quyền, tin tức...) được lưu an toàn tại máy cục bộ (local).</div>
+          <div>• Bạn có thể nhấn nút <strong>"🚀 Xuất bản lên online"</strong> bất kỳ lúc nào để đẩy ngay lập tức.</div>
+          <div>• Hoặc để máy chủ tự động đẩy đúng lúc <strong><span id="modalSchedulePreview">16:40</span></strong> hàng ngày.</div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">
+            💾 Lưu cài đặt hẹn giờ
+          </button>
+          <button type="button" class="btn btn-outline" onclick="triggerPublishToGithub()">
+            🚀 Xuất bản ngay bây giờ
+          </button>
         </div>
       </form>
     </div>
