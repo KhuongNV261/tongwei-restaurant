@@ -14,8 +14,7 @@
       "Bán chạy",
       "Nghệ nhân",
       "Signature"
-    ],
-    "showOnHome": false
+    ]
   },
   {
     "id": "dimsum-2",
@@ -415,7 +414,6 @@
     "tags": [
       "Tươi mát",
       "Nguyên chất"
-    ],
-    "isAvailable": true
+    ]
   }
 ]
