@@ -10,7 +10,11 @@
     "description": "Vỏ bánh mềm xốp như mây, bọc trọn nhân trứng muối vàng óng tan chảy béo ngậy ngọt dịu chuẩn vị Quảng Đông.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Bán chạy", "Nghệ nhân", "Signature"]
+    "tags": [
+      "Bán chạy",
+      "Nghệ nhân",
+      "Signature"
+    ]
   },
   {
     "id": "dimsum-2",
@@ -23,7 +27,10 @@
     "description": "Nhân thịt xá xíu nướng mật ong thơm lừng xắt hạt lựu, quyện sốt tương truyền thống ngọt mặn hài hòa.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Yêu thích", "Truyền thống"]
+    "tags": [
+      "Yêu thích",
+      "Truyền thống"
+    ]
   },
   {
     "id": "dimsum-3",
@@ -36,7 +43,10 @@
     "description": "Tạo hình quả đào tiên phong thủy thanh tao, nhân đậu đỏ sen nhuyễn thanh ngọt mang ý nghĩa cát tường chúc thọ.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Ý nghĩa", "Thanh đạm"]
+    "tags": [
+      "Ý nghĩa",
+      "Thanh đạm"
+    ]
   },
   {
     "id": "dimsum-4",
@@ -49,7 +59,10 @@
     "description": "Vỏ bánh xanh ngọc từ bột trà xanh cao cấp, hòa quyện sốt kem matcha béo thơm đượm vị thanh dịu.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Mới", "Trà xanh"]
+    "tags": [
+      "Mới",
+      "Trà xanh"
+    ]
   },
   {
     "id": "dimsum-5",
@@ -62,7 +75,10 @@
     "description": "Lớp bánh tráng mỏng tang mướt mát cuốn trọn tôm sú tươi giòn sần sật, chan nước tương ngọt thơm gia truyền.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Best Seller", "Tươi sống"]
+    "tags": [
+      "Best Seller",
+      "Tươi sống"
+    ]
   },
   {
     "id": "dimsum-6",
@@ -75,7 +91,10 @@
     "description": "Sắc xanh ngọc bích từ nước ép rau tần ô tự nhiên, thanh mát, bổ dưỡng, kết hợp nấm tươi và hải sản.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Thanh mát", "Nghệ thuật"]
+    "tags": [
+      "Thanh mát",
+      "Nghệ thuật"
+    ]
   },
   {
     "id": "dimsum-7",
@@ -88,7 +107,10 @@
     "description": "Đáy bánh vàng ruộm giòn tan rụm, phần trên dẻo mềm mọng nước dùng ngọt đậm đà từ thịt băm và hành hoa.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Giòn rụm", "Mọng nước"]
+    "tags": [
+      "Giòn rụm",
+      "Mọng nước"
+    ]
   },
   {
     "id": "main-1",
@@ -101,7 +123,10 @@
     "description": "Thịt ba chỉ thượng hạng quay giòn bì tẩm lớp cốm giòn thơm lừng, thịt mềm mọng nước chấm cùng sốt mận chua ngọt.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Đặc sản", "Bán chạy"]
+    "tags": [
+      "Đặc sản",
+      "Bán chạy"
+    ]
   },
   {
     "id": "main-2",
@@ -114,7 +139,10 @@
     "description": "Sự sáng tạo đột phá từ thịt ba chỉ cuộn mỏng giòn rụm quyện đẫm sốt ô mai chua ngọt đậm vị cung đình khai vị xuất sắc.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Món mới", "Sáng tạo"]
+    "tags": [
+      "Món mới",
+      "Sáng tạo"
+    ]
   },
   {
     "id": "main-3",
@@ -127,7 +155,10 @@
     "description": "Thịt ba chỉ thái lát mỏng xào lửa lớn cùng ớt chuông, ớt khô Tứ Xuyên và tỏi tây, cay nồng đậm đà bắt cơm.",
     "isSignature": false,
     "spicy": 2,
-    "tags": ["Cay nồng", "Đậm đà"]
+    "tags": [
+      "Cay nồng",
+      "Đậm đà"
+    ]
   },
   {
     "id": "main-4",
@@ -140,7 +171,10 @@
     "description": "Lưỡi vịt và cánh vịt tiềm thảo mộc cổ truyền rồi xào sả ớt Hồ Nam the cay thấm sâu vào từng thớ thịt giòn sần sật.",
     "isSignature": true,
     "spicy": 3,
-    "tags": ["Đặc sản Hồ Nam", "Cay tê"]
+    "tags": [
+      "Đặc sản Hồ Nam",
+      "Cay tê"
+    ]
   },
   {
     "id": "main-5",
@@ -153,7 +187,10 @@
     "description": "Bò phi lê mềm như lụa nhúng nước sốt dầu ớt tiêu hoa thảo mộc đỏ rực, tê cay bùng nổ mọi giác quan.",
     "isSignature": true,
     "spicy": 3,
-    "tags": ["Trùng Khánh", "Thách thức cay"]
+    "tags": [
+      "Trùng Khánh",
+      "Thách thức cay"
+    ]
   },
   {
     "id": "claypot-1",
@@ -166,7 +203,10 @@
     "description": "Cà tím mềm ngọt om chậm trong nồi đất cùng bò bằm sốt tương đậu thơm phức, giữ nhiệt sôi xèo xèo hấp dẫn.",
     "isSignature": true,
     "spicy": 1,
-    "tags": ["Cơm niêu", "Đậm đà"]
+    "tags": [
+      "Cơm niêu",
+      "Đậm đà"
+    ]
   },
   {
     "id": "claypot-2",
@@ -179,7 +219,10 @@
     "description": "Mướp đắng xanh giòn thanh nhiệt kết hợp thịt bò tươi mềm và sốt đậu đen lên men tàu xì thơm nồng đặc trưng.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Thanh nhiệt", "Quảng Đông"]
+    "tags": [
+      "Thanh nhiệt",
+      "Quảng Đông"
+    ]
   },
   {
     "id": "claypot-3",
@@ -192,7 +235,10 @@
     "description": "Sự kết hợp thượng hạng của nấm đông cô, nấm mỡ tươi ngọt quyện hương tôm khô đại dương và thịt bò áp chảo.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Bổ dưỡng", "Thơm ngậy"]
+    "tags": [
+      "Bổ dưỡng",
+      "Thơm ngậy"
+    ]
   },
   {
     "id": "veggie-1",
@@ -205,7 +251,10 @@
     "description": "Ngồng cải non tươi ngọt nhập khẩu chần chuẩn độ giòn, rưới sốt bào ngư vàng nâu sánh mịn quý phái.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Cao cấp", "Sốt bào ngư"]
+    "tags": [
+      "Cao cấp",
+      "Sốt bào ngư"
+    ]
   },
   {
     "id": "veggie-2",
@@ -218,7 +267,10 @@
     "description": "Cải thìa xanh mướt xếp cánh hoa nghệ thuật, quyện nấm đông cô thượng phẩm hầm mềm đậm đà vị ngọt tự nhiên.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Thanh tịnh", "Bổ dưỡng"]
+    "tags": [
+      "Thanh tịnh",
+      "Bổ dưỡng"
+    ]
   },
   {
     "id": "veggie-3",
@@ -231,7 +283,10 @@
     "description": "Bông cải xanh mướt giòn ngọt tự nhiên, hòa quyện sốt dầu hào thượng hạng dậy mùi tỏi phi vàng óng.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Dễ ăn", "Gia đình"]
+    "tags": [
+      "Dễ ăn",
+      "Gia đình"
+    ]
   },
   {
     "id": "seafood-1",
@@ -244,7 +299,10 @@
     "description": "Thịt cá lăng sông béo ngậy ngọt đượm thịt, hấp chín tới cùng tàu xì Quảng Đông, gừng sợi và hành hoa thơm nức.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Tuyệt phẩm", "Best Seller"]
+    "tags": [
+      "Tuyệt phẩm",
+      "Best Seller"
+    ]
   },
   {
     "id": "seafood-2",
@@ -257,7 +315,10 @@
     "description": "Cá lăng tươi sống phủ đẫm tỏi băm thơm nồng và ớt đỏ lên men chua thanh cay dịu, giữ trọn vị ngọt tự nhiên.",
     "isSignature": false,
     "spicy": 1,
-    "tags": ["Cay dịu", "Đậm vị"]
+    "tags": [
+      "Cay dịu",
+      "Đậm vị"
+    ]
   },
   {
     "id": "seafood-3",
@@ -270,7 +331,10 @@
     "description": "Nước dùng cá hầm trắng đục sánh ngọt, điểm xuyết cải chua Tứ Xuyên và hạt tiêu Tứ Xuyên thơm lừng giải ngấy đỉnh cao.",
     "isSignature": true,
     "spicy": 1,
-    "tags": ["Chua thanh", "Dễ ăn"]
+    "tags": [
+      "Chua thanh",
+      "Dễ ăn"
+    ]
   },
   {
     "id": "seafood-4",
@@ -283,7 +347,10 @@
     "description": "Phi lê cá lăng mềm tan trần trong nồi dầu thơm ớt khô và hoa hồi thảo quả đỏ rực, tê cay khó cưỡng.",
     "isSignature": true,
     "spicy": 3,
-    "tags": ["Cay tê", "Trùng Khánh"]
+    "tags": [
+      "Cay tê",
+      "Trùng Khánh"
+    ]
   },
   {
     "id": "soup-1",
@@ -296,7 +363,10 @@
     "description": "Tiềm chậm 4 giờ bằng phương pháp cách thủy truyền thống với gà ta thả đồi, nấm quý, câu kỷ tử và sâm bổ lượng.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Dưỡng sinh", "Bổ khí huyết"]
+    "tags": [
+      "Dưỡng sinh",
+      "Bổ khí huyết"
+    ]
   },
   {
     "id": "soup-2",
@@ -309,7 +379,10 @@
     "description": "Món canh dưỡng nhan thanh mát cho phái đẹp từ lê tuyết giòn ngọt, tuyết nhĩ nở hoa và táo đỏ Tân Cương bổ phổi nhuận tràng.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Dưỡng nhan", "Thanh mát"]
+    "tags": [
+      "Dưỡng nhan",
+      "Thanh mát"
+    ]
   },
   {
     "id": "soup-3",
@@ -322,7 +395,10 @@
     "description": "Hòa quyện nước dùng thượng canh ninh xương gà với trứng muối, trứng bắc thảo và trứng tươi béo ngậy ngọt hậu.",
     "isSignature": false,
     "spicy": 0,
-    "tags": ["Thanh vị", "Độc đáo"]
+    "tags": [
+      "Thanh vị",
+      "Độc đáo"
+    ]
   },
   {
     "id": "drink-1",
@@ -335,6 +411,9 @@
     "description": "100% cam tươi mọng nước nguyên chất ép tươi tại quầy, cung cấp vitamin C dồi dào giải nhiệt hoàn hảo.",
     "isSignature": true,
     "spicy": 0,
-    "tags": ["Tươi mát", "Nguyên chất"]
+    "tags": [
+      "Tươi mát",
+      "Nguyên chất"
+    ]
   }
 ]
