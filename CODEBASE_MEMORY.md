@@ -43,6 +43,12 @@
    - File cấu hình: `wrangler.toml`
    - File khởi tạo bảng và 26 món ăn: `schema.sql`
    - Các API Serverless Edge Functions: `functions/api/dishes.js`, `functions/api/bookings.js`, `functions/api/branches.js`.
+5. **Khắc phục triệt để tràn viền nút "Đặt bàn ngay" (Responsive Navbar):**
+   - Đã tối ưu padding/gap/font-size của 8 mục menu để thanh header không bị vượt quá 1060px trên laptop (1366px, 1280px).
+   - Thêm `flex-shrink: 0` cho cụm `.nav-actions` đảm bảo nút CTA không bao giờ bị bóp méo hoặc đẩy ra mép màn hình.
+   - Điều chỉnh breakpoint hamburger menu sang `<= 1120px` (chuẩn iPad / Tablet).
+   - Trên mobile (`<= 480px`): giữ nút "Đặt bàn" nhỏ gọn trên header và bổ sung nút CTA nổi bật trong menu trượt (`🏮 Đặt bàn ngay`).
+
 
 ---
 
