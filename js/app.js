@@ -1267,8 +1267,22 @@ async function loadLiveEvents() {
   }
 
   if (events && events.length > 0) {
+    const today = new Date().toISOString().split('T')[0];
+
+    // Lọc sự kiện:
+    // 1. Loại bỏ các sự kiện bị Admin ẩn thủ công (status === 'hidden')
+    // 2. Nếu có ngày kết thúc (end_date) và hôm nay đã vượt quá ngày kết thúc -> Tự động ẩn!
+    // 3. Nếu KHÔNG nhập ngày kết thúc (end_date để trống) -> LUÔN HIỂN THỊ!
+    const visibleEvents = events.filter(ev => {
+      if (ev.status === 'hidden') return false;
+      if (ev.end_date && ev.end_date.trim() !== '') {
+        if (today > ev.end_date.trim()) return false;
+      }
+      return true;
+    });
+
     // Populate eventData object for modal
-    events.forEach(ev => {
+    visibleEvents.forEach(ev => {
       eventData[ev.id] = {
         title: ev.title,
         date: ev.date,
@@ -1299,27 +1313,29 @@ async function loadLiveEvents() {
     });
 
     // Render cards
-    eventsGrid.innerHTML = events.map(ev => {
-      const isFeatured = ev.id === 4 || (ev.badge && ev.badge.includes('Soft Opening'));
-      const badgeStyle = isFeatured ? 'background: var(--color-brand-red); color: #fff;' : '';
-      const cardStyle = isFeatured ? 'border: 2px solid var(--color-brand-red); box-shadow: var(--shadow-md);' : '';
-      const titleStyle = isFeatured ? 'color: var(--color-brand-red);' : '';
+    if (visibleEvents.length > 0) {
+      eventsGrid.innerHTML = visibleEvents.map(ev => {
+        const isFeatured = ev.id === 4 || (ev.badge && ev.badge.includes('Soft Opening'));
+        const badgeStyle = isFeatured ? 'background: var(--color-brand-red); color: #fff;' : '';
+        const cardStyle = isFeatured ? 'border: 2px solid var(--color-brand-red); box-shadow: var(--shadow-md);' : '';
+        const titleStyle = isFeatured ? 'color: var(--color-brand-red);' : '';
 
-      return `
-        <div class="event-card ${isFeatured ? 'featured-event-card' : ''}" onclick="openEventDetail(${ev.id})" style="${cardStyle}">
-          <div class="event-img-wrap" style="position: relative;">
-            <img src="${ev.img}" alt="${ev.title}" class="event-img" loading="lazy">
-            <span class="event-badge" style="${badgeStyle}">${ev.badge || 'Sự Kiện'}</span>
+        return `
+          <div class="event-card ${isFeatured ? 'featured-event-card' : ''}" onclick="openEventDetail(${ev.id})" style="${cardStyle}">
+            <div class="event-img-wrap" style="position: relative;">
+              <img src="${ev.img}" alt="${ev.title}" class="event-img" loading="lazy">
+              <span class="event-badge" style="${badgeStyle}">${ev.badge || 'Sự Kiện'}</span>
+            </div>
+            <div class="event-content">
+              <div class="event-date">📅 ${ev.date}</div>
+              <h3 class="event-title" style="${titleStyle}">${ev.title}</h3>
+              <p class="event-desc">${ev.desc}</p>
+              <span class="event-link" style="${titleStyle} font-weight: 700;">Xem Chi Tiết & Đặt Bàn Nhận Ưu Đãi ↗</span>
+            </div>
           </div>
-          <div class="event-content">
-            <div class="event-date">📅 ${ev.date}</div>
-            <h3 class="event-title" style="${titleStyle}">${ev.title}</h3>
-            <p class="event-desc">${ev.desc}</p>
-            <span class="event-link" style="${titleStyle} font-weight: 700;">Xem Chi Tiết & Đặt Bàn Nhận Ưu Đãi ↗</span>
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
   }
 }
 

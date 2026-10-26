@@ -382,6 +382,7 @@
                   <th>Tiêu đề sự kiện</th>
                   <th>Thời gian & địa điểm</th>
                   <th>Huy hiệu</th>
+                  <th>Trạng thái & Hạn dùng</th>
                   <th>Nội dung tóm tắt</th>
                   <th style="text-align: right;">Thao tác</th>
                 </tr>
@@ -886,6 +887,22 @@
           <div class="form-group">
             <label class="form-label">Huy hiệu (Badge tag)</label>
             <input type="text" class="form-control" id="eventBadge" placeholder="Sự kiện nổi bật" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Ngày kết thúc ưu đãi (Tự động ẩn sau ngày này)</label>
+            <input type="date" class="form-control" id="eventEndDate">
+            <small style="font-size: 0.78rem; color: var(--text-secondary); display: block; margin-top: 0.25rem;">
+              💡 <i>Để trống nếu sự kiện luôn diễn ra / không giới hạn ngày kết thúc.</i>
+            </small>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; padding-top: 1.6rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600; color: var(--color-indigo-dark); user-select: none;">
+              <input type="checkbox" id="eventStatusCheckbox" checked style="width: 18px; height: 18px; accent-color: var(--color-brand-red);">
+              <span>Hiển thị trên website</span>
+            </label>
           </div>
         </div>
 

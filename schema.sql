@@ -25,6 +25,7 @@ CREATE TABLE bookings (
   name TEXT NOT NULL,
   phone TEXT NOT NULL,
   date TEXT NOT NULL,
+  end_date TEXT,
   time TEXT NOT NULL,
   guests TEXT NOT NULL,
   branch TEXT,
