@@ -637,6 +637,29 @@ window.openEventDetail = function(eventId) {
   if (!elements.eventModal || !elements.eventModalBody) return;
 
   const eventData = {
+    4: {
+      title: 'Soft Opening TongWei Nguyễn Thị Thập — Tặng 01 Xửng Đại Long Bao Cho Mỗi Khách Hàng',
+      date: '📅 15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy, Hà Nội',
+      img: 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg',
+      content: `
+        <div style="background: rgba(226, 35, 41, 0.06); border-left: 4px solid var(--color-brand-red); padding: 0.85rem 1rem; border-radius: 4px; margin-bottom: 1.25rem;">
+          <b style="color: var(--color-brand-red); font-size: 1.05rem;">🎉 ĐẠI TIỆC KHAI TRƯƠNG CƠ SỞ MỚI: TONG WEI NGUYỄN THỊ THẬP</b>
+          <p style="margin-top: 0.25rem; font-size: 0.9rem; color: var(--color-text-secondary);">Thời gian áp dụng: <b>15.10 – 30.10.2026</b> tại <b>5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy, Hà Nội</b></p>
+        </div>
+        <p style="margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary);">
+          TongWei hân hạnh chào đón quý thực khách đến với cơ sở mới tại khu đô thị sầm uất Trung Hòa - Cầu Giấy. Không gian ẩm thực Quảng Đông đương đại ấm cúng, thiết kế trang nhã kết hợp văn hóa ẩm thực nghệ nhân và phòng tiệc bàn tròn đại yến sang trọng.
+        </p>
+        <ul style="margin-bottom: 1.5rem; line-height: 1.8; color: var(--color-indigo); padding-left: 1.25rem; font-weight: 600;">
+          <li>🥟 <b style="color: var(--color-brand-red);">TẶNG MỖI KHÁCH HÀNG 01 XỬNG ĐẠI LONG BAO:</b> Thưởng thức món bánh trứ danh nóng hổi nghi ngút khói, nhân thịt tôm thơm ngọt mọng nước dùng ngọt đậm đà.</li>
+          <li>📱 <b style="color: var(--color-brand-red);">GIẢM THÊM 5% TOÀN BỘ HÓA ĐƠN:</b> Dành cho khách hàng đăng ký mới thành viên Zalo Official Account (Zalo OA) ngay tại bàn.</li>
+          <li>🍵 <b>Miễn phí thưởng trà:</b> Trà Thiết Quan Âm & Trà hoa cúc thảo mộc phục vụ xuyên suốt bữa tiệc.</li>
+          <li>🀄 <b>Không gian độc bản:</b> Trang bị bàn mạt chược và góc thưởng trà cố sự phục vụ khách hàng đặt phòng VIP.</li>
+        </ul>
+        <p style="font-size: 0.9rem; color: var(--color-text-muted);">
+          * Chương trình áp dụng cho tất cả thực khách đến dùng bữa trực tiếp hoặc đặt bàn trực tuyến qua website.
+        </p>
+      `
+    },
     1: {
       title: 'Đại Tiệc Khai Trương TongWei Hà Nội — Mỹ Vị Quảng Đông Giao Hòa',
       date: '📅 15 Tháng 06, 2026 • Chi Nhánh Hà Nội',
@@ -815,15 +838,21 @@ function setupEventListeners() {
     });
   });
 
-  // Mobile menu toggle
+  // Mobile menu toggle with aria-expanded and body scroll lock (RESP-02)
   if (elements.mobileToggle && elements.navLinks) {
     elements.mobileToggle.addEventListener('click', () => {
-      elements.navLinks.classList.toggle('mobile-open');
+      const isOpened = elements.navLinks.classList.toggle('mobile-open');
+      elements.mobileToggle.setAttribute('aria-expanded', isOpened ? 'true' : 'false');
+      elements.mobileToggle.setAttribute('aria-label', isOpened ? 'Đóng menu' : 'Mở menu');
+      document.body.style.overflow = isOpened ? 'hidden' : '';
     });
     // Close mobile menu when clicking a link
     elements.navLinks.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         elements.navLinks.classList.remove('mobile-open');
+        elements.mobileToggle.setAttribute('aria-expanded', 'false');
+        elements.mobileToggle.setAttribute('aria-label', 'Mở menu');
+        document.body.style.overflow = '';
       });
     });
   }
@@ -837,12 +866,32 @@ function setupEventListeners() {
     }
   });
 
-  // Keyboard navigation for Master Album Lightbox
+  // Keyboard navigation & Global ESC Listener (UX-05, UX-06)
   window.addEventListener('keydown', (e) => {
-    if (!elements.lightboxModal?.classList.contains('active')) return;
-    if (e.key === 'ArrowLeft') prevAlbumPhoto();
-    if (e.key === 'ArrowRight') nextAlbumPhoto();
-    if (e.key === 'Escape') closeLightboxDirect();
+    if (e.key === 'ArrowLeft' && elements.lightboxModal?.classList.contains('active')) {
+      prevAlbumPhoto();
+    }
+    if (e.key === 'ArrowRight' && elements.lightboxModal?.classList.contains('active')) {
+      nextAlbumPhoto();
+    }
+    if (e.key === 'Escape') {
+      // Close lightbox
+      if (elements.lightboxModal?.classList.contains('active')) {
+        closeLightboxDirect();
+      }
+      // Close all modals
+      closeModal('dishModal');
+      closeModal('cartModal');
+      closeModal('careerModal');
+      closeModal('eventModal');
+      // Close mobile menu if opened
+      if (elements.navLinks?.classList.contains('mobile-open')) {
+        elements.navLinks.classList.remove('mobile-open');
+        elements.mobileToggle?.setAttribute('aria-expanded', 'false');
+        elements.mobileToggle?.setAttribute('aria-label', 'Mở menu');
+        document.body.style.overflow = '';
+      }
+    }
   });
 
   // ROI Calculator sliders
@@ -994,11 +1043,21 @@ function renderBranches() {
   if (!branches || branches.length === 0) {
     branches = [
       {
+        id: 'CS-03',
+        name: 'Nhà Hàng TongWei - Cơ Sở Nguyễn Thị Thập (Soft Opening)',
+        address: '5N7A Nguyễn Thị Thập, Phường Yên Hòa, Cầu Giấy, Hà Nội',
+        phone: '0986 688 866 / 024 3999 8888',
+        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+        scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược • Tặng 01 Xửng Đại Long Bao (15.10 - 30.10)',
+        status: 'active'
+      },
+      {
         id: 'CS-01',
         name: 'Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm (Flagship)',
         address: '68A Trần Hưng Đạo, Phường Cửa Nam, Hoàn Kiếm, Hà Nội',
         phone: '0989 123 456 / 024 3987 6543',
         hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+        scale: '180 Chỗ ngồi • 4 Phòng VIP Hoàng Kim',
         status: 'active'
       },
       {
@@ -1007,9 +1066,27 @@ function renderBranches() {
         address: '12 Duy Tân, Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội',
         phone: '0988 567 890 / 024 3888 9999',
         hours: '10:00 - 14:00 | 17:30 - 22:30',
+        scale: '140 Chỗ ngồi • 3 Phòng VIP',
         status: 'active'
       }
     ];
+  } else {
+    // If branches exist from older localStorage, make sure CS-03 (Nguyen Thi Thap) is included
+    const hasNTT = branches.some(b => b.id === 'CS-03' || (b.address && b.address.includes('Nguyễn Thị Thập')));
+    if (!hasNTT) {
+      branches.unshift({
+        id: 'CS-03',
+        name: 'Nhà Hàng TongWei - Cơ Sở Nguyễn Thị Thập (Soft Opening)',
+        address: '5N7A Nguyễn Thị Thập, Phường Yên Hòa, Cầu Giấy, Hà Nội',
+        phone: '0986 688 866 / 024 3999 8888',
+        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+        scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược • Tặng 01 Xửng Đại Long Bao (15.10 - 30.10)',
+        status: 'active'
+      });
+      try {
+        localStorage.setItem('tongwei_branches', JSON.stringify(branches));
+      } catch (e) {}
+    }
   }
 
   // Populate Select Dropdown in Booking Form
@@ -1134,6 +1211,34 @@ window.addEventListener('storage', (e) => {
   }
 });
 
+// ScrollSpy: Automatically highlight active navbar link on scroll
+function setupScrollSpy() {
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinksList = document.querySelectorAll('.nav-links .nav-link');
+  if (!sections.length || !navLinksList.length) return;
+
+  window.addEventListener('scroll', () => {
+    let currentId = '';
+    const scrollPosition = window.scrollY + 140;
+
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPosition >= top && scrollPosition < top + height) {
+        currentId = section.getAttribute('id');
+      }
+    });
+
+    if (currentId) {
+      navLinksList.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + currentId) {
+          link.classList.add('active');
+        }
+      });
+    }
+  }, { passive: true });
+}
 // Initialize everything on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   initDishes();
@@ -1141,5 +1246,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderBranches();
   renderFranchisePackages();
   setupEventListeners();
+  setupScrollSpy();
   calculateROI();
 });

@@ -28,6 +28,9 @@
 </head>
 <body>
 
+  <!-- Skip to Main Content Link (WCAG 2.1 AA) -->
+  <a href="#main-content" class="skip-link">Bỏ qua đến nội dung chính</a>
+
   <!-- ==================== HEADER & NAVBAR ==================== -->
   <header class="navbar" id="navbar">
     <div class="container nav-container">
@@ -66,7 +69,7 @@
           <span class="btn-text-short">Đặt bàn</span>
         </a>
 
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Mở Menu">
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Mở menu" aria-expanded="false" aria-controls="navLinks">
           <span></span>
           <span></span>
           <span></span>
@@ -75,7 +78,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <!-- ==================== HERO SECTION ==================== -->
     <section class="hero-section" id="trang-chu">
       <div class="container">
@@ -157,19 +160,19 @@
         <div class="about-grid">
           <div class="about-mosaic">
             <div class="mosaic-item" onclick="openMasterAlbum(6)" title="Xem ảnh">
-              <img src="assets/images/concept/concept_7.jpg" alt="Dimsum Nghệ Nhân">
+              <img src="assets/images/concept/concept_7.jpg" alt="Dimsum Nghệ Nhân" loading="lazy">
               <span class="mosaic-badge">Dimsum Nghệ Nhân</span>
             </div>
             <div class="mosaic-item" onclick="openMasterAlbum(1)" title="Xem ảnh">
-              <img src="assets/images/concept/concept_2.jpg" alt="Văn Hóa Cố Sự">
+              <img src="assets/images/concept/concept_2.jpg" alt="Văn Hóa Cố Sự" loading="lazy">
               <span class="mosaic-badge">Mạt Chược & Trà Đạo</span>
             </div>
             <div class="mosaic-item" onclick="openMasterAlbum(8)" title="Xem ảnh">
-              <img src="assets/images/concept/concept_9.jpg" alt="Bánh Bao Trường Thọ">
+              <img src="assets/images/concept/concept_9.jpg" alt="Bánh Bao Trường Thọ" loading="lazy">
               <span class="mosaic-badge">Đào Tiên Chúc Thọ</span>
             </div>
             <div class="mosaic-item" onclick="openMasterAlbum(23)" title="Xem ảnh">
-              <img src="assets/images/concept/concept_24.jpg" alt="Xá Xíu Mật Ong">
+              <img src="assets/images/concept/concept_24.jpg" alt="Xá Xíu Mật Ong" loading="lazy">
               <span class="mosaic-badge">Xá Xíu Mật Ong</span>
             </div>
           </div>
@@ -225,7 +228,8 @@
         <div class="menu-controls">
           <div class="menu-search-wrapper">
             <span class="search-icon">🔍</span>
-            <input type="text" class="search-input" id="menuSearch" placeholder="Tìm kiếm món ăn (VD: Kim sa, Cá lăng, Bò nhúng, Bánh cuốn...)">
+            <label for="menuSearch" class="visually-hidden">Tìm kiếm món ăn</label>
+            <input type="text" class="search-input" id="menuSearch" placeholder="Tìm kiếm món ăn (VD: Kim sa, Cá lăng, Bò nhúng, Bánh cuốn...)" aria-label="Tìm kiếm món ăn">
           </div>
 
           <div class="category-tabs" id="categoryTabs">
@@ -307,6 +311,20 @@
         </div>
 
         <div class="events-grid">
+          <!-- Event 4 (Spotlight: Khai Trương Nguyễn Thị Thập) -->
+          <div class="event-card featured-event-card" onclick="openEventDetail(4)" style="border: 2px solid var(--color-brand-red); box-shadow: var(--shadow-md);">
+            <div class="event-img-wrap" style="position: relative;">
+              <img src="assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg" alt="Khai trương TongWei Nguyễn Thị Thập" class="event-img" loading="lazy">
+              <span class="event-badge" style="background: var(--color-brand-red); color: #fff;">🏮 Soft Opening (15.10 - 30.10)</span>
+            </div>
+            <div class="event-content">
+              <div class="event-date">📅 15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, Cầu Giấy</div>
+              <h3 class="event-title" style="color: var(--color-brand-red);">Khai Trương TongWei Nguyễn Thị Thập — Tặng 01 Xửng Đại Long Bao</h3>
+              <p class="event-desc">Mừng cơ sở mới: Tặng mỗi khách hàng 01 Xửng Đại Long Bao thượng phẩm và giảm thêm 5% cho khách hàng đăng ký mới Zalo OA!</p>
+              <span class="event-link" style="color: var(--color-brand-red); font-weight: 700;">Xem Chi Tiết & Đặt Bàn Nhận Ưu Đãi ↗</span>
+            </div>
+          </div>
+
           <!-- Event 1 -->
           <div class="event-card" onclick="openEventDetail(1)">
             <div class="event-img-wrap">
@@ -371,7 +389,7 @@
           </div>
 
           <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-md);">
-            <img src="assets/images/concept/concept_3.jpg" alt="Món ăn tiêu chuẩn TongWei" style="width: 100%; height: 260px; object-fit: cover;">
+            <img src="assets/images/concept/concept_3.jpg" alt="Món ăn tiêu chuẩn TongWei" loading="lazy" style="width: 100%; height: 260px; object-fit: cover;">
           </div>
         </div>
 
@@ -520,26 +538,26 @@
 
             <div class="slider-group">
               <div class="slider-label">
-                <span>Quy mô chỗ ngồi:</span>
+                <label for="seatSlider">Quy mô chỗ ngồi:</label>
                 <span class="slider-value" id="seatVal">90 Chỗ ngồi</span>
               </div>
-              <input type="range" min="40" max="220" step="10" value="90" class="range-input" id="seatSlider">
+              <input type="range" min="40" max="220" step="10" value="90" class="range-input" id="seatSlider" aria-label="Quy mô chỗ ngồi">
             </div>
 
             <div class="slider-group">
               <div class="slider-label">
-                <span>Chi tiêu trung bình / khách:</span>
+                <label for="spendSlider">Chi tiêu trung bình / khách:</label>
                 <span class="slider-value" id="spendVal">220.000 ₫ / Khách</span>
               </div>
-              <input type="range" min="150000" max="450000" step="10000" value="220000" class="range-input" id="spendSlider">
+              <input type="range" min="150000" max="450000" step="10000" value="220000" class="range-input" id="spendSlider" aria-label="Chi tiêu trung bình trên mỗi khách">
             </div>
 
             <div class="slider-group">
               <div class="slider-label">
-                <span>Tần suất xoay vòng bàn:</span>
+                <label for="turnoverSlider">Vòng quay bàn / ngày:</label>
                 <span class="slider-value" id="turnoverVal">2.2 Lượt / Ngày</span>
               </div>
-              <input type="range" min="1.2" max="4.0" step="0.2" value="2.2" class="range-input" id="turnoverSlider">
+              <input type="range" min="1.2" max="4.0" step="0.2" value="2.2" class="range-input" id="turnoverSlider" aria-label="Vòng quay bàn mỗi ngày">
             </div>
 
             <div class="roi-results-card">
@@ -822,7 +840,7 @@
             </div>
 
             <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border);">
-              <img src="assets/images/branding/fb_cover_banner.png" alt="TongWei Brand Cover" style="width: 100%; height: 160px; object-fit: cover;">
+              <img src="assets/images/branding/fb_cover_banner.png" alt="TongWei Brand Cover" loading="lazy" style="width: 100%; height: 160px; object-fit: cover;">
             </div>
           </div>
         </div>
@@ -898,7 +916,7 @@
   <!-- Dish Detail Modal -->
   <div class="modal-overlay" id="dishModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('dishModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('dishModal')" aria-label="Đóng cửa sổ">✕</button>
       <div id="dishModalBody">
         <!-- Filled by JS -->
       </div>
@@ -908,7 +926,7 @@
   <!-- Cart / Pre-order Menu Modal -->
   <div class="modal-overlay" id="cartModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('cartModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('cartModal')" aria-label="Đóng cửa sổ">✕</button>
       <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thực Đơn Đã Chọn Trước</h3>
       <p style="font-size: 0.88rem; color: var(--color-text-secondary); margin-bottom: 1.5rem;">Các món ăn này sẽ được tự động đính kèm vào yêu cầu đặt bàn của Quý khách.</p>
       
@@ -933,7 +951,7 @@
   <!-- Career Application Modal -->
   <div class="modal-overlay" id="careerModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('careerModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('careerModal')" aria-label="Đóng cửa sổ">✕</button>
       <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin-bottom: 0.5rem;">Nộp Hồ Sơ Ứng Tuyển</h3>
       <p style="font-size: 0.88rem; color: var(--color-text-secondary); margin-bottom: 1.5rem;">Hãy để lại thông tin, phòng Nhân sự TongWei sẽ liên hệ với bạn trong vòng 24h làm việc.</p>
 
@@ -969,12 +987,12 @@
   <!-- Master Concept Album Lightbox Modal -->
   <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
     <div class="lightbox-content" onclick="event.stopPropagation()">
-      <button class="lightbox-close" onclick="closeLightboxDirect()" aria-label="Đóng">✕</button>
+      <button class="lightbox-close" onclick="closeLightboxDirect()" aria-label="Đóng thư viện ảnh">✕</button>
       
       <div class="lightbox-stage">
         <button class="album-nav-btn prev" onclick="prevAlbumPhoto()" aria-label="Ảnh trước">‹</button>
         <div class="lightbox-img-wrap">
-          <img src="" alt="Lookbook Full Preview" class="lightbox-img" id="lightboxImg">
+          <img src="" alt="Lookbook Full Preview" class="lightbox-img" id="lightboxImg" loading="lazy">
         </div>
         <button class="album-nav-btn next" onclick="nextAlbumPhoto()" aria-label="Ảnh tiếp theo">›</button>
       </div>
@@ -993,7 +1011,7 @@
   <!-- Event Detail Modal -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeModal('eventModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('eventModal')" aria-label="Đóng cửa sổ">✕</button>
       <div id="eventModalBody">
         <!-- Filled by JS -->
       </div>

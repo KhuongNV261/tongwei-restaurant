@@ -68,7 +68,8 @@ INSERT INTO users (id, username, password, full_name, role, role_name, status, a
 -- Seed Default Branches
 INSERT INTO branches (id, name, short_name, address, phone, hours, scale, status) VALUES
 ('CS-01', 'Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm', 'Cơ sở 1 (Hoàn Kiếm)', '68A Trần Hưng Đạo, P. Cửa Nam, Hoàn Kiếm, Hà Nội', '0912 345 678 / 024 3999 8888', '10:00 - 14:00 | 17:30 - 22:30', '180 Chỗ ngồi • 4 Phòng VIP', 'active'),
-('CS-02', 'Nhà Hàng TongWei - Cơ Sở Cầu Giấy', 'Cơ sở 2 (Cầu Giấy)', '12 Duy Tân, P. Dịch Vọng Hậu, Cầu Giấy, Hà Nội', '0988 567 890 / 024 3888 9999', '10:00 - 14:00 | 17:30 - 22:30', '140 Chỗ ngồi • 3 Phòng VIP', 'active');
+('CS-02', 'Nhà Hàng TongWei - Cơ Sở Cầu Giấy', 'Cơ sở 2 (Cầu Giấy)', '12 Duy Tân, P. Dịch Vọng Hậu, Cầu Giấy, Hà Nội', '0988 567 890 / 024 3888 9999', '10:00 - 14:00 | 17:30 - 22:30', '140 Chỗ ngồi • 3 Phòng VIP', 'active'),
+('CS-03', 'Nhà Hàng TongWei - Cơ Sở Nguyễn Thị Thập', 'Cơ sở 3 (Nguyễn Thị Thập)', '5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy, Hà Nội', '0986 688 866 / 024 3999 8888', '10:00 - 14:00 | 17:30 - 22:30', '160 Chỗ ngồi • 3 Phòng VIP • Tặng 01 Xửng Đại Long Bao', 'active');
 
 -- Seed Dishes
 INSERT INTO dishes (id, name, chinese, category, category_name, price, image, description, is_signature, is_available, show_on_home, spicy, tags) VALUES ('dimsum-1', 'Bánh bao kim sa', '黄金流沙包', 'dimsum', 'Điểm Tâm & Dimsum', 68000, 'assets/images/dishes/Bánh bao kim sa.png', 'Vỏ bánh mềm xốp như mây, bọc trọn nhân trứng muối vàng óng tan chảy béo ngậy ngọt dịu chuẩn vị Quảng Đông.', 1, 1, 1, 0, 'Bán chạy,Nghệ nhân,Signature');
