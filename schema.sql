@@ -98,3 +98,34 @@ INSERT INTO dishes (id, name, chinese, category, category_name, price, image, de
 INSERT INTO dishes (id, name, chinese, category, category_name, price, image, description, is_signature, is_available, show_on_home, spicy, tags) VALUES ('soup-2', 'Canh lê tiềm tuyết nhĩ', '雪耳炖雪梨盅', 'soup', 'Canh Tiềm Dưỡng Sinh', 115000, 'assets/images/dishes/Canh lê tiềm tuyết nhĩ.png', 'Món canh dưỡng nhan thanh mát cho phái đẹp từ lê tuyết giòn ngọt, tuyết nhĩ nở hoa và táo đỏ Tân Cương bổ phổi nhuận tràng.', 0, 1, 1, 0, 'Dưỡng nhan,Thanh mát');
 INSERT INTO dishes (id, name, chinese, category, category_name, price, image, description, is_signature, is_available, show_on_home, spicy, tags) VALUES ('soup-3', 'Canh rau trứng tam sắc', '上汤三色蛋时蔬', 'soup', 'Canh Tiềm Dưỡng Sinh', 105000, 'assets/images/dishes/Canh rau trứng tam sắc.png', 'Hòa quyện nước dùng thượng canh ninh xương gà với trứng muối, trứng bắc thảo và trứng tươi béo ngậy ngọt hậu.', 0, 1, 1, 0, 'Thanh vị,Độc đáo');
 INSERT INTO dishes (id, name, chinese, category, category_name, price, image, description, is_signature, is_available, show_on_home, spicy, tags) VALUES ('drink-1', 'Cam ép TongWei thượng phẩm', '同味鲜榨甜橙汁', 'drinks', 'Thức Uống Thanh Vị', 55000, 'assets/images/dishes/Cam ép Tongwei.png', '100% cam tươi mọng nước nguyên chất ép tươi tại quầy, cung cấp vitamin C dồi dào giải nhiệt hoàn hảo.', 1, 1, 1, 0, 'Tươi mát,Nguyên chất');
+
+
+
+DROP TABLE IF EXISTS events;
+CREATE TABLE events (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  badge TEXT,
+  img TEXT,
+  desc TEXT,
+  detail TEXT,
+  status TEXT DEFAULT 'active',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Seed Events
+INSERT INTO events (id, title, date, badge, img, desc, detail, status) VALUES
+(4, '(SOFT OPENING) TONG WEI NGUYỄN THỊ THẬP — KHAI TRƯƠNG CƠ SỞ MỚI', '15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy', '🏮 Soft Opening', 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg', 'Tặng mỗi khách hàng 01 Xửng Đại Long Bao và giảm thêm 5% khi đăng ký Zalo OA. Trải nghiệm không gian Quảng Đông hoài cổ độc bản.', '• Tặng mỗi khách hàng 01 XỬNG ĐẠI LONG BAO.
+• Giảm thêm 5% cho khách hàng đăng ký mới Zalo OA.
+• Trải nghiệm 3 Phòng VIP Mạt Chược phong lưu, ẩm thực chuẩn vị Quảng Đông.
+• Thời gian áp dụng: 15.10 – 30.10.2026 tại 5N7A Nguyễn Thị Thập, Cầu Giấy.', 'active'),
+(1, 'Đại Tiệc Khai Trương TongWei Hà Nội — Mỹ Vị Quảng Đông Giao Hòa', '15 Tháng 06, 2026 • Chi Nhánh Hà Nội', 'Sự Kiện Nổi Bật', 'assets/images/concept/concept_12.jpg', 'Ưu đãi 20% toàn bộ thực đơn điểm tâm và tặng ngay xửng bánh bao kim sa cho bàn tiệc đặt trước từ 4 khách.', '- Ưu đãi 20% tổng hóa đơn dimsum và cá lăng.
+- Tặng ngay 01 xửng Bánh Bao Kim Sa cho bàn từ 4 khách.
+- Miễn phí trà Thiết Quan Âm.', 'active'),
+(2, 'Ra Mắt Bộ Sưu Tập Thức Uống Mùa Hè: Thanh Mát Dưỡng Nhan', '01 Tháng 07, 2026 • Toàn Hệ Thống', 'Menu Mùa Hè', 'assets/images/concept/concept_1.jpg', 'Dòng thức uống sáng tạo kết hợp lá dứa non, dưa lưới và thảo mộc thanh lọc giải nhiệt sau tiệc nướng.', '- Trà Dưa Lưới Sương Sáo Lá Dứa.
+- Nước Chanh Vàng Mật Ong Dưỡng Nhan.
+- Đồng Vị Trái Cây Nhiệt Đới.', 'active'),
+(3, 'Đêm Tiệc Thưởng Vị & Giao Lưu Mạt Chược Truyền Thống', 'Thứ 6 & Thứ 7 Hàng Tuần • Phòng VIP Cố Sự', 'Trải Nghiệm Độc Bản', 'assets/images/concept/concept_2.jpg', 'Thưởng thức dimsum nóng hổi trong không gian hoài cổ, nhâm nhi trà cổ thụ và giao lưu mạt chược phong lưu.', '- Miễn phí bàn mạt chược tiêu chuẩn trong phòng VIP.
+- Set ẩm thực Cố Sự Thượng Phẩm phục vụ riêng.
+- Phòng cách âm riêng tư 8 - 14 khách.', 'active');

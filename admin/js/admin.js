@@ -85,11 +85,39 @@ async function initializeData() {
   }
 
   // 2. Events
-  const savedEvents = localStorage.getItem('tongwei_events');
-  if (savedEvents) {
-    adminState.events = JSON.parse(savedEvents);
-  } else {
+  try {
+    const evRes = await fetch('/api/events');
+    if (evRes.ok) {
+      const dbEvents = await evRes.json();
+      if (Array.isArray(dbEvents) && dbEvents.length > 0) {
+        adminState.events = dbEvents;
+        localStorage.setItem('tongwei_events', JSON.stringify(dbEvents));
+      }
+    }
+  } catch (err) {
+    console.warn('API events fallback to local:', err);
+  }
+
+  if (!adminState.events || adminState.events.length === 0) {
+    const savedEvents = localStorage.getItem('tongwei_events');
+    if (savedEvents) {
+      try {
+        adminState.events = JSON.parse(savedEvents);
+      } catch (e) {}
+    }
+  }
+
+  if (!adminState.events || adminState.events.length === 0) {
     adminState.events = [
+      {
+        id: 4,
+        title: '(SOFT OPENING) TONG WEI NGUYỄN THỊ THẬP — KHAI TRƯƠNG CƠ SỞ MỚI',
+        date: '15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy',
+        badge: '🏮 Soft Opening',
+        img: 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg',
+        desc: 'Tặng mỗi khách hàng 01 Xửng Đại Long Bao và giảm thêm 5% khi đăng ký Zalo OA. Trải nghiệm không gian Quảng Đông hoài cổ độc bản.',
+        detail: '• Tặng mỗi khách hàng 01 XỬNG ĐẠI LONG BAO.\n• Giảm thêm 5% cho khách hàng đăng ký mới Zalo OA.\n• Trải nghiệm 3 Phòng VIP Mạt Chược phong lưu, ẩm thực chuẩn vị Quảng Đông.\n• Thời gian áp dụng: 15.10 – 30.10.2026 tại 5N7A Nguyễn Thị Thập, Cầu Giấy.'
+      },
       {
         id: 1,
         title: 'Đại Tiệc Khai Trương TongWei Hà Nội — Mỹ Vị Quảng Đông Giao Hòa',
@@ -119,6 +147,20 @@ async function initializeData() {
       }
     ];
     localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
+  } else {
+    // Tự động bổ sung sự kiện Nguyễn Thị Thập nếu chưa có
+    if (!adminState.events.some(e => e.id === 4 || (e.title && e.title.includes('Nguyễn Thị Thập')))) {
+      adminState.events.unshift({
+        id: 4,
+        title: '(SOFT OPENING) TONG WEI NGUYỄN THỊ THẬP — KHAI TRƯƠNG CƠ SỞ MỚI',
+        date: '15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy',
+        badge: '🏮 Soft Opening',
+        img: 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg',
+        desc: 'Tặng mỗi khách hàng 01 Xửng Đại Long Bao và giảm thêm 5% khi đăng ký Zalo OA. Trải nghiệm không gian Quảng Đông hoài cổ độc bản.',
+        detail: '• Tặng mỗi khách hàng 01 XỬNG ĐẠI LONG BAO.\n• Giảm thêm 5% cho khách hàng đăng ký mới Zalo OA.\n• Trải nghiệm 3 Phòng VIP Mạt Chược phong lưu, ẩm thực chuẩn vị Quảng Đông.\n• Thời gian áp dụng: 15.10 – 30.10.2026 tại 5N7A Nguyễn Thị Thập, Cầu Giấy.'
+      });
+      localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
+    }
   }
 
   // 3. Concept Photos (25)
@@ -747,6 +789,10 @@ window.deleteEvent = function(id) {
     localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
     renderEventsTable();
     showToast(`Đã xóa sự kiện thành công!`, 'danger');
+
+    // Đồng bộ xóa trên Cloudflare D1
+    fetch(`/api/events?id=${id}`, { method: 'DELETE' })
+      .catch(e => console.warn('Delete event from D1 failed:', e));
   }
 };
 
@@ -760,6 +806,7 @@ document.getElementById('eventForm')?.addEventListener('submit', (e) => {
   const desc = document.getElementById('eventDesc').value.trim();
   const detail = document.getElementById('eventDetail').value.trim();
 
+  let targetEvent = null;
   if (editId) {
     const ev = adminState.events.find(e => e.id == editId);
     if (ev) {
@@ -769,24 +816,36 @@ document.getElementById('eventForm')?.addEventListener('submit', (e) => {
       ev.img = img;
       ev.desc = desc;
       ev.detail = detail;
+      targetEvent = ev;
       showToast(`Đã cập nhật sự kiện <b>${title}</b>!`);
     }
   } else {
-    adminState.events.unshift({
+    targetEvent = {
       id: Date.now(),
       title,
       date,
       badge,
       img,
       desc,
-      detail
-    });
+      detail,
+      status: 'active'
+    };
+    adminState.events.unshift(targetEvent);
     showToast(`Đã đăng sự kiện mới <b>${title}</b>!`);
   }
 
   localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
   closeModal('eventModal');
   renderEventsTable();
+
+  // Đồng bộ lên Cloudflare D1
+  if (targetEvent) {
+    fetch('/api/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(targetEvent)
+    }).catch(e => console.warn('Sync event to D1 failed:', e));
+  }
 });
 
 // ==================== MEDIA & CONCEPT LOOKBOOK ====================
