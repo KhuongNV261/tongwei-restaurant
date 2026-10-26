@@ -4,8 +4,3 @@ compatibility_date = "2026-10-22"
 
 [assets]
 directory = "./"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "tongwei-db"
-database_id = "tongwei-db"
