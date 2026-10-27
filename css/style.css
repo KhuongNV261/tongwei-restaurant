@@ -69,6 +69,9 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   color-scheme: light;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -77,6 +80,9 @@ body {
   color: var(--color-text-main);
   line-height: 1.65;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
   background-image: 
     radial-gradient(circle at 15% 15%, rgba(29, 61, 116, 0.03) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(226, 35, 41, 0.02) 0%, transparent 40%);
@@ -116,6 +122,14 @@ button {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+main, section {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  box-sizing: border-box;
 }
 
 .text-indigo {
@@ -188,6 +202,48 @@ button {
   letter-spacing: 0.02em;
   transition: all var(--transition-normal);
   white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.btn .btn-text-short {
+  display: none;
+}
+
+.lookbook-actions .btn {
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
+}
+
+.btn .btn-text-short {
+  display: none;
+}
+
+.lookbook-actions .btn {
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
+}
+
+.btn .btn-text-short {
+  display: none;
+}
+
+.lookbook-actions .btn {
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
+}
+
+.btn .btn-text-short {
+  display: none;
+}
+
+.lookbook-actions .btn {
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
 }
 
 .btn-primary {
@@ -561,6 +617,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .dish-halo {
@@ -1541,6 +1600,13 @@ textarea.form-control {
   box-shadow: 0 20px 50px rgba(18, 40, 78, 0.25);
   transform: scale(0.95);
   transition: transform var(--transition-normal);
+  box-sizing: border-box;
+}
+
+.modal-actions-row,
+.cart-modal-footer {
+  display: flex;
+  gap: 1rem;
 }
 
 .modal-overlay.active .modal-card {
@@ -1624,44 +1690,9 @@ textarea.form-control {
   to { transform: translateX(0); opacity: 1; }
 }
 
-/* 14. RESPONSIVE MEDIA QUERIES */
-@media (max-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 3rem;
-  }
-  .hero-content {
-    max-width: 100%;
-    margin: 0 auto;
-  }
-  .hero-cta {
-    justify-content: center;
-  }
-  .hero-stats {
-    justify-content: center;
-  }
-  .about-grid,
-  .factory-banner,
-  .franchise-tools-grid,
-  .booking-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  .franchise-models-grid {
-    grid-template-columns: 1fr;
-    max-width: 500px;
-    margin: 0 auto 3rem;
-  }
-  .factory-features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+/* 14. RESPONSIVE MEDIA QUERIES (DESKTOP-FIRST HIERARCHY) */
 
-/* RESPONSIVE NAVBAR: Laptops & Medium Desktops (1121px - 1366px) */
+/* Large Desktops & Laptops (<= 1366px) */
 @media (max-width: 1366px) {
   .nav-container {
     padding: 0 1rem;
@@ -1698,19 +1729,19 @@ textarea.form-control {
   }
 }
 
-/* TABLETS & MOBILE BREAKPOINT (<= 1120px) */
+/* Tablets & Mobile Navigation Breakpoint (<= 1120px) */
 @media (max-width: 1120px) {
   .nav-links {
     display: none;
   }
   .mobile-toggle {
-    display: flex;
+    display: flex !important;
   }
   .nav-actions {
-    gap: 0.65rem;
+    gap: 0.55rem;
   }
   .nav-booking-btn {
-    padding: 0.45rem 0.95rem;
+    padding: 0.42rem 0.85rem;
     font-size: 0.82rem;
   }
   .nav-link-mobile-cta {
@@ -1727,52 +1758,7 @@ textarea.form-control {
   }
 }
 
-/* SMARTPHONE BREAKPOINTS */
-@media (max-width: 640px) {
-  .brand-tagline {
-    display: none;
-  }
-  .nav-actions {
-    gap: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-container {
-    padding: 0 0.75rem;
-  }
-  .brand-logo {
-    gap: 0.45rem;
-  }
-  .logo-avatar-img {
-    width: 36px;
-    height: 36px;
-  }
-  .brand-title {
-    font-size: 1.05rem;
-  }
-  .cart-btn {
-    width: 36px;
-    height: 36px;
-  }
-  .nav-booking-btn {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.78rem;
-  }
-  .nav-booking-btn .btn-text-full {
-    display: none;
-  }
-  .nav-booking-btn .btn-text-short {
-    display: inline;
-  }
-}
-
-@media (max-width: 360px) {
-  .brand-title {
-    display: none;
-  }
-}
-
+/* Mobile Open Drawer Dropdown */
 .nav-links.mobile-open {
   display: flex !important;
   flex-direction: column;
@@ -1783,12 +1769,13 @@ textarea.form-control {
   background: rgba(250, 247, 242, 0.98);
   backdrop-filter: blur(20px);
   border-bottom: 2px solid var(--color-indigo);
-  padding: 1.5rem;
-  gap: 0.6rem;
+  padding: 1.25rem;
+  gap: 0.5rem;
   box-shadow: 0 15px 35px rgba(29, 61, 116, 0.2);
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   margin: 0;
   align-items: stretch;
+  z-index: 1000;
 }
 
 .nav-links.mobile-open .nav-link {
@@ -1797,33 +1784,672 @@ textarea.form-control {
   font-size: 1rem;
 }
 
+/* Medium Tablets & Small Desktops (<= 1024px) */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 3rem;
+  }
+  .hero-content {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .hero-cta {
+    justify-content: center;
+  }
+  .hero-stats {
+    justify-content: center;
+  }
+  .about-grid,
+  .factory-banner,
+  .franchise-tools-grid,
+  .booking-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .franchise-models-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto 3rem;
+  }
+  .factory-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Standard Tablets & Large Phones (<= 768px) */
 @media (max-width: 768px) {
+  /* Section Spacing - Streamlined Mobile UX */
+  .section-padding {
+    padding: 2.75rem 0;
+  }
+  .section-header {
+    margin: 0 auto 2rem;
+  }
+  .section-title {
+    font-size: 1.85rem;
+  }
+
+  /* Container */
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Navbar */
+  .nav-container {
+    padding: 0 0.85rem;
+  }
+  .brand-logo {
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .logo-avatar-img {
+    width: 36px;
+    height: 36px;
+  }
+  .brand-title {
+    font-size: 1.08rem;
+  }
+  .brand-tagline {
+    display: none !important;
+  }
+  .nav-actions {
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .cart-btn {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+  .cart-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .nav-booking-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-booking-btn .btn-text-full {
+    display: none !important;
+  }
+  .nav-booking-btn .btn-text-short {
+    display: inline !important;
+  }
+  .mobile-toggle {
+    display: flex !important;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+  .mobile-toggle span {
+    width: 22px;
+    height: 2px;
+  }
+
+  /* Hero Banner Strip - Triết lý Đồng Vị */
   .hero-banner-strip {
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
-    padding: 1.5rem;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-lg);
+  }
+  .banner-poetry h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+  }
+  .banner-poetry p {
+    font-size: 0.88rem;
+    line-height: 1.5;
   }
   .banner-calligraphy {
     text-align: center;
+    font-size: 1.35rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero Visual & Halos (Eliminate horizontal overflow) */
+  .hero-visual {
+    flex-direction: column !important;
+    align-items: center !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    padding: 1rem 0;
+    box-sizing: border-box;
+  }
+  .dish-halo {
+    width: 300px;
+    height: 300px;
+  }
+  .dish-halo-ring {
+    width: 280px;
+    height: 280px;
+  }
+  .hero-dish-img {
+    max-width: 320px;
   }
   .hero-title {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
+  }
+  .hero-floating-card {
+    position: static !important;
+    margin: 1.25rem auto 0 !important;
+    max-width: 90% !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  /* Menu Section Category Tabs - Horizontal Touch Swipeable Pills */
+  .category-tabs.menu-cat-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.5rem;
+    justify-content: flex-start !important;
+    padding: 0.4rem 0.2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .category-tabs.menu-cat-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .category-tabs.menu-cat-tabs .tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  /* Menu Actions Row */
+  .menu-actions-row {
+    padding: 0.65rem 0.85rem;
+    gap: 0.75rem;
+    box-sizing: border-box;
+  }
+
+  /* Menu Book Stage & Navigation Buttons */
+  .menu-book-stage {
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .book-nav-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .book-nav-btn.prev-btn {
+    left: 8px;
+    right: auto;
+  }
+  .book-nav-btn.next-btn {
+    right: 8px;
+    left: auto;
+  }
+
+  /* Mini Thumbnails */
+  .menu-thumbs-scroll-wrapper {
+    padding-bottom: 0.35rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .menu-thumb-item {
+    flex: 0 0 65px;
+    border-radius: 6px;
+  }
+  .menu-thumb-item img {
+    height: 46px;
+  }
+  .menu-thumb-item span {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.1rem;
+  }
+
+  /* Status Bar */
+  .menu-status-bar {
+    padding: 0.85rem 1rem;
+    gap: 0.65rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .menu-page-title {
+    font-size: 1.05rem;
+  }
+  .menu-page-desc {
+    font-size: 0.82rem;
+  }
+  .menu-page-counter {
+    font-size: 1.15rem;
+  }
+  .menu-page-counter .counter-curr {
+    font-size: 1.35rem;
+  }
+
+  /* Menu Bottom CTA */
+  .menu-bottom-cta {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .cta-banner-content {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cta-banner-content .cta-icon {
+    font-size: 2rem;
+  }
+  .cta-banner-content h4 {
+    font-size: 1.1rem;
+  }
+  .cta-banner-content p {
+    font-size: 0.85rem;
+  }
+  .btn-cta-book {
+    width: 100%;
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Lookbook Actions */
+  .lookbook-actions {
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .lookbook-actions .btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+  }
+  .lookbook-actions .btn .btn-text-full {
+    display: none;
+  }
+  .lookbook-actions .btn .btn-text-short {
+    display: inline;
+  }
+
+  /* Franchise Tools, Booking & Other Grids - Flex column on mobile */
+  .franchise-tools-grid,
+  .booking-grid,
+  .factory-banner {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.75rem 1.25rem !important;
+    border-radius: var(--radius-lg);
+    gap: 2rem;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .booking-form-wrap, .branches-info, .calculator-box, .form-box, .form-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
   }
   .jobs-grid, .form-row {
-    grid-template-columns: 1fr;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    box-sizing: border-box;
   }
   .perks-row {
     grid-template-columns: repeat(2, 1fr);
   }
-  .factory-banner, .booking-grid {
-    padding: 2rem 1.5rem;
-  }
   .footer-grid {
     grid-template-columns: 1fr;
   }
+  .form-control, select.form-control {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
 }
 
+/* Small Tablets & Large Phones (<= 640px) */
+@media (max-width: 640px) {
+  .hero-floating-card {
+    position: static !important;
+    margin: 1rem auto 0 !important;
+    max-width: 100% !important;
+    animation: none;
+  }
+}
+
+/* Standard Mobile Phones (<= 480px) */
+@media (max-width: 480px) {
+  /* Section Spacing */
+  .section-padding {
+    padding: 2.25rem 0;
+  }
+  .section-header {
+    margin: 0 auto 1.5rem;
+  }
+  .section-title {
+    font-size: 1.65rem;
+  }
+
+  /* Container */
+  .container {
+    padding: 0 0.75rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Navbar - Precision Fit for <= 480px */
+  .nav-container {
+    padding: 0 0.75rem;
+  }
+  .brand-logo {
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+  .logo-avatar-img {
+    width: 36px;
+    height: 36px;
+  }
+  .brand-title {
+    font-size: 1.05rem;
+    display: inline-block;
+  }
+  .brand-tagline {
+    display: none !important;
+  }
+  .nav-actions {
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+  .cart-btn {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+  .cart-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .nav-booking-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+  .nav-booking-btn .btn-text-full {
+    display: none !important;
+  }
+  .nav-booking-btn .btn-text-short {
+    display: inline !important;
+  }
+  .mobile-toggle {
+    display: flex !important;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hero Banner Strip */
+  .hero-banner-strip {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+  .banner-poetry h3 {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+  .banner-poetry p {
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+  .banner-calligraphy {
+    font-size: 1.2rem;
+  }
+
+  /* Hero Visual Halos */
+  .hero-visual {
+    flex-direction: column !important;
+    align-items: center !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    padding: 0.5rem 0;
+  }
+  .dish-halo {
+    width: 240px;
+    height: 240px;
+  }
+  .dish-halo-ring {
+    width: 220px;
+    height: 220px;
+  }
+  .hero-dish-img {
+    max-width: 260px;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+  }
+
+  /* Menu Actions Row */
+  .menu-actions-row {
+    flex-direction: column;
+    padding: 0.6rem 0.75rem;
+    gap: 0.5rem;
+    align-items: stretch;
+    box-sizing: border-box;
+  }
+  .menu-view-switchers,
+  .menu-action-buttons {
+    display: flex;
+    width: 100%;
+    gap: 0.4rem;
+  }
+  .menu-view-switchers .view-switch-btn {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .menu-action-buttons .btn {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Status Bar */
+  .menu-status-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 0.85rem;
+    box-sizing: border-box;
+  }
+  .menu-page-counter {
+    align-self: flex-end;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    padding: 1rem 0.75rem;
+    box-sizing: border-box;
+  }
+  .modal-card {
+    padding: 1.5rem 1rem;
+    max-width: 100%;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-sizing: border-box;
+  }
+  .modal-actions-row,
+  .cart-modal-footer {
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+  }
+  .modal-actions-row .btn,
+  .cart-modal-footer .btn {
+    width: 100% !important;
+    white-space: normal !important;
+    text-align: center;
+  }
+
+  /* Franchise Tools, Booking & Factory */
+  .franchise-tools-grid,
+  .booking-grid,
+  .factory-banner {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.25rem 0.85rem !important;
+    border-radius: var(--radius-lg);
+    box-sizing: border-box;
+    max-width: 100% !important;
+    gap: 1.5rem;
+  }
+  .calculator-box h3, .form-box h3 {
+    font-size: 1.35rem;
+  }
+  .roi-results-card {
+    padding: 1rem 0.75rem;
+    gap: 0.75rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .roi-stat-val {
+    font-size: 1.2rem;
+  }
+  .form-control, select.form-control {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+}
+
+/* Small Screen Mobile Phones (<= 360px) */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 0.5rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .nav-container {
+    padding: 0 0.5rem;
+  }
+  .brand-logo {
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .logo-avatar-img {
+    width: 34px;
+    height: 34px;
+  }
+  .brand-title {
+    font-size: 0.98rem;
+    display: inline-block;
+  }
+  .nav-actions {
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .cart-btn {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+  .cart-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  .nav-booking-btn {
+    padding: 0.32rem 0.55rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .mobile-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  .mobile-toggle span {
+    width: 20px;
+  }
+  .dish-halo {
+    width: 210px;
+    height: 210px;
+  }
+  .dish-halo-ring {
+    width: 190px;
+    height: 190px;
+  }
+  .hero-dish-img {
+    max-width: 230px;
+  }
+  .hero-title {
+    font-size: 1.65rem;
+  }
+}
+
+/* Ultra Small Screens (<= 320px) */
+@media (max-width: 320px) {
+  .container {
+    padding: 0 0.35rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .nav-container {
+    padding: 0 0.35rem;
+  }
+  .brand-title {
+    font-size: 0.88rem;
+  }
+  .logo-avatar-img {
+    width: 30px;
+    height: 30px;
+  }
+  .nav-actions {
+    gap: 0.25rem;
+  }
+  .nav-booking-btn {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.72rem;
+  }
+  .cart-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .mobile-toggle {
+    width: 32px;
+    height: 32px;
+  }
+}
 
 /* COMPACT ABOUT MOSAIC */
 .about-mosaic {
@@ -2533,6 +3159,7 @@ textarea:focus-visible,
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .menu-page-display {
@@ -2894,8 +3521,12 @@ textarea:focus-visible,
     gap: 0.5rem;
   }
   .book-nav-btn {
-    width: 42px;
-    height: 42px;
-    font-size: 1.6rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+    left: 8px;
+  }
+  .book-nav-btn.next-btn {
+    right: 8px;
   }
 }

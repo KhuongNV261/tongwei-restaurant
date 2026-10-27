@@ -468,7 +468,7 @@ window.openDishDetail = function(id) {
       </ul>
     </div>
 
-    <div style="display: flex; gap: 1rem;">
+    <div class="modal-actions-row" style="display: flex; gap: 1rem;">
       <button class="btn btn-primary" style="flex: 1;" onclick="addToCart('${dish.id}'); closeModal('dishModal');">
         + Thêm vào thực đơn đặt bàn
       </button>
@@ -731,7 +731,7 @@ window.openEventDetail = function(eventId) {
     <div style="font-size: 0.85rem; color: var(--color-text-muted); font-weight: 600; margin-bottom: 0.5rem;">${evt.date}</div>
     <h2 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 1rem;">${evt.title}</h2>
     ${evt.content}
-    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+    <div class="modal-actions-row" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
       <a href="#dat-ban" class="btn btn-primary" style="flex: 1; text-align: center;" onclick="closeModal('eventModal')">
         Đăng Ký Đặt Bàn Ngay
       </a>
