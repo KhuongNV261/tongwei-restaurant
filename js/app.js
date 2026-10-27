@@ -910,6 +910,17 @@ function setupEventListeners() {
   if (elements.spendSlider) elements.spendSlider.addEventListener('input', calculateROI);
   if (elements.turnoverSlider) elements.turnoverSlider.addEventListener('input', calculateROI);
 
+  // Initialize default booking date to today
+  const dateInput = document.getElementById('bookDate');
+  if (dateInput && !dateInput.value) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dateInput.value = `${yyyy}-${mm}-${dd}`;
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+  }
+
   // Booking Form Submission
   if (elements.bookingForm) {
     elements.bookingForm.addEventListener('submit', (e) => {
@@ -1574,6 +1585,31 @@ function setupMenuSwipeListener() {
     }
   }, { passive: true });
 }
+
+// 13. Apply Website Menu Display Mode (Digital Book vs Dish Grid)
+function applyWebsiteMenuMode() {
+  const mode = localStorage.getItem('tongwei_menu_display_mode') || 'book';
+  const dishesWrap = document.getElementById('dishesListContainer');
+  const bookWrap = document.getElementById('menuBookViewerContainer');
+  const subtitle = document.getElementById('menuSectionSubtitle');
+  const title = document.getElementById('menuSectionTitle');
+  const desc = document.getElementById('menuSectionDesc');
+
+  if (mode === 'dishes') {
+    if (dishesWrap) dishesWrap.style.display = 'block';
+    if (bookWrap) bookWrap.style.display = 'none';
+    if (subtitle) subtitle.textContent = 'Mỹ Vị Tinh Hoa';
+    if (title) title.textContent = 'Thực Đơn Món Ăn Quảng Đông';
+    if (desc) desc.textContent = 'Khám phá 28+ mỹ vị đỉnh cao chế biến tươi ngon mỗi ngày theo công thức nghệ nhân Quảng Đông.';
+  } else {
+    if (dishesWrap) dishesWrap.style.display = 'none';
+    if (bookWrap) bookWrap.style.display = 'block';
+    if (subtitle) subtitle.textContent = 'Độc Bản Mỹ Vị Quảng Đông';
+    if (title) title.textContent = 'Quyển Thực Đơn Tinh Hoa TongWei';
+    if (desc) desc.textContent = 'Ấn phẩm thực đơn thiết kế nghệ nhân trọn vẹn — Kết tinh mỹ vị truyền thống Quảng Đông từ Dimsum, Món quay nướng tới Hải sản & Lẩu dưỡng sinh.';
+  }
+}
+window.applyWebsiteMenuMode = applyWebsiteMenuMode;
 
 document.addEventListener('DOMContentLoaded', () => {
   applyWebsiteMenuMode();
