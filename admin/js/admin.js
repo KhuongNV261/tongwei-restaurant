@@ -20,7 +20,8 @@ const adminState = {
   franchiseLeads: [],
   franchisePackages: [],
   branches: [],
-  users: []
+  users: [],
+  menuPages: []
 };
 
 // Format currency
@@ -163,13 +164,26 @@ async function initializeData() {
     }
   }
 
+  // 2.5 Menu Book Pages
+  const savedMenuPages = localStorage.getItem('tongwei_menu_pages');
+  if (savedMenuPages) {
+    try {
+      adminState.menuPages = JSON.parse(savedMenuPages);
+    } catch (e) {
+      adminState.menuPages = defaultMenuPages;
+    }
+  } else {
+    adminState.menuPages = defaultMenuPages;
+    localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
+  }
+
   // 3. Concept Photos (25)
   const savedPhotos = localStorage.getItem('tongwei_photos');
   if (savedPhotos) {
     adminState.photos = JSON.parse(savedPhotos);
   } else {
     adminState.photos = [
-      { id: 1, src: 'assets/images/concept/concept_1.jpg', title: 'Bộ Sưu Tập Thức Uống Nhiệt Đới', category: 'drinks', categoryName: 'Thức Uống', desc: 'Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn.' },
+      { id: 1, order: 1, src: 'assets/images/concept/concept_1.jpg', title: 'Bộ Sưu Tập Thức Uống Nhiệt Đới', category: 'drinks', categoryName: 'Thức Uống', desc: 'Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn.' },
       { id: 2, src: 'assets/images/concept/concept_2.jpg', title: 'Văn Hóa Cố Sự & Bàn Mạt Chược', category: 'banquet', categoryName: 'Văn Hóa & Không Gian', desc: 'Nét sinh hoạt hoài niệm tao nhã bên bàn mạt chược truyền thống và trà thơm.' },
       { id: 3, src: 'assets/images/concept/concept_3.jpg', title: 'Mâm Cơm Quảng Đông & Trà Đạo', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Bàn ăn chuẩn vị gia đình với các món xào lửa lớn, thịt nướng xá xíu thơm ngát.' },
       { id: 4, src: 'assets/images/concept/concept_4.jpg', title: 'Đại Tiệc Sum Vầy Gia Tộc', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Thịt nướng mật ong, xiên nướng than hoa và các món khai vị cung đình.' },
@@ -196,6 +210,7 @@ async function initializeData() {
       { id: 25, src: 'assets/images/concept/concept_25.jpg', title: 'Xá Xíu Phủ Ớt Tươi & Hành Hoa', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Sắc đỏ mang lại may mắn, kích thích trọn vẹn vị giác thực khách.' }
     ];
     localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
   }
 
   // 4. Bookings
@@ -428,6 +443,12 @@ function refreshDashboardStats() {
   document.getElementById('kpiApplicantsCount').textContent = adminState.candidates.length;
   document.getElementById('kpiFranchiseCount').textContent = adminState.franchiseLeads.length;
 
+  const eventBadge = document.getElementById('eventCountBadge');
+  if (eventBadge) eventBadge.textContent = adminState.events ? adminState.events.length : 0;
+
+  const mediaBadge = document.getElementById('mediaCountBadge');
+  if (mediaBadge) mediaBadge.textContent = adminState.photos ? adminState.photos.length : 0;
+
   // Recent Bookings in Dashboard Table
   const tbody = document.getElementById('dashboardBookingsTbody');
   if (tbody) {
@@ -472,7 +493,9 @@ function switchTab(tabId) {
 
   const targetPane = document.getElementById(`pane-${tabId}`);
   if (targetPane) targetPane.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
 // ==================== DISHES MANAGEMENT ====================
@@ -910,25 +933,190 @@ document.getElementById('eventForm')?.addEventListener('submit', (e) => {
 });
 
 // ==================== MEDIA & CONCEPT LOOKBOOK ====================
+let mediaViewMode = 'grid'; // 'grid' or 'table'
+
+function toggleMediaViewMode() {
+  mediaViewMode = mediaViewMode === 'grid' ? 'table' : 'grid';
+  const gridEl = document.getElementById('adminMediaGrid');
+  const tableEl = document.getElementById('adminMediaTableView');
+  const btnToggle = document.getElementById('btnToggleMediaView');
+
+  if (mediaViewMode === 'table') {
+    if (gridEl) gridEl.style.display = 'none';
+    if (tableEl) tableEl.style.display = 'block';
+    if (btnToggle) btnToggle.textContent = 'Chuyển xem lưới ảnh 🔲';
+  } else {
+    if (gridEl) gridEl.style.display = 'grid';
+    if (tableEl) tableEl.style.display = 'none';
+    if (btnToggle) btnToggle.textContent = 'Chuyển xem dạng bảng 📋';
+  }
+  renderAdminMedia();
+}
+window.toggleMediaViewMode = toggleMediaViewMode;
+
 function renderAdminMedia() {
   const grid = document.getElementById('adminMediaGrid');
-  if (!grid) return;
+  const tbody = document.getElementById('adminMediaTbody');
+  if (!grid && !tbody) return;
+
+  // Auto-fill order if missing
+  adminState.photos.forEach((p, idx) => {
+    if (p.order === undefined || p.order === null) {
+      p.order = idx + 1;
+    }
+  });
+
+  // Always sort photos by order
+  adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
 
   let list = adminState.photos;
   if (adminState.mediaFilterCat !== 'all') {
     list = list.filter(p => p.category === adminState.mediaFilterCat);
   }
 
-  grid.innerHTML = list.map(item => `
-    <div class="media-item" onclick="openPhotoModal(${item.id})">
-      <img src="../${item.src}" alt="${item.title}" loading="lazy">
-      <div class="media-overlay">
-        <span class="badge badge-indigo" style="color: #fff; background: var(--color-brand-red); margin-bottom: 4px;">#${item.id} • ${item.categoryName}</span>
-        <div class="media-title">${item.title}</div>
-      </div>
-    </div>
-  `).join('');
+  // 1. Render Grid View
+  if (grid) {
+    grid.innerHTML = list.map((item, index) => {
+      const imgSrc = item.src.startsWith('http') || item.src.startsWith('/') ? item.src : `/${item.src}`;
+      const orderNum = item.order || (index + 1);
+
+      return `
+        <div class="media-item" onclick="openPhotoModal(${item.id})">
+          <span class="badge" style="position: absolute; top: 8px; left: 8px; background: var(--color-indigo); color: #fff; font-weight: 800; font-size: 0.78rem; z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border-radius: var(--radius-sm);">
+            STT: #${orderNum}
+          </span>
+          <button type="button" class="media-delete-btn" onclick="deletePhoto(${item.id}, event)" title="Xóa bức ảnh này">🗑️</button>
+          <img src="${imgSrc}" alt="${item.title}" loading="lazy">
+          <div class="media-overlay">
+            <span class="badge badge-indigo" style="color: #fff; background: var(--color-brand-red); margin-bottom: 4px;">STT #${orderNum} • ${item.categoryName}</span>
+            <div class="media-title">${item.title}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 2. Render Table View (with Order Column & Up/Down Sort buttons)
+  if (tbody) {
+    tbody.innerHTML = list.map((item, index) => {
+      const imgSrc = item.src.startsWith('http') || item.src.startsWith('/') ? item.src : `/${item.src}`;
+      const orderNum = item.order || (index + 1);
+
+      return `
+        <tr>
+          <td style="text-align: center;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <input type="number" class="form-control" style="width: 60px; text-align: center; font-weight: 800; color: var(--color-indigo); padding: 0.3rem 0.2rem;" value="${orderNum}" min="1" max="999" onchange="changePhotoOrder(${item.id}, this.value)" title="Nhập số thứ tự và nhấn Enter">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <button type="button" onclick="movePhotoPosition(${item.id}, -1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển lên trên">▲</button>
+                <button type="button" onclick="movePhotoPosition(${item.id}, 1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển xuống dưới">▼</button>
+              </div>
+            </div>
+          </td>
+          <td>
+            <img src="${imgSrc}" alt="${item.title}" style="width: 75px; height: 50px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color); cursor: pointer;" onclick="openPhotoModal(${item.id})">
+          </td>
+          <td>
+            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${item.title}</div>
+            <small style="color: var(--text-secondary); font-size: 0.78rem;">Tệp: ${item.src}</small>
+          </td>
+          <td>
+            <span class="badge badge-indigo" style="background: rgba(29, 61, 116, 0.08); color: var(--color-indigo); font-weight: 700;">
+              ${item.categoryName}
+            </span>
+          </td>
+          <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            ${item.desc}
+          </td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; gap: 0.4rem;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="openPhotoModal(${item.id})" title="Chỉnh sửa">
+                ✏️ Sửa
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deletePhoto(${item.id})" title="Xóa">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  updateMediaCountBadge();
 }
+
+function changePhotoOrder(id, newOrderVal) {
+  const newOrder = parseInt(newOrderVal, 10);
+  if (isNaN(newOrder) || newOrder < 1) return;
+
+  const item = adminState.photos.find(p => p.id === id);
+  if (!item) return;
+
+  item.order = newOrder;
+  adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
+  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  renderAdminMedia();
+  showToast(`Đã đổi thứ tự ảnh <b>${item.title}</b> thành vị trí <b>#${newOrder}</b>!`);
+}
+window.changePhotoOrder = changePhotoOrder;
+
+function movePhotoPosition(id, direction) {
+  const sorted = [...adminState.photos].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const idx = sorted.findIndex(p => p.id === id);
+  if (idx === -1) return;
+
+  const targetIdx = idx + direction;
+  if (targetIdx < 0 || targetIdx >= sorted.length) return;
+
+  // Swap orders
+  const currentPhoto = sorted[idx];
+  const targetPhoto = sorted[targetIdx];
+
+  const tempOrder = currentPhoto.order || (idx + 1);
+  currentPhoto.order = targetPhoto.order || (targetIdx + 1);
+  targetPhoto.order = tempOrder;
+
+  // If orders were identical, force separation
+  if (currentPhoto.order === targetPhoto.order) {
+    currentPhoto.order = targetIdx + 1;
+    targetPhoto.order = idx + 1;
+  }
+
+  adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
+  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  renderAdminMedia();
+  showToast(`Đã di chuyển vị trí ảnh <b>${currentPhoto.title}</b>!`);
+}
+window.movePhotoPosition = movePhotoPosition;
+
+function updateMediaCountBadge() {
+  const count = adminState.photos ? adminState.photos.length : 0;
+  const badge = document.getElementById('mediaCountBadge');
+  if (badge) badge.textContent = count;
+  const filterAllBtn = document.querySelector('#mediaFilterControls [data-cat="all"]');
+  if (filterAllBtn) filterAllBtn.textContent = `Tất cả ${count} ảnh`;
+}
+
+function deletePhoto(id, e) {
+  if (e && e.stopPropagation) e.stopPropagation();
+  const p = adminState.photos.find(item => item.id === id);
+  if (!p) return;
+  if (!confirm(`Bạn có chắc chắn muốn xóa bức ảnh "${p.title}" khỏi thư viện concept không?`)) return;
+
+  adminState.photos = adminState.photos.filter(item => item.id !== id);
+  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  closeModal('photoModal');
+  renderAdminMedia();
+  showToast(`Đã xóa bức ảnh <b>${p.title}</b> khỏi thư viện!`);
+}
+window.deletePhoto = deletePhoto;
+
+function deletePhotoFromModal() {
+  const id = parseInt(document.getElementById('photoEditId')?.value, 10);
+  if (id) deletePhoto(id);
+}
+window.deletePhotoFromModal = deletePhotoFromModal;
 
 function openPhotoModal(id) {
   const p = adminState.photos.find(item => item.id === id);
@@ -936,9 +1124,12 @@ function openPhotoModal(id) {
 
   document.getElementById('photoEditId').value = p.id;
   document.getElementById('photoTitle').value = p.title;
+  const orderInput = document.getElementById('photoOrder');
+  if (orderInput) orderInput.value = p.order || (adminState.photos.indexOf(p) + 1);
   document.getElementById('photoCategory').value = p.category;
   document.getElementById('photoDesc').value = p.desc;
-  document.getElementById('photoModalPreview').src = `../${p.src}`;
+  const previewImg = document.getElementById('photoModalPreview');
+  if (previewImg) previewImg.src = p.src.startsWith('http') || p.src.startsWith('/') ? p.src : `/${p.src}`;
 
   openModal('photoModal');
 }
@@ -960,9 +1151,14 @@ document.getElementById('photoForm')?.addEventListener('submit', (e) => {
   };
 
   p.title = document.getElementById('photoTitle').value.trim();
+  const orderInputVal = parseInt(document.getElementById('photoOrder')?.value, 10);
+  p.order = !isNaN(orderInputVal) && orderInputVal > 0 ? orderInputVal : (p.order || 1);
   p.category = document.getElementById('photoCategory').value;
   p.categoryName = catNames[p.category] || p.category;
   p.desc = document.getElementById('photoDesc').value.trim();
+
+  // Re-sort photos by order
+  adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
 
   localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
   closeModal('photoModal');
@@ -1553,14 +1749,17 @@ function renderUsersTable() {
         <td>${statusHtml}</td>
         <td style="color: var(--text-muted); font-size: 0.85rem;">${u.createdAt || '2026-10-21'}</td>
         <td style="text-align: right;">
-          <div style="display: inline-flex; gap: 0.4rem;">
-            <button class="btn btn-outline btn-sm" onclick="openResetPassModal('${u.username}')" title="Đặt lại mật khẩu">
+          <div style="display: inline-flex; gap: 0.4rem; align-items: center;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openEditUserModal('${u.id}')" title="Chỉnh sửa thông tin tài khoản">
+              ✏️ Sửa
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openResetPassModal('${u.username}')" title="Đặt lại mật khẩu">
               🔑 Đổi pass
             </button>
-            <button class="btn btn-outline btn-sm" onclick="toggleUserStatus('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể khóa tài khoản này"' : `title="${u.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa'}"`}>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleUserStatus('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể khóa tài khoản này"' : `title="${u.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa'}"`}>
               ${u.status === 'active' ? '🔒' : '🔓'}
             </button>
-            <button class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể xóa tài khoản này"' : 'title="Xóa tài khoản"'} style="color: var(--status-danger);">
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteUser('${u.id}')" ${isMasterAdmin || isSelf ? 'disabled title="Không thể xóa tài khoản này"' : 'title="Xóa tài khoản"'} style="color: var(--status-danger);">
               🗑️
             </button>
           </div>
@@ -1571,56 +1770,239 @@ function renderUsersTable() {
 }
 
 function openAddUserModal() {
-  document.getElementById('userForm')?.reset();
-  const passEl = document.getElementById('newPassword');
-  if (passEl) passEl.value = '123456';
+  const form = document.getElementById('userForm');
+  if (form) form.reset();
+
+  const idInput = document.getElementById('userEditId');
+  if (idInput) idInput.value = '';
+
+  const titleEl = document.getElementById('userModalTitle');
+  if (titleEl) titleEl.textContent = 'Thêm Người Dùng Quản Trị';
+
+  const subtitleEl = document.getElementById('userModalSubtitle');
+  if (subtitleEl) subtitleEl.textContent = 'Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.';
+
+  const btnSubmit = document.getElementById('btnSubmitUserForm');
+  if (btnSubmit) btnSubmit.textContent = '➕ Tạo tài khoản';
+
+  const usernameInput = document.getElementById('newUsername');
+  if (usernameInput) {
+    usernameInput.disabled = false;
+    usernameInput.value = '';
+  }
+
+  const usernameHint = document.getElementById('userEditUsernameHint');
+  if (usernameHint) usernameHint.style.display = 'none';
+
+  const roleSelect = document.getElementById('newRoleSelect');
+  if (roleSelect) {
+    roleSelect.disabled = false;
+    roleSelect.value = 'cashier';
+  }
+
+  const statusGroup = document.getElementById('userStatusGroup');
+  if (statusGroup) statusGroup.style.display = 'none';
+
+  const passGroup = document.getElementById('userPasswordGroup');
+  if (passGroup) passGroup.style.display = 'block';
+
+  const passLabel = document.getElementById('userPasswordLabel');
+  if (passLabel) passLabel.textContent = 'Mật khẩu ban đầu *';
+
+  const passInput = document.getElementById('newPassword');
+  if (passInput) {
+    passInput.required = true;
+    passInput.value = '123456';
+    passInput.placeholder = 'Nhập mật khẩu (tối thiểu 6 ký tự)';
+  }
+
+  const passHint = document.getElementById('userPasswordHint');
+  if (passHint) passHint.style.display = 'block';
+
   openModal('userModal');
 }
+window.openAddUserModal = openAddUserModal;
 
-function handleCreateUserSubmit(e) {
-  e.preventDefault();
+function openEditUserModal(userId) {
+  const u = adminState.users.find(x => x.id === userId);
+  if (!u) return;
+
+  const form = document.getElementById('userForm');
+  if (form) form.reset();
+
+  document.getElementById('userEditId').value = u.id;
+  document.getElementById('userModalTitle').textContent = `Chỉnh Sửa Tài Khoản @${u.username}`;
+  document.getElementById('userModalSubtitle').textContent = 'Cập nhật họ tên, vai trò phân quyền và trạng thái hoạt động.';
+  document.getElementById('btnSubmitUserForm').textContent = '💾 Lưu thay đổi';
+
+  const isMasterAdmin = u.username.toLowerCase() === 'admin';
+
+  const usernameInput = document.getElementById('newUsername');
+  const usernameHint = document.getElementById('userEditUsernameHint');
+  if (usernameInput) {
+    usernameInput.value = u.username;
+    usernameInput.disabled = isMasterAdmin;
+  }
+  if (usernameHint) {
+    usernameHint.style.display = isMasterAdmin ? 'block' : 'none';
+  }
+
+  const fullNameInput = document.getElementById('newFullName');
+  if (fullNameInput) fullNameInput.value = u.fullName;
+
+  const roleSelect = document.getElementById('newRoleSelect');
+  if (roleSelect) {
+    roleSelect.value = u.role;
+    roleSelect.disabled = isMasterAdmin;
+  }
+
+  const statusGroup = document.getElementById('userStatusGroup');
+  const statusSelect = document.getElementById('userStatusSelect');
+  if (statusGroup) statusGroup.style.display = isMasterAdmin ? 'none' : 'block';
+  if (statusSelect) statusSelect.value = u.status || 'active';
+
+  // Password optional when editing
+  const passGroup = document.getElementById('userPasswordGroup');
+  const passLabel = document.getElementById('userPasswordLabel');
+  const passInput = document.getElementById('newPassword');
+  const passHint = document.getElementById('userPasswordHint');
+
+  if (passGroup) passGroup.style.display = 'block';
+  if (passLabel) passLabel.textContent = 'Đổi mật khẩu mới (Để trống nếu không đổi)';
+  if (passInput) {
+    passInput.required = false;
+    passInput.value = '';
+    passInput.placeholder = 'Để trống nếu giữ nguyên mật khẩu cũ';
+  }
+  if (passHint) passHint.style.display = 'none';
+
+  openModal('userModal');
+}
+window.openEditUserModal = openEditUserModal;
+
+function handleSaveUserSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  const editId = (document.getElementById('userEditId')?.value || '').trim();
   const username = (document.getElementById('newUsername')?.value || '').trim().toLowerCase();
   const fullName = (document.getElementById('newFullName')?.value || '').trim();
   const role = document.getElementById('newRoleSelect')?.value || 'cashier';
-  const password = document.getElementById('newPassword')?.value || '123456';
+  const password = document.getElementById('newPassword')?.value || '';
+  const status = document.getElementById('userStatusSelect')?.value || 'active';
 
-  if (!username || !fullName) return;
-
-  if (adminState.users.some(u => u.username.toLowerCase() === username)) {
-    showToast('Tên đăng nhập này đã tồn tại! Vui lòng chọn tên khác.', 'danger');
+  if (!fullName) {
+    showToast('Vui lòng nhập họ và tên người dùng!', 'danger');
     return;
   }
 
   const roleNameMap = {
     admin: 'Quản trị viên cấp cao',
     kitchen: 'Quản lý bếp & thực đơn',
-    cashier: 'Vận hành & đặt bàn'
+    cashier: 'Vận hành đặt bàn & CSKH'
   };
 
-  // Avatar initials from full name
+  // Avatar initials
   const nameParts = fullName.split(' ').filter(Boolean);
   const avatar = nameParts.length >= 2
     ? (nameParts[nameParts.length - 2][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
     : username.substring(0, 2).toUpperCase();
 
-  const newUser = {
-    id: `usr_${Date.now()}`,
-    username,
-    fullName,
-    role,
-    roleName: roleNameMap[role] || 'Nhân Sự',
-    password,
-    status: 'active',
-    createdAt: new Date().toISOString().split('T')[0],
-    avatar
-  };
+  if (editId) {
+    // EDIT MODE
+    const user = adminState.users.find(u => u.id === editId);
+    if (!user) return;
 
-  adminState.users.push(newUser);
-  localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
-  renderUsersTable();
-  closeModal('userModal');
-  showToast(`🎉 Đã tạo thành công tài khoản @${username} (${fullName})!`);
+    const isMasterAdmin = user.username.toLowerCase() === 'admin';
+
+    // Username check if changed
+    if (!isMasterAdmin && username && username !== user.username) {
+      if (adminState.users.some(u => u.id !== user.id && u.username.toLowerCase() === username)) {
+        showToast(`Tên đăng nhập @${username} đã tồn tại! Vui lòng chọn tên khác.`, 'danger');
+        return;
+      }
+      user.username = username;
+    }
+
+    user.fullName = fullName;
+    user.avatar = avatar;
+
+    if (!isMasterAdmin) {
+      user.role = role;
+      user.roleName = roleNameMap[role] || 'Nhân Sự';
+      user.status = status;
+    }
+
+    if (password && password.trim().length >= 6) {
+      user.password = password.trim();
+    }
+
+    // If editing self, update currentAuth session and UI
+    const currentAuth = getCurrentAuthUser();
+    if (currentAuth && currentAuth.id === user.id) {
+      currentAuth.fullName = user.fullName;
+      currentAuth.avatar = user.avatar;
+      if (!isMasterAdmin) {
+        currentAuth.role = user.role;
+        currentAuth.roleName = user.roleName;
+      }
+      if (password && password.trim().length >= 6) {
+        currentAuth.password = user.password;
+      }
+
+      if (localStorage.getItem('tongwei_auth_user')) {
+        localStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+      } else {
+        sessionStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+      }
+
+      // Update sidebar avatar and name
+      const sidebarName = document.getElementById('sidebarUserName');
+      const sidebarRole = document.getElementById('sidebarUserRole');
+      const sidebarAvatar = document.getElementById('sidebarUserAvatar');
+      if (sidebarName) sidebarName.textContent = currentAuth.fullName;
+      if (sidebarRole) sidebarRole.textContent = currentAuth.roleName;
+      if (sidebarAvatar) sidebarAvatar.textContent = currentAuth.avatar;
+    }
+
+    localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+    renderUsersTable();
+    closeModal('userModal');
+    showToast(`🎉 Đã cập nhật thành công tài khoản @${user.username} (${user.fullName})!`);
+  } else {
+    // CREATE MODE
+    if (!username) {
+      showToast('Vui lòng nhập tên đăng nhập!', 'danger');
+      return;
+    }
+
+    if (adminState.users.some(u => u.username.toLowerCase() === username)) {
+      showToast('Tên đăng nhập này đã tồn tại! Vui lòng chọn tên khác.', 'danger');
+      return;
+    }
+
+    const initialPassword = password || '123456';
+
+    const newUser = {
+      id: `usr_${Date.now()}`,
+      username,
+      fullName,
+      role,
+      roleName: roleNameMap[role] || 'Nhân Sự',
+      password: initialPassword,
+      status: 'active',
+      createdAt: new Date().toISOString().split('T')[0],
+      avatar
+    };
+
+    adminState.users.push(newUser);
+    localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+    renderUsersTable();
+    closeModal('userModal');
+    showToast(`🎉 Đã tạo thành công tài khoản @${username} (${fullName})!`);
+  }
 }
+window.handleSaveUserSubmit = handleSaveUserSubmit;
+window.handleCreateUserSubmit = handleSaveUserSubmit;
 
 function openResetPassModal(username) {
   const user = adminState.users.find(u => u.username.toLowerCase() === username.toLowerCase());
@@ -1815,6 +2197,9 @@ function updatePublishUI() {
 
 function openScheduleModal() {
   updatePublishUI();
+  updateWebsiteMenuModeUI();
+  renderMenuPagesTable();
+  updateMediaCountBadge();
   openModal('scheduleModal');
 }
 window.openScheduleModal = openScheduleModal;
@@ -1952,6 +2337,244 @@ function syncDataToLiveWebsite(showFeedback = true) {
 window.syncDataToLiveWebsite = syncDataToLiveWebsite;
 
 // ==================== EVENT LISTENERS & SETUP ====================
+
+// ==================== WEBSITE MENU MODE & MENU BOOK PAGES ENGINE ====================
+const defaultMenuPages = [
+  { id: 1, page: 1, title: 'Bìa Menu Tong Wei Cantonese Flavours', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_01.jpg', desc: 'Thương hiệu ẩm thực Quảng Đông độc bản tại Hà Nội — 68A Trần Hưng Đạo & 5N7A Nguyễn Thị Thập' },
+  { id: 2, page: 2, title: 'Triết Lý Ẩm Thực Đồng Vị (同味)', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_02.jpg', desc: 'Sự hòa điệu giữa con người, hương vị và dư vị ngọt ngào sau mỗi bữa tiệc sum vầy' },
+  { id: 3, page: 3, title: 'Đại Yến Tinh Hoa Mỹ Vị Quảng Đông', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_03.jpg', desc: 'Mâm tiệc đại yến trứ danh với vịt quay, tháp xửng dimsum nghệ nhân và cháo nóng' },
+  { id: 4, page: 4, title: 'Khai Vị & Salad Khơi Mở Vị Giác', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_04.jpg', desc: 'Chân gà ngâm ớt xanh, nấm chiên kim sa, cánh lưỡi vịt cay Hồ Nam, salad rong biển trứng cua' },
+  { id: 5, page: 5, title: 'Súp Thượng Canh & Canh Tiềm Dưỡng Sinh', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_05.jpg', desc: 'Canh lê tiềm tuyết nhĩ, canh gà nấm dưỡng sinh, soup bào ngư kê vàng, soup cua hoàng bào' },
+  { id: 6, page: 6, title: 'Dimsum Hấp Nghệ Nhân & Bánh Cuốn', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_06.jpg', desc: 'Há cảo tôm tươi, há cảo sò điệp, xíu mại tôm thịt gạch cua, sủi cảo Bắc Kinh chuẩn vị' },
+  { id: 7, page: 7, title: 'Dimsum Chiên, Áp Chảo & Đại Long Bao', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_07.jpg', desc: 'Đại long bao truyền thống (Tặng khi khai trương), tiểu long bao, chả giò tôm phô mai, bánh xếp áp chảo' },
+  { id: 8, page: 8, title: 'Bánh Bao Thượng Hạng & Món Rau Thanh Vị', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_08.jpg', desc: 'Bánh bao kim sa tan chảy, matcha, xá xíu & củ sen Triều Châu, cải chíp sốt nấm, đậu Tứ Xuyên' },
+  { id: 9, page: 9, title: 'Món Quay Nướng BBQ Quảng Đông', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_09.jpg', desc: 'Heo quay Macao da giòn, vịt quay Quảng Đông, thịt xá xíu mật ong rừng, sườn nướng Mai Quế Lộ' },
+  { id: 10, page: 10, title: 'Món Thịt Xào Lửa Lớn & Thố Nồi Đất', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_10.jpg', desc: 'Bò bằm cà tím thố đất, bò nhúng cay Trùng Khánh, gà xào bào ngư, ba chỉ cuộn sốt ô mai' },
+  { id: 11, page: 11, title: 'Hải Sản Tươi Sống & Cá Lăng Sông', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_11.jpg', desc: 'Cá lăng nhúng cay, cá lăng hấp tàu xì, mực tươi ngồng tỏi, tôm chiên trứng mặn, sò điệp măng tây' },
+  { id: 12, page: 12, title: 'Cơm Chiên Thượng Hạng, Mỳ Trộn & Cháo Nóng', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_12.jpg', desc: 'Cơm chiên hải sản XO, cơm chiên heo quay Macau, mỳ sườn Quảng Đông, cháo tôm Quảng Châu' },
+  { id: 13, page: 13, title: 'Lẩu Trùng Khánh, Lẩu Cà Chua & Đồ Nhúng', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_13.jpg', desc: 'Nồi lẩu 2 ngăn cay nồng, lẩu khô vịt & ba chỉ bò, viên thả lẩu tổng hợp, rau tươi theo mùa' },
+  { id: 14, page: 14, title: 'Đồ Uống, Trà Trái Cây & Trà Sữa Dưỡng Nhan', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_14.jpg', desc: 'Trà Olong Bạch Lan, Trà hoa quả TongWei, Trà nho xanh Kale, Long Tỉnh sữa dưa lưới, bia Thanh Đảo' },
+  { id: 15, page: 15, title: 'Món Tráng Miệng Thanh Ngọt & Topping', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_15.jpg', desc: 'Tàu hũ non trân châu đường đen, caramen, trân châu kim cương, thạch dừa giòn thanh mát' }
+];
+
+function setWebsiteMenuMode(mode) {
+  localStorage.setItem('tongwei_menu_display_mode', mode);
+  updateWebsiteMenuModeUI();
+  const msg = mode === 'book' 
+    ? 'Đã bật chế độ: <b>📖 Hiện Quyển Thực Đơn (Sách)</b> trên Website!' 
+    : 'Đã bật chế độ: <b>🍽️ Hiện Danh Sách Món Ăn (28 Món)</b> trên Website!';
+  showToast(msg, 'success');
+}
+window.setWebsiteMenuMode = setWebsiteMenuMode;
+
+function updateWebsiteMenuModeUI() {
+  const mode = localStorage.getItem('tongwei_menu_display_mode') || 'book';
+  const btnBook = document.getElementById('btnModeSelectBook');
+  const btnDishes = document.getElementById('btnModeSelectDishes');
+  const label = document.getElementById('currentMenuModeLabel');
+
+  if (btnBook) btnBook.classList.toggle('active', mode === 'book');
+  if (btnDishes) btnDishes.classList.toggle('active', mode === 'dishes');
+  if (label) {
+    label.textContent = mode === 'book' ? '📖 Quyển Thực Đơn (Sách ảnh thiết kế)' : '🍽️ Danh Sách Món Ăn Chi Tiết';
+  }
+}
+window.updateWebsiteMenuModeUI = updateWebsiteMenuModeUI;
+
+function switchDishSubtab(subtab) {
+  const btnDishes = document.getElementById('btnSubtabDishes');
+  const btnMenuPages = document.getElementById('btnSubtabMenuPages');
+  const contentDishes = document.getElementById('subtabDishesContent');
+  const contentMenuPages = document.getElementById('subtabMenuPagesContent');
+
+  if (subtab === 'menupages') {
+    if (btnDishes) btnDishes.classList.remove('active');
+    if (btnMenuPages) btnMenuPages.classList.add('active');
+    if (contentDishes) contentDishes.style.display = 'none';
+    if (contentMenuPages) contentMenuPages.style.display = 'block';
+    renderMenuPagesTable();
+  } else {
+    if (btnDishes) btnDishes.classList.add('active');
+    if (btnMenuPages) btnMenuPages.classList.remove('active');
+    if (contentDishes) contentDishes.style.display = 'block';
+    if (contentMenuPages) contentMenuPages.style.display = 'none';
+  }
+}
+window.switchDishSubtab = switchDishSubtab;
+
+function renderMenuPagesTable() {
+  const tbody = document.getElementById('menuPagesTbody');
+  if (!tbody) return;
+
+  const countEl = document.getElementById('countMenuPagesSubtab');
+  if (countEl) countEl.textContent = adminState.menuPages.length;
+
+  const catNames = {
+    intro: '📖 Giới Thiệu',
+    starter: '🥗 Khai Vị & Súp',
+    dimsum: '🥢 Dimsum',
+    bbq: '🍗 Quay Nướng',
+    main: '🐟 Cơm & Mỳ',
+    drinks: '🍲 Lẩu & Tráng Miệng'
+  };
+
+  tbody.innerHTML = adminState.menuPages.map((item, index) => {
+    const imgSrc = item.img.startsWith('http') || item.img.startsWith('/') ? item.img : `/${item.img}`;
+    const pageNum = item.page < 10 ? '0' + item.page : item.page;
+
+    return `
+      <tr>
+        <td style="font-weight: 800; color: var(--color-indigo); font-size: 1.05rem;">
+          #${pageNum}
+        </td>
+        <td>
+          <img src="${imgSrc}" alt="${item.title}" style="width: 80px; height: 55px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color); cursor: pointer;" onclick="openMenuPageModal(${item.id})">
+        </td>
+        <td>
+          <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${item.title}</div>
+          <small style="color: var(--text-secondary); font-size: 0.78rem;">Tệp: ${item.img}</small>
+        </td>
+        <td>
+          <span class="badge badge-indigo" style="background: rgba(29, 61, 116, 0.08); color: var(--color-indigo); border: 1px solid rgba(29, 61, 116, 0.2); font-weight: 700;">
+            ${catNames[item.category] || item.categoryName || item.category}
+          </span>
+        </td>
+        <td style="max-width: 320px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+          ${item.desc}
+        </td>
+        <td style="text-align: right;">
+          <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openMenuPageModal(${item.id})" title="Chỉnh sửa trang này">
+              ✏️ Sửa
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteMenuPage(${item.id})" title="Xóa trang này">
+              🗑️
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+window.renderMenuPagesTable = renderMenuPagesTable;
+
+function openMenuPageModal(editId = null) {
+  const form = document.getElementById('menuPageForm');
+  if (form) form.reset();
+
+  const titleEl = document.getElementById('menuPageModalTitle');
+  const btnDelete = document.getElementById('btnDeleteMenuPageInModal');
+  const preview = document.getElementById('menuPageModalPreview');
+
+  if (editId) {
+    const item = adminState.menuPages.find(p => p.id === editId);
+    if (!item) return;
+
+    if (titleEl) titleEl.textContent = `Chỉnh Sửa Trang ${item.page}: ${item.title}`;
+    if (btnDelete) btnDelete.style.display = 'inline-block';
+
+    document.getElementById('menuPageEditId').value = item.id;
+    document.getElementById('menuPageNumber').value = item.page;
+    document.getElementById('menuPageCategory').value = item.category;
+    document.getElementById('menuPageTitleInput').value = item.title;
+    document.getElementById('menuPageImgInput').value = item.img;
+    document.getElementById('menuPageDescInput').value = item.desc;
+    if (preview) preview.src = item.img.startsWith('http') || item.img.startsWith('/') ? item.img : `/${item.img}`;
+  } else {
+    if (titleEl) titleEl.textContent = 'Thêm Trang Menu Mới Vào Quyển';
+    if (btnDelete) btnDelete.style.display = 'none';
+
+    const nextId = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.id)) + 1 : 1;
+    const nextPage = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.page)) + 1 : 1;
+
+    document.getElementById('menuPageEditId').value = '';
+    document.getElementById('menuPageNumber').value = nextPage;
+    document.getElementById('menuPageCategory').value = 'dimsum';
+    document.getElementById('menuPageTitleInput').value = '';
+    document.getElementById('menuPageImgInput').value = 'assets/images/menu/menu_page_01.jpg';
+    document.getElementById('menuPageDescInput').value = '';
+    if (preview) preview.src = '/assets/images/menu/menu_page_01.jpg';
+  }
+
+  openModal('menuPageModal');
+}
+window.openMenuPageModal = openMenuPageModal;
+
+function handleSaveMenuPage(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  const editIdStr = document.getElementById('menuPageEditId').value;
+  const page = parseInt(document.getElementById('menuPageNumber').value, 10) || 1;
+  const category = document.getElementById('menuPageCategory').value;
+  const title = document.getElementById('menuPageTitleInput').value.trim();
+  const img = document.getElementById('menuPageImgInput').value.trim();
+  const desc = document.getElementById('menuPageDescInput').value.trim();
+
+  const catNames = {
+    intro: 'Giới Thiệu',
+    starter: 'Khai Vị & Súp',
+    dimsum: 'Dimsum',
+    bbq: 'Quay Nướng',
+    main: 'Cơm & Mỳ',
+    drinks: 'Lẩu & Tráng Miệng'
+  };
+
+  if (editIdStr) {
+    const editId = parseInt(editIdStr, 10);
+    const item = adminState.menuPages.find(p => p.id === editId);
+    if (item) {
+      item.page = page;
+      item.category = category;
+      item.categoryName = catNames[category] || category;
+      item.title = title;
+      item.img = img;
+      item.desc = desc;
+      showToast(`Đã cập nhật trang <b>${item.title}</b>!`);
+    }
+  } else {
+    const newId = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.id)) + 1 : 1;
+    const newPage = {
+      id: newId,
+      page,
+      category,
+      categoryName: catNames[category] || category,
+      title,
+      img,
+      desc
+    };
+    adminState.menuPages.push(newPage);
+    showToast(`Đã thêm trang mới <b>${newPage.title}</b> vào quyển menu!`);
+  }
+
+  // Sort pages by page number
+  adminState.menuPages.sort((a, b) => a.page - b.page);
+
+  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
+  closeModal('menuPageModal');
+  renderMenuPagesTable();
+}
+window.handleSaveMenuPage = handleSaveMenuPage;
+
+function deleteMenuPage(id) {
+  const item = adminState.menuPages.find(p => p.id === id);
+  if (!item) return;
+  if (!confirm(`Bạn có chắc chắn muốn xóa "Trang ${item.page}: ${item.title}" khỏi quyển menu không?`)) return;
+
+  adminState.menuPages = adminState.menuPages.filter(p => p.id !== id);
+  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
+  closeModal('menuPageModal');
+  renderMenuPagesTable();
+  showToast(`Đã xóa trang thực đơn <b>${item.title}</b>!`, 'warning');
+}
+window.deleteMenuPage = deleteMenuPage;
+
+function deleteMenuPageFromModal() {
+  const id = parseInt(document.getElementById('menuPageEditId')?.value, 10);
+  if (id) deleteMenuPage(id);
+}
+window.deleteMenuPageFromModal = deleteMenuPageFromModal;
+
+
 document.addEventListener('DOMContentLoaded', () => {
   initializeData();
   updatePublishUI();

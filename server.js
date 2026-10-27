@@ -608,6 +608,15 @@ const server = http.createServer(async (req, res) => {
 
   let targetPath = resolved;
   if (fs.existsSync(targetPath) && fs.statSync(targetPath).isDirectory()) {
+    // If directory URL does not end with trailing slash, redirect 301 to ensure relative assets (css, js) resolve correctly
+    if (!parsedUrl.endsWith('/')) {
+      const queryString = (req.url || '').includes('?') ? '?' + (req.url || '').split('?')[1] : '';
+      res.writeHead(301, {
+        'Location': parsedUrl + '/' + queryString,
+        ...CORS_HEADERS
+      });
+      return res.end();
+    }
     targetPath = path.join(targetPath, 'index.html');
   }
 

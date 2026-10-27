@@ -218,44 +218,152 @@
     <section class="section-padding menu-section" id="thuc-don">
       <div class="container">
         <div class="section-header">
-          <div class="section-subtitle">Độc Bản Mỹ Vị</div>
-          <h2 class="section-title">Thực Đơn Tinh Hoa TongWei</h2>
-          <p class="section-desc">
-            Khám phá 28+ món ăn dimsum, cá lăng và món xào Quảng Đông đặc sắc được chuẩn bị nóng hổi mỗi ngày.
+          <div class="section-subtitle" id="menuSectionSubtitle">Độc Bản Mỹ Vị Quảng Đông</div>
+          <h2 class="section-title" id="menuSectionTitle">Quyển Thực Đơn Tinh Hoa TongWei</h2>
+          <p class="section-desc" id="menuSectionDesc">
+            Ấn phẩm thực đơn thiết kế nghệ nhân trọn vẹn — Kết tinh mỹ vị truyền thống Quảng Đông từ Dimsum, Món quay nướng tới Hải sản & Lẩu dưỡng sinh.
           </p>
         </div>
 
-        <div class="menu-controls">
-          <div class="menu-search-wrapper">
-            <span class="search-icon">🔍</span>
-            <label for="menuSearch" class="visually-hidden">Tìm kiếm món ăn</label>
-            <input type="text" class="search-input" id="menuSearch" placeholder="Tìm kiếm món ăn (VD: Kim sa, Cá lăng, Bò nhúng, Bánh cuốn...)" aria-label="Tìm kiếm món ăn">
+        <!-- 1. DISHES LIST VIEW (Active when mode is 'dishes') -->
+        <div id="dishesListContainer" style="display: none;">
+          <div class="menu-controls">
+            <div class="menu-search-wrapper">
+              <span class="search-icon">🔍</span>
+              <label for="menuSearch" class="visually-hidden">Tìm kiếm món ăn</label>
+              <input type="text" class="search-input" id="menuSearch" placeholder="Tìm kiếm món ăn (VD: Kim sa, Cá lăng, Bò nhúng, Bánh cuốn...)" aria-label="Tìm kiếm món ăn">
+            </div>
+
+            <div class="category-tabs" id="categoryTabs">
+              <button class="tab-btn active" data-category="all">Tất Cả Món (28)</button>
+              <button class="tab-btn" data-category="dimsum">Điểm Tâm & Dimsum</button>
+              <button class="tab-btn" data-category="main">Món Chính Quảng Đông</button>
+              <button class="tab-btn" data-category="seafood">Hải Sản & Cá Lăng</button>
+              <button class="tab-btn" data-category="claypot">Nồi Đất & Món Xào</button>
+              <button class="tab-btn" data-category="soup">Canh Tiềm Dưỡng Sinh</button>
+              <button class="tab-btn" data-category="drinks">Thức Uống</button>
+            </div>
           </div>
 
-          <div class="category-tabs" id="categoryTabs">
-            <button class="tab-btn active" data-category="all">Tất Cả Món (28)</button>
-            <button class="tab-btn" data-category="dimsum">Điểm Tâm & Dimsum</button>
-            <button class="tab-btn" data-category="main">Món Chính Quảng Đông</button>
-            <button class="tab-btn" data-category="seafood">Hải Sản & Cá Lăng</button>
-            <button class="tab-btn" data-category="claypot">Nồi Đất & Món Xào</button>
-            <button class="tab-btn" data-category="soup">Canh Tiềm Dưỡng Sinh</button>
-            <button class="tab-btn" data-category="drinks">Thức Uống</button>
+          <!-- Dishes Grid -->
+          <div class="dishes-grid" id="dishesGrid">
+            <!-- Populated by JavaScript from data/dishes.json -->
+          </div>
+
+          <!-- Show/Hide Menu Toggle Button -->
+          <div class="menu-toggle-wrap" id="menuToggleWrap">
+            <button class="btn btn-outline btn-menu-toggle" id="menuToggleBtn" onclick="toggleMenuExpand()">
+              <span id="menuToggleIcon">▾</span>
+              <span id="menuToggleText">Xem Toàn Bộ Thực Đơn (Còn 20 Món)</span>
+              <span class="toggle-badge">28 Món</span>
+            </button>
           </div>
         </div>
 
-        <!-- Dishes Grid -->
-        <div class="dishes-grid" id="dishesGrid">
-          <!-- Populated by JavaScript from data/dishes.json -->
+        <!-- 2. DIGITAL MENU BOOK VIEWER (Active when mode is 'book') -->
+        <div id="menuBookViewerContainer">
+
+        <!-- Menu Navigation & Mode Controls -->
+        <div class="menu-header-bar">
+          <!-- Category Quick Tabs -->
+          <div class="category-tabs menu-cat-tabs" id="menuBookCategoryTabs">
+            <button class="tab-btn active" data-cat="all" onclick="filterMenuByCat('all', event)">🌟 Tất Cả</button>
+            <button class="tab-btn" data-cat="intro" onclick="filterMenuByCat('intro', event)">📖 Giới Thiệu</button>
+            <button class="tab-btn" data-cat="starter" onclick="filterMenuByCat('starter', event)">🥗 Khai Vị & Súp</button>
+            <button class="tab-btn" data-cat="dimsum" onclick="filterMenuByCat('dimsum', event)">🥢 Dimsum</button>
+            <button class="tab-btn" data-cat="bbq" onclick="filterMenuByCat('bbq', event)">🍗 Quay Nướng</button>
+            <button class="tab-btn" data-cat="main" onclick="filterMenuByCat('main', event)">🐟 Cơm & Mỳ</button>
+            <button class="tab-btn" data-cat="drinks" onclick="filterMenuByCat('drinks', event)">🍲 Lẩu & Tráng Miệng</button>
+          </div>
+
+          <!-- Mode Switcher & Actions -->
+          <div class="menu-actions-row">
+            <div class="menu-view-switchers">
+              <button class="view-switch-btn active" id="btnModeBook" onclick="switchMenuViewMode('book')" title="Xem dạng lật từng trang menu">
+                <span>📖</span> Lật Cuốn Menu
+              </button>
+              <button class="view-switch-btn" id="btnModeGrid" onclick="switchMenuViewMode('grid')" title="Xem dạng lưới toàn bộ 15 trang">
+                <span>🖼️</span> Lưới 15 Trang
+              </button>
+            </div>
+            <div class="menu-action-buttons" style="display: flex; gap: 0.5rem; align-items: center;">
+              <button class="btn btn-outline btn-sm" onclick="zoomCurrentMenuPage()" title="Phóng to trang hiện tại đọc chữ rõ nét">
+                <span>🔍</span> Phóng To Trang
+              </button>
+              <a href="#dat-ban" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                <span>🥢</span> Đặt Bàn
+              </a>
+            </div>
+          </div>
         </div>
 
-        <!-- Show/Hide Menu Toggle Button -->
-        <div class="menu-toggle-wrap" id="menuToggleWrap">
-          <button class="btn btn-outline btn-menu-toggle" id="menuToggleBtn" onclick="toggleMenuExpand()">
-            <span id="menuToggleIcon">▾</span>
-            <span id="menuToggleText">Xem Toàn Bộ Thực Đơn (Còn 20 Món)</span>
-            <span class="toggle-badge">28 Món</span>
-          </button>
+        <!-- 1. Interactive Menu Book Viewer (Default Mode) -->
+        <div class="menu-book-container" id="menuBookViewer">
+          <div class="menu-book-stage">
+            <!-- Nav Prev Button -->
+            <button class="book-nav-btn prev-btn" type="button" onclick="prevMenuPage(event)" aria-label="Trang trước" title="Trang trước">
+              <span>‹</span>
+            </button>
+
+            <!-- Main Page Display -->
+            <div class="menu-page-display" id="menuMainPageWrapper" onclick="zoomCurrentMenuPage()" title="Bấm để phóng to đọc chi tiết">
+              <img id="menuMainPageImg" src="assets/images/menu/menu_page_01.jpg" alt="Trang Menu TongWei" class="menu-main-img" loading="lazy">
+              <div class="menu-page-overlay">
+                <span class="zoom-badge">🔍 Bấm để phóng to đọc rõ nét</span>
+              </div>
+            </div>
+
+            <!-- Nav Next Button -->
+            <button class="book-nav-btn next-btn" type="button" onclick="nextMenuPage(event)" aria-label="Trang sau" title="Trang sau">
+              <span>›</span>
+            </button>
+          </div>
+
+          <!-- Page Caption & Status Bar -->
+          <div class="menu-status-bar">
+            <div class="menu-page-title-wrap">
+              <div class="menu-page-badge" id="menuPageCategoryBadge">Giới Thiệu</div>
+              <h3 class="menu-page-title" id="menuPageTitle">Trang 01: Bìa Menu Tong Wei Cantonese Flavours</h3>
+              <p class="menu-page-desc" id="menuPageDesc">Thương hiệu ẩm thực Quảng Đông độc bản tại Hà Nội</p>
+            </div>
+            <div class="menu-page-counter" id="menuPageCounter">
+              <span class="counter-curr" id="menuCurrentPageNum">01</span> / <span class="counter-total">15</span>
+            </div>
+          </div>
+
+          <!-- Mini Thumbnails Bar -->
+          <div class="menu-thumbs-scroll-wrapper">
+            <div class="menu-thumbs-bar" id="menuThumbsBar">
+              <!-- Rendered by JavaScript: 15 mini thumbnails -->
+            </div>
+          </div>
         </div>
+
+        <!-- 2. Menu Grid View (All 15 pages in grid) -->
+        <div class="menu-grid-container" id="menuGridContainer" style="display: none;">
+          <div class="menu-pages-grid" id="menuPagesGrid">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+
+        </div> <!-- End menuBookViewerContainer -->
+
+        <!-- Bottom CTA Bar -->
+        <div class="menu-bottom-cta">
+          <div class="cta-banner-content">
+            <span class="cta-icon">🏮</span>
+            <div class="cta-text">
+              <h4>Quý khách đã chọn được phong vị ưng ý?</h4>
+              <p>Đặt bàn trước tại TongWei để nhận ngay 01 Xửng Đại Long Bao và thưởng trà tuyệt hảo.</p>
+            </div>
+          </div>
+          <div class="cta-actions">
+            <a href="#dat-ban" class="btn btn-primary btn-cta-book">
+              <span>🥢</span> Đặt Bàn Ngay
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
 

@@ -10,8 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/admin.css">
-  <link rel="icon" href="../assets/images/branding/tongwei_avatar.png">
+  <base href="/admin/">
+  <link rel="stylesheet" href="/admin/css/admin.css">
+  <link rel="icon" href="/assets/images/branding/tongwei_avatar.png">
 </head>
 <body>
 
@@ -19,7 +20,7 @@
   <div class="login-screen" id="loginScreen">
     <div class="login-card">
       <div class="login-header">
-        <img src="../assets/images/branding/tongwei_avatar.png" alt="TongWei Logo" class="login-logo">
+        <img src="/assets/images/branding/tongwei_avatar.png" alt="TongWei Logo" class="login-logo">
         <h2 class="login-title">TONG WEI (同味)</h2>
         <div class="login-subtitle">Cổng Quản Trị Hệ Thống • CMS Portal</div>
       </div>
@@ -54,7 +55,7 @@
               <input type="checkbox" id="rememberMe" checked>
               <span>Ghi nhớ đăng nhập</span>
             </label>
-            <a href="../index.html" style="color: var(--color-indigo); text-decoration: underline;">Về Trang Chủ</a>
+            <a href="/" style="color: var(--color-indigo); text-decoration: underline;">Về Trang Chủ</a>
           </div>
 
           <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);">
@@ -68,7 +69,7 @@
   <!-- ==================== SIDEBAR ==================== -->
   <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-header">
-      <img src="../assets/images/branding/tongwei_avatar.png" alt="TongWei Logo" class="sidebar-logo">
+      <img src="/assets/images/branding/tongwei_avatar.png" alt="TongWei Logo" class="sidebar-logo">
       <div class="sidebar-brand">
         <span class="sidebar-title">TONG WEI</span>
         <span class="sidebar-badge">Quản Trị Hệ Thống</span>
@@ -90,11 +91,13 @@
       </a>
       <a class="menu-item" data-tab="events">
         <span class="menu-icon">📰</span>
-        <span>Sự kiện & tin tức</span>
+        <span class="menu-label">Sự kiện & tin tức</span>
+        <span class="menu-badge" id="eventCountBadge" style="background: var(--color-indigo-light);">4</span>
       </a>
       <a class="menu-item" data-tab="media">
         <span class="menu-icon">🖼️</span>
-        <span>Thư viện ảnh (25)</span>
+        <span class="menu-label">Thư viện ảnh</span>
+        <span class="menu-badge" id="mediaCountBadge">25</span>
       </a>
 
       <div class="menu-section-label">Kinh doanh & vận hành</div>
@@ -137,7 +140,7 @@
         </div>
       </div>
       <div class="sidebar-footer-actions">
-        <a href="../index.html" target="_blank" class="live-link-btn" title="Mở trang khách hàng trong tab mới">
+        <a href="/" target="_blank" class="live-link-btn" title="Mở trang khách hàng trong tab mới">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
         </a>
         <button type="button" class="logout-icon-btn" onclick="handleLogout()" title="Đăng xuất">
@@ -173,10 +176,7 @@
           <span>🚀 Xuất bản lên online</span>
         </button>
 
-        <button class="btn btn-primary btn-sm" onclick="openDishModal()">
-          + Thêm món mới
-        </button>
-        <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
+        <a href="/" target="_blank" class="btn btn-outline btn-sm" title="Mở trang chủ khách hàng trong tab mới">
           👁️ Xem web ↗
         </a>
       </div>
@@ -289,19 +289,52 @@
         <div class="page-header">
           <div class="page-title-wrap">
             <h1>Quản lý thực đơn & món ăn</h1>
-            <p class="page-subtitle">Cập nhật giá bán, hình ảnh món tách nền, tên tiếng Hoa và tình trạng phục vụ.</p>
+            <p class="page-subtitle">Cập nhật giá bán, hình ảnh món tách nền, chỉnh sửa quyển menu sách và tùy chọn hiển thị trên website.</p>
           </div>
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-outline btn-sm" id="btnToggleViewMode" onclick="toggleDishViewMode()">
-              Chuyển xem lưới ảnh 🔲
+        </div>
+
+        <!-- WEBSITE MENU DISPLAY MODE SWITCHER -->
+        <div class="menu-display-mode-card">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-brand-red); display: flex; align-items: center; gap: 0.35rem;">
+              <span>🌐</span> CẤU HÌNH HIỂN THỊ TRANG CHỦ
+            </div>
+            <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin: 0.25rem 0; font-size: 1.22rem;">Chế độ hiển thị Thực Đơn trên Website</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+              Khách vào trang chủ đang xem: <b id="currentMenuModeLabel" style="color: var(--color-brand-red);">📖 Quyển Thực Đơn (Sách ảnh thiết kế)</b>
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="mode-btn active" id="btnModeSelectBook" onclick="setWebsiteMenuMode('book')">
+              <span>📖</span> Hiện Quyển Thực Đơn (Sách)
             </button>
-            <button class="btn btn-primary" onclick="openDishModal()">
-              + Thêm món ăn mới
+            <button type="button" class="mode-btn" id="btnModeSelectDishes" onclick="setWebsiteMenuMode('dishes')">
+              <span>🍽️</span> Hiện Danh Sách Món Ăn
             </button>
           </div>
         </div>
 
-        <div class="card-container">
+        <!-- MANAGEMENT SUBTABS (DISHES VS MENU BOOK PAGES) -->
+        <div style="display: flex; gap: 0.35rem; margin-bottom: -1px; border-bottom: 2px solid var(--border-color);">
+          <button type="button" class="menu-subtab-btn active" id="btnSubtabDishes" onclick="switchDishSubtab('dishes')">
+            <span>🍽️</span> Quản Lý Từng Món Ăn (<span id="countDishesSubtab">28</span> món)
+          </button>
+          <button type="button" class="menu-subtab-btn" id="btnSubtabMenuPages" onclick="switchDishSubtab('menupages')">
+            <span>📖</span> Quản Lý Trang Quyển Menu (<span id="countMenuPagesSubtab">15</span> trang)
+          </button>
+        </div>
+
+        <!-- SUBTAB 1: DISHES MANAGEMENT -->
+        <div id="subtabDishesContent">
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin: 1rem 0;">
+            <button class="btn btn-outline btn-sm" id="btnToggleViewMode" onclick="toggleDishViewMode()">
+              Chuyển xem lưới ảnh 🔲
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="openDishModal()">
+              + Thêm món ăn mới
+            </button>
+          </div>
+          <div class="card-container">
           <div class="card-header">
             <div class="table-controls" id="dishFilterControls">
               <button class="table-filter-btn active" data-filter="all">Tất cả (<span id="countAllDishes">28</span>)</button>
@@ -359,6 +392,40 @@
             <!-- Filled by JS -->
           </div>
         </div>
+        </div> <!-- End subtabDishesContent -->
+
+        <!-- SUBTAB 2: MENU BOOK PAGES MANAGEMENT (SỬA & XÓA CÁC TRANG MENU) -->
+        <div id="subtabMenuPagesContent" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h3 style="font-size: 1.15rem; color: var(--color-indigo-dark); margin: 0;">Danh Sách Các Trang Trong Quyển Menu</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0;">Quản trị viên có thể chỉnh sửa tiêu đề, danh mục, mô tả các món hoặc xóa trang không cần thiết.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openMenuPageModal()">
+              + Thêm trang menu mới 📑
+            </button>
+          </div>
+
+          <div class="card-container">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">Số trang</th>
+                    <th style="width: 100px;">Ảnh xem trước</th>
+                    <th>Tiêu đề trang</th>
+                    <th>Phân loại</th>
+                    <th>Mô tả / Món ăn tiêu biểu</th>
+                    <th style="text-align: right; width: 140px;">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="menuPagesTbody">
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> <!-- End subtabMenuPagesContent -->
       </section>
 
       <!-- ==================== TAB 3: SỰ KIỆN & TIN TỨC (EVENTS) ==================== -->
@@ -403,7 +470,10 @@
             <p class="page-subtitle">Quản trị toàn bộ 25 bức ảnh concept ẩm thực nghệ nhân tải từ Google Drive của TongWei.</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-outline btn-sm" onclick="openMediaUploader()">Tải thêm ảnh mới 📁</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnToggleMediaView" onclick="toggleMediaViewMode()">
+              Chuyển xem dạng bảng 📋
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openMediaUploader()">Tải thêm ảnh mới 📁</button>
           </div>
         </div>
 
@@ -422,6 +492,25 @@
 
           <div class="media-grid" id="adminMediaGrid">
             <!-- Populated by JS -->
+          </div>
+
+          <!-- Table View for Media with Order Sorting Column -->
+          <div class="table-responsive" id="adminMediaTableView" style="display: none; padding: 0.5rem 1rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px; text-align: center;">STT / Thứ tự vị trí</th>
+                  <th style="width: 100px;">Ảnh xem trước</th>
+                  <th>Tiêu đề ảnh</th>
+                  <th>Phân loại album</th>
+                  <th>Mô tả & lời bình</th>
+                  <th style="text-align: right; width: 140px;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="adminMediaTbody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -834,7 +923,7 @@
 
         <!-- Live Preview Thumbnail -->
         <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
-          <img src="../assets/images/dishes/Bánh bao kim sa.png" alt="Preview" id="dishPreviewImg" style="width: 60px; height: 60px; object-fit: contain;">
+          <img src="/assets/images/dishes/Bánh bao kim sa.png" alt="Preview" id="dishPreviewImg" style="width: 60px; height: 60px; object-fit: contain;">
           <div>
             <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-indigo);">Xem trước hình ảnh món</div>
             <div style="font-size: 0.78rem; color: var(--text-secondary);">Ảnh tách nền PNG sẽ hiển thị trên nền men sứ nổi bật</div>
@@ -953,15 +1042,22 @@
           <input type="text" class="form-control" id="photoTitle" required>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Phân loại album</label>
-          <select class="form-control" id="photoCategory">
-            <option value="banquet">Bàn tiệc đại yến</option>
-            <option value="dimsum">Dimsum nghệ nhân</option>
-            <option value="bbq">Món quay & nướng</option>
-            <option value="appetizer">Khai vị & súp</option>
-            <option value="drinks">Thức uống</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group" style="flex: 0 0 130px;">
+            <label class="form-label">Số thứ tự (STT) *</label>
+            <input type="number" class="form-control" id="photoOrder" min="1" max="999" required>
+            <small style="color: var(--text-secondary); font-size: 0.75rem; display: block; margin-top: 0.2rem;">Vị trí hiển thị</small>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Phân loại album *</label>
+            <select class="form-control" id="photoCategory" required>
+              <option value="banquet">Bàn tiệc đại yến</option>
+              <option value="dimsum">Dimsum nghệ nhân</option>
+              <option value="bbq">Món quay & nướng</option>
+              <option value="appetizer">Khai vị & súp</option>
+              <option value="drinks">Thức uống</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group">
@@ -969,11 +1065,15 @@
           <textarea class="form-control" id="photoDesc" rows="3" required></textarea>
         </div>
 
-        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-          <button type="submit" class="btn btn-primary" style="flex: 1;">
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-danger" onclick="deletePhotoFromModal()" style="font-weight: 700;">
+            🗑️ Xóa ảnh này
+          </button>
+          <div style="flex: 1;"></div>
+          <button type="button" class="btn btn-outline" onclick="closeModal('photoModal')">Đóng</button>
+          <button type="submit" class="btn btn-primary">
             💾 Lưu thông tin ảnh
           </button>
-          <button type="button" class="btn btn-outline" onclick="closeModal('photoModal')">Đóng</button>
         </div>
       </form>
     </div>
@@ -1115,15 +1215,24 @@
 
   <!-- 7. Add/Edit User Modal -->
   <div class="modal-overlay" id="userModal">
-    <div class="modal-card" style="max-width: 520px;">
+    <div class="modal-card" style="max-width: 540px;">
       <button class="modal-close" onclick="closeModal('userModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm người dùng quản trị</h3>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.</p>
+      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;" id="userModalTitle">
+        Thêm người dùng quản trị
+      </h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;" id="userModalSubtitle">
+        Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.
+      </p>
 
-      <form id="userForm" onsubmit="handleCreateUserSubmit(event)">
+      <form id="userForm" onsubmit="handleSaveUserSubmit(event)">
+        <input type="hidden" id="userEditId">
+
         <div class="form-group" style="margin-bottom: 1.15rem;">
           <label class="form-label">Tên đăng nhập (Username - viết liền, không dấu) *</label>
           <input type="text" class="form-control" id="newUsername" placeholder="VD: quanly_bep, letan_hn" pattern="[a-zA-Z0-9_]{3,20}" title="Từ 3-20 ký tự chữ, số hoặc gạch dưới" required>
+          <small id="userEditUsernameHint" style="display: none; font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            🔒 Tài khoản quản trị viên tối cao không thể đổi tên đăng nhập.
+          </small>
         </div>
 
         <div class="form-group" style="margin-bottom: 1.15rem;">
@@ -1131,23 +1240,34 @@
           <input type="text" class="form-control" id="newFullName" placeholder="VD: Nguyễn Văn Hoàng (Bếp Phó)" required>
         </div>
 
-        <div class="form-group" style="margin-bottom: 1.15rem;">
-          <label class="form-label">Vai trò & phân quyền *</label>
-          <select class="form-control" id="newRoleSelect" required>
-            <option value="admin">Quản trị viên cấp cao (Toàn quyền hệ thống)</option>
-            <option value="kitchen">Quản lý bếp & thực đơn (Chỉnh sửa món, công thức)</option>
-            <option value="cashier" selected>Vận hành & đặt bàn (Tiếp nhận khách, CSKH)</option>
-          </select>
+        <div class="form-row" style="margin-bottom: 1.15rem;">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Vai trò & phân quyền *</label>
+            <select class="form-control" id="newRoleSelect" required>
+              <option value="admin">Quản trị viên cấp cao (Toàn quyền hệ thống)</option>
+              <option value="kitchen">Quản lý bếp & thực đơn (Chỉnh sửa món, công thức)</option>
+              <option value="cashier" selected>Vận hành đặt bàn & CSKH (Tiếp nhận khách)</option>
+            </select>
+          </div>
+          <div class="form-group" id="userStatusGroup" style="flex: 0 0 140px; display: none;">
+            <label class="form-label">Trạng thái</label>
+            <select class="form-control" id="userStatusSelect">
+              <option value="active">✔ Hoạt động</option>
+              <option value="disabled">🔒 Tạm khóa</option>
+            </select>
+          </div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 1.75rem;">
-          <label class="form-label">Mật khẩu ban đầu *</label>
-          <input type="text" class="form-control" id="newPassword" value="123456" minlength="6" required>
-          <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; display: block;">Mặc định: <code>123456</code> (Nhân sự có thể đổi lại sau).</small>
+        <div class="form-group" id="userPasswordGroup" style="margin-bottom: 1.75rem;">
+          <label class="form-label" id="userPasswordLabel">Mật khẩu ban đầu *</label>
+          <input type="password" class="form-control" id="newPassword" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" minlength="6" value="123456" required>
+          <small id="userPasswordHint" style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 0.35rem;">
+            Mặc định: <code>123456</code> (Nhân sự có thể đổi lại sau).
+          </small>
         </div>
 
-        <div style="display: flex; gap: 1rem;">
-          <button type="submit" class="btn btn-primary" style="flex: 1;">
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="submit" class="btn btn-primary" id="btnSubmitUserForm" style="flex: 1;">
             ➕ Tạo tài khoản
           </button>
           <button type="button" class="btn btn-outline" onclick="closeModal('userModal')">Hủy bỏ</button>
@@ -1231,6 +1351,68 @@
   <div class="toast-container" id="adminToastContainer"></div>
 
   <!-- Scripts -->
-  <script src="js/admin.js"></script>
+  <script src="/admin/js/admin.js"></script>
+
+  <!-- ==================== MODAL: QUẢN LÝ TRANG MENU BOOK (SỬA / XÓA) ==================== -->
+  <div class="modal-overlay" id="menuPageModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('menuPageModal')">✕</button>
+      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;" id="menuPageModalTitle">Chỉnh Sửa Trang Menu</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật tiêu đề, danh mục, mô tả các món hoặc hình ảnh của trang menu sách.</p>
+
+      <form id="menuPageForm" onsubmit="handleSaveMenuPage(event)">
+        <input type="hidden" id="menuPageEditId">
+
+        <div style="text-align: center; margin-bottom: 1.25rem; background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
+          <img src="" alt="Trang Menu Preview" id="menuPageModalPreview" style="max-height: 220px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin: 0 auto; display: block;">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 0 0 120px;">
+            <label class="form-label">Số trang *</label>
+            <input type="number" class="form-control" id="menuPageNumber" min="1" max="99" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Phân loại danh mục *</label>
+            <select class="form-control" id="menuPageCategory" required>
+              <option value="intro">📖 Giới Thiệu</option>
+              <option value="starter">🥗 Khai Vị & Súp</option>
+              <option value="dimsum">🥢 Dimsum</option>
+              <option value="bbq">🍗 Quay Nướng</option>
+              <option value="main">🐟 Cơm & Mỳ</option>
+              <option value="drinks">🍲 Lẩu & Tráng Miệng</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tiêu đề trang thực đơn *</label>
+          <input type="text" class="form-control" id="menuPageTitleInput" placeholder="Ví dụ: Dimsum Hấp Nghệ Nhân & Bánh Cuốn" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Đường dẫn ảnh trang menu *</label>
+          <input type="text" class="form-control" id="menuPageImgInput" placeholder="assets/images/menu/menu_page_01.jpg" required oninput="document.getElementById('menuPageModalPreview').src = this.value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mô tả tóm tắt món ăn trên trang *</label>
+          <textarea class="form-control" id="menuPageDescInput" rows="3" placeholder="Ví dụ: Há cảo tôm tươi, há cảo sò điệp, xíu mại tôm thịt gạch cua..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-danger" id="btnDeleteMenuPageInModal" onclick="deleteMenuPageFromModal()" style="font-weight: 700;">
+            🗑️ Xóa trang này
+          </button>
+          <div style="flex: 1;"></div>
+          <button type="button" class="btn btn-outline" onclick="closeModal('menuPageModal')">Đóng</button>
+          <button type="submit" class="btn btn-primary">
+            💾 Lưu trang menu
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>

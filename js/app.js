@@ -18,7 +18,7 @@ const state = {
 };
 
 // Master 25 Concept Photos Data
-const masterAlbum = [
+let masterAlbum = [
   {
     "id": 1,
     "src": "assets/images/concept/concept_1.jpg",
@@ -596,6 +596,7 @@ window.toggleLookbookExpand = function() {
 
 // 7. Master Lightbox Modal Slider (Full-Screen Carousel for all 25 images)
 window.openMasterAlbum = function(index) {
+  state.isViewingMenuInLightbox = false;
   state.currentAlbumIndex = (index >= 0 && index < masterAlbum.length) ? index : 0;
   updateLightboxContent();
   if (elements.lightboxModal) elements.lightboxModal.classList.add('active');
@@ -613,11 +614,21 @@ function updateLightboxContent() {
 }
 
 window.prevAlbumPhoto = function() {
+  if (state.isViewingMenuInLightbox) {
+    state.currentMenuLightboxIndex = (state.currentMenuLightboxIndex - 1 + menuPagesData.length) % menuPagesData.length;
+    openMenuLightboxModal(state.currentMenuLightboxIndex);
+    return;
+  }
   state.currentAlbumIndex = (state.currentAlbumIndex - 1 + masterAlbum.length) % masterAlbum.length;
   updateLightboxContent();
 };
 
 window.nextAlbumPhoto = function() {
+  if (state.isViewingMenuInLightbox) {
+    state.currentMenuLightboxIndex = (state.currentMenuLightboxIndex + 1) % menuPagesData.length;
+    openMenuLightboxModal(state.currentMenuLightboxIndex);
+    return;
+  }
   state.currentAlbumIndex = (state.currentAlbumIndex + 1) % masterAlbum.length;
   updateLightboxContent();
 };
@@ -1339,7 +1350,234 @@ async function loadLiveEvents() {
   }
 }
 
+
+// ==================== 15-PAGE DIGITAL MENU BOOK VIEWER ====================
+let menuPagesData = [
+  { id: 1, page: 1, title: 'Bìa Menu Tong Wei Cantonese Flavours', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_01.jpg', desc: 'Thương hiệu ẩm thực Quảng Đông độc bản tại Hà Nội — 68A Trần Hưng Đạo & 5N7A Nguyễn Thị Thập' },
+  { id: 2, page: 2, title: 'Triết Lý Ẩm Thực Đồng Vị (同味)', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_02.jpg', desc: 'Sự hòa điệu giữa con người, hương vị và dư vị ngọt ngào sau mỗi bữa tiệc sum vầy' },
+  { id: 3, page: 3, title: 'Đại Yến Tinh Hoa Mỹ Vị Quảng Đông', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_03.jpg', desc: 'Mâm tiệc đại yến trứ danh với vịt quay, tháp xửng dimsum nghệ nhân và cháo nóng' },
+  { id: 4, page: 4, title: 'Khai Vị & Salad Khơi Mở Vị Giác', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_04.jpg', desc: 'Chân gà ngâm ớt xanh, nấm chiên kim sa, cánh lưỡi vịt cay Hồ Nam, salad rong biển trứng cua' },
+  { id: 5, page: 5, title: 'Súp Thượng Canh & Canh Tiềm Dưỡng Sinh', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_05.jpg', desc: 'Canh lê tiềm tuyết nhĩ, canh gà nấm dưỡng sinh, soup bào ngư kê vàng, soup cua hoàng bào' },
+  { id: 6, page: 6, title: 'Dimsum Hấp Nghệ Nhân & Bánh Cuốn', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_06.jpg', desc: 'Há cảo tôm tươi, há cảo sò điệp, xíu mại tôm thịt gạch cua, sủi cảo Bắc Kinh chuẩn vị' },
+  { id: 7, page: 7, title: 'Dimsum Chiên, Áp Chảo & Đại Long Bao', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_07.jpg', desc: 'Đại long bao truyền thống (Tặng khi khai trương), tiểu long bao, chả giò tôm phô mai, bánh xếp áp chảo' },
+  { id: 8, page: 8, title: 'Bánh Bao Thượng Hạng & Món Rau Thanh Vị', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_08.jpg', desc: 'Bánh bao kim sa tan chảy, matcha, xá xíu & củ sen Triều Châu, cải chíp sốt nấm, đậu Tứ Xuyên' },
+  { id: 9, page: 9, title: 'Món Quay Nướng BBQ Quảng Đông', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_09.jpg', desc: 'Heo quay Macao da giòn, vịt quay Quảng Đông, thịt xá xíu mật ong rừng, sườn nướng Mai Quế Lộ' },
+  { id: 10, page: 10, title: 'Món Thịt Xào Lửa Lớn & Thố Nồi Đất', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_10.jpg', desc: 'Bò bằm cà tím thố đất, bò nhúng cay Trùng Khánh, gà xào bào ngư, ba chỉ cuộn sốt ô mai' },
+  { id: 11, page: 11, title: 'Hải Sản Tươi Sống & Cá Lăng Sông', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_11.jpg', desc: 'Cá lăng nhúng cay, cá lăng hấp tàu xì, mực tươi ngồng tỏi, tôm chiên trứng mặn, sò điệp măng tây' },
+  { id: 12, page: 12, title: 'Cơm Chiên Thượng Hạng, Mỳ Trộn & Cháo Nóng', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_12.jpg', desc: 'Cơm chiên hải sản XO, cơm chiên heo quay Macau, mỳ sườn Quảng Đông, cháo tôm Quảng Châu' },
+  { id: 13, page: 13, title: 'Lẩu Trùng Khánh, Lẩu Cà Chua & Đồ Nhúng', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_13.jpg', desc: 'Nồi lẩu 2 ngăn cay nồng, lẩu khô vịt & ba chỉ bò, viên thả lẩu tổng hợp, rau tươi theo mùa' },
+  { id: 14, page: 14, title: 'Đồ Uống, Trà Trái Cây & Trà Sữa Dưỡng Nhan', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_14.jpg', desc: 'Trà Olong Bạch Lan, Trà hoa quả TongWei, Trà nho xanh Kale, Long Tỉnh sữa dưa lưới, bia Thanh Đảo' },
+  { id: 15, page: 15, title: 'Món Tráng Miệng Thanh Ngọt & Topping', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_15.jpg', desc: 'Tàu hũ non trân châu đường đen, caramen, trân châu kim cương, thạch dừa giòn thanh mát' }
+];
+
+let currentMenuPageIndex = 0;
+let currentMenuCategory = 'all';
+let menuViewMode = 'book';
+
+function initMenuBookViewer() {
+  renderMenuThumbsBar();
+  renderMenuPagesGrid();
+  renderMenuCurrentPage();
+  setupMenuSwipeListener();
+}
+
+function renderMenuThumbsBar() {
+  const container = document.getElementById('menuThumbsBar');
+  if (!container) return;
+
+  container.innerHTML = menuPagesData.map((item, index) => `
+    <div class="menu-thumb-item ${index === currentMenuPageIndex ? 'active' : ''}" onclick="goToMenuPage(${index})" id="thumb-item-${index}" title="${item.title}">
+      <img src="${item.img}" alt="${item.title}" loading="lazy">
+      <span>Trang ${item.page < 10 ? '0' + item.page : item.page}</span>
+    </div>
+  `).join('');
+}
+
+function renderMenuPagesGrid() {
+  const grid = document.getElementById('menuPagesGrid');
+  if (!grid) return;
+
+  grid.innerHTML = menuPagesData.map((item, index) => `
+    <div class="menu-grid-card" data-category="${item.category}" onclick="openMenuLightboxModal(${index})">
+      <div class="menu-grid-thumb-wrap">
+        <img src="${item.img}" alt="${item.title}" loading="lazy">
+        <span class="menu-grid-badge">Trang ${item.page < 10 ? '0' + item.page : item.page} • ${item.categoryName}</span>
+      </div>
+      <div class="menu-grid-info">
+        <h4 class="menu-grid-title">${item.title}</h4>
+        <p class="menu-grid-desc">${item.desc}</p>
+        <span class="menu-grid-link">🔍 Bấm để phóng to xem chi tiết ↗</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMenuCurrentPage() {
+  const item = menuPagesData[currentMenuPageIndex];
+  if (!item) return;
+
+  const imgEl = document.getElementById('menuMainPageImg');
+  const catEl = document.getElementById('menuPageCategoryBadge');
+  const titleEl = document.getElementById('menuPageTitle');
+  const descEl = document.getElementById('menuPageDesc');
+  const currNumEl = document.getElementById('menuCurrentPageNum');
+
+  if (imgEl) {
+    imgEl.style.opacity = '0.3';
+    setTimeout(() => {
+      imgEl.src = item.img;
+      imgEl.alt = item.title;
+      imgEl.style.opacity = '1';
+    }, 120);
+  }
+
+  if (catEl) catEl.textContent = item.categoryName;
+  if (titleEl) titleEl.textContent = `Trang ${item.page < 10 ? '0' + item.page : item.page}: ${item.title}`;
+  if (descEl) descEl.textContent = item.desc;
+  if (currNumEl) currNumEl.textContent = item.page < 10 ? '0' + item.page : item.page;
+
+  // Highlight active thumb
+  document.querySelectorAll('.menu-thumb-item').forEach((thumb, idx) => {
+    thumb.classList.toggle('active', idx === currentMenuPageIndex);
+  });
+
+  // Scroll active thumb horizontally inside its scroll wrapper ONLY - NEVER trigger vertical window scroll
+  const activeThumb = document.getElementById(`thumb-item-${currentMenuPageIndex}`);
+  const thumbsWrapper = document.querySelector('.menu-thumbs-scroll-wrapper');
+  if (activeThumb && thumbsWrapper) {
+    const targetLeft = activeThumb.offsetLeft - (thumbsWrapper.clientWidth / 2) + (activeThumb.clientWidth / 2);
+    thumbsWrapper.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+  }
+}
+
+window.nextMenuPage = function(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  currentMenuPageIndex = (currentMenuPageIndex + 1) % menuPagesData.length;
+  renderMenuCurrentPage();
+};
+
+window.prevMenuPage = function(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  currentMenuPageIndex = (currentMenuPageIndex - 1 + menuPagesData.length) % menuPagesData.length;
+  renderMenuCurrentPage();
+};
+
+window.goToMenuPage = function(index, e) {
+  if (e && e.preventDefault) e.preventDefault();
+  if (index >= 0 && index < menuPagesData.length) {
+    currentMenuPageIndex = index;
+    renderMenuCurrentPage();
+  }
+};
+
+window.switchMenuViewMode = function(mode) {
+  menuViewMode = mode;
+  const bookView = document.getElementById('menuBookViewer');
+  const gridView = document.getElementById('menuGridContainer');
+  const btnBook = document.getElementById('btnModeBook');
+  const btnGrid = document.getElementById('btnModeGrid');
+
+  if (mode === 'grid') {
+    if (bookView) bookView.style.display = 'none';
+    if (gridView) gridView.style.display = 'block';
+    if (btnBook) btnBook.classList.remove('active');
+    if (btnGrid) btnGrid.classList.add('active');
+  } else {
+    if (bookView) bookView.style.display = 'flex';
+    if (gridView) gridView.style.display = 'none';
+    if (btnBook) btnBook.classList.add('active');
+    if (btnGrid) btnGrid.classList.remove('active');
+    renderMenuCurrentPage();
+  }
+};
+
+window.filterMenuByCat = function(category, e) {
+  if (e && e.preventDefault) e.preventDefault();
+  currentMenuCategory = category;
+
+  // Active tab button
+  document.querySelectorAll('#menuBookCategoryTabs .tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-cat') === category);
+  });
+
+  if (menuViewMode === 'book') {
+    // Jump to the first page of selected category
+    if (category === 'all') {
+      goToMenuPage(0);
+    } else {
+      const targetIdx = menuPagesData.findIndex(item => item.category === category);
+      if (targetIdx !== -1) {
+        goToMenuPage(targetIdx);
+      }
+    }
+  } else {
+    // Filter grid cards
+    document.querySelectorAll('.menu-grid-card').forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (category === 'all' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+};
+
+window.zoomCurrentMenuPage = function() {
+  openMenuLightboxModal(currentMenuPageIndex);
+};
+
+window.openMenuLightboxModal = function(index) {
+  const item = menuPagesData[index];
+  if (!item) return;
+
+  const modal = document.getElementById('lightboxModal');
+  const img = document.getElementById('lightboxImg');
+  const counter = document.getElementById('lightboxCounter');
+  const cat = document.getElementById('lightboxCategory');
+  const caption = document.getElementById('lightboxCaption');
+  const desc = document.getElementById('lightboxDesc');
+
+  if (img) img.src = item.img;
+  if (counter) counter.textContent = `Trang Menu ${item.page} / ${menuPagesData.length}`;
+  if (cat) cat.textContent = item.categoryName;
+  if (caption) caption.textContent = item.title;
+  if (desc) desc.textContent = item.desc;
+
+  // Save current menu index in state for lightbox navigation
+  state.isViewingMenuInLightbox = true;
+  state.currentMenuLightboxIndex = index;
+
+  if (modal) modal.classList.add('active');
+};
+
+function setupMenuSwipeListener() {
+  const wrapper = document.getElementById('menuMainPageWrapper');
+  if (!wrapper) return;
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  wrapper.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) {
+        nextMenuPage(); // Vuốt sang trái -> Trang sau
+      } else {
+        prevMenuPage(); // Vuốt sang phải -> Trang trước
+      }
+    }
+  }, { passive: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  applyWebsiteMenuMode();
+  initMenuBookViewer();
   initDishes();
   loadLiveEvents();
   renderLookbookGrid();

@@ -1069,3 +1069,133 @@ body {
   border: 1px solid rgba(29, 61, 116, 0.25);
 }
 
+
+
+/* ==================== MEDIA DELETE BUTTON ==================== */
+.media-item {
+  position: relative !important;
+}
+
+.media-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 0.2s ease;
+  z-index: 15;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-size: 0.95rem;
+}
+
+.media-item:hover .media-delete-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.media-delete-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: scale(1.12);
+}
+
+/* ==================== MENU DISPLAY MODE & SUBTABS ==================== */
+.menu-display-mode-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border: 2px solid var(--color-indigo);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 4px 14px rgba(29, 61, 116, 0.08);
+}
+
+.mode-btn {
+  padding: 0.6rem 1.25rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.mode-btn.active {
+  background: var(--color-indigo);
+  color: #ffffff;
+  border: 2px solid var(--color-indigo);
+  box-shadow: 0 4px 12px rgba(29, 61, 116, 0.25);
+}
+
+.mode-btn:not(.active) {
+  background: #ffffff;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-color);
+}
+
+.mode-btn:not(.active):hover {
+  border-color: var(--color-indigo);
+  color: var(--color-indigo);
+}
+
+.menu-subtab-btn {
+  padding: 0.65rem 1.35rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.menu-subtab-btn.active {
+  background: #ffffff;
+  color: var(--color-indigo-dark);
+  border-color: var(--border-color);
+  border-top: 3px solid var(--color-brand-red);
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.menu-subtab-btn:hover:not(.active) {
+  color: var(--color-indigo);
+  background: rgba(29, 61, 116, 0.04);
+}
+
+/* ==================== SIDEBAR MENU LABEL & ANTI-WRAP FIX ==================== */
+.menu-label {
+  white-space: nowrap;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-item {
+  white-space: nowrap;
+}
+
+.page-header {
+  padding-top: 0.5rem;
+}
