@@ -957,7 +957,7 @@ function setupEventListeners() {
         console.warn('Cannot persist booking to localStorage', err);
       }
 
-      showToast(`Kính chào Quý khách <b>${name}</b>, TongWei đã tiếp nhận yêu cầu đặt bàn lúc ${time} ngày ${date} cho ${guests} tại ${branchVal.split(':')[0]}! Hotline cơ sở sẽ gọi xác nhận trong 5 phút.`, 'success');
+      showToast(`Cảm ơn Quý khách <b>${name}</b>! Hotline cơ sở sẽ gọi trực tiếp đến số <b>${phone}</b> trong 3 phút để kiểm tra sơ đồ bàn thực tế và xác nhận giữ chỗ cho Quý khách.`, 'success');
       elements.bookingForm.reset();
       
       if (state.cart.length > 0) {
@@ -1126,7 +1126,7 @@ function renderBranches() {
       ${branches.map(b => `
         <div class="branch-card">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <h4 style="margin: 0; color: var(--color-indigo-dark);">${b.name}</h4>
+            <h4 style="margin: 0; color: var(--color-indigo-dark); font-size: 1.15rem;">${b.name}</h4>
             <span style="background: ${b.status === 'upcoming' ? 'rgba(217,119,6,0.1)' : 'rgba(22,163,74,0.1)'}; color: ${b.status === 'upcoming' ? '#d97706' : '#16a34a'}; border: 1px solid currentColor; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); white-space: nowrap;">
               ${b.status === 'upcoming' ? '⏳ Sắp Khai Trương' : '✔ Đang Hoạt Động'}
             </span>
@@ -1144,6 +1144,11 @@ function renderBranches() {
             <span>Giờ phục vụ: ${b.hours}</span>
           </div>
           ${b.scale ? `<div class="branch-detail" style="font-size: 0.85rem; color: var(--color-text-secondary);"><span>🏛️</span><span>${b.scale}</span></div>` : ''}
+          <div style="margin-top: 0.85rem;">
+            <a href="tel:${(b.phone || '0989123456').split('/')[0].trim().replace(/\s+/g, '')}" class="btn btn-primary btn-sm" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; font-weight: 700; text-decoration: none;">
+              <span>📞</span> Bấm Gọi Đặt Bàn Cơ Sở Này (${(b.phone || '').split('/')[0].trim()})
+            </a>
+          </div>
         </div>
       `).join('')}
 

@@ -831,81 +831,88 @@
           <!-- Booking Form -->
           <div class="booking-form-wrap">
             <div class="section-subtitle">Trải Nghiệm Thượng Đỉnh</div>
-            <h2 class="section-title" style="font-size: 2rem;">Đặt Bàn Thưởng Vị</h2>
-            <p class="section-desc" style="margin-bottom: 2rem;">
-              Đặt bàn trước để được giữ chỗ ngồi ưng ý, nhận ưu đãi tráng miệng đặc biệt và thưởng thức các món ăn tươi ngon vừa ra lò.
+            <h2 class="section-title" style="font-size: 2rem;">Liên Hệ Đặt Bàn & Giữ Chỗ</h2>
+            <p class="section-desc" style="margin-bottom: 1.5rem;">
+              Để đảm bảo kiểm tra chính xác sơ đồ bàn thực tế, sắp xếp vị trí ngồi hoàn hảo và tránh tình trạng hết bàn vào khung giờ cao điểm, kính mời Quý khách liên hệ trực tiếp Hotline của cơ sở gần nhất.
             </p>
 
-            <form id="bookingForm">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="bookName">Họ và Tên *</label>
-                  <input type="text" class="form-control" id="bookName" placeholder="Tên của bạn" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="bookPhone">Số Điện Thoại *</label>
-                  <input type="tel" class="form-control" id="bookPhone" placeholder="0988xxxxxx" required>
-                </div>
+            <!-- Quick Hotline Call Hub (1-Tap Call) -->
+            <div class="hotline-highlight-box">
+              <div class="hotline-title">
+                <span>📞</span> Bấm Số Gọi Đặt Bàn Trực Tiếp (1 Chạm)
               </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="bookDate">Ngày Dùng Bữa *</label>
-                  <input type="date" class="form-control" id="bookDate" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="bookTime">Giờ Đến *</label>
-                  <select class="form-control" id="bookTime" required>
-                    <option value="11:30">11:30 (Trưa)</option>
-                    <option value="12:00">12:00 (Trưa)</option>
-                    <option value="12:30">12:30 (Trưa)</option>
-                    <option value="18:00" selected>18:00 (Tối)</option>
-                    <option value="18:30">18:30 (Tối)</option>
-                    <option value="19:00">19:00 (Tối)</option>
-                    <option value="19:30">19:30 (Tối)</option>
-                    <option value="20:00">20:00 (Tối)</option>
-                  </select>
-                </div>
+              <p class="hotline-desc">
+                Nhân viên lễ tân tiếp nhận cuộc gọi, kiểm tra bàn trống thực tế và xác nhận giữ chỗ cho Quý khách ngay lập tức:
+              </p>
+              
+              <div class="hotline-phone-grid">
+                <a href="tel:0986688866" class="btn-hotline-call" title="Bấm để gọi đặt bàn cơ sở Nguyễn Thị Thập">
+                  <span class="hotline-branch">🥢 Cơ Sở 1 (Nguyễn Thị Thập - Cầu Giấy):</span>
+                  <span class="hotline-num">📞 0986 688 866</span>
+                </a>
+                <a href="tel:0989123456" class="btn-hotline-call" title="Bấm để gọi đặt bàn cơ sở Hoàn Kiếm">
+                  <span class="hotline-branch">🏛️ Cơ Sở 2 (Trần Hưng Đạo - Hoàn Kiếm):</span>
+                  <span class="hotline-num">📞 0989 123 456</span>
+                </a>
+                <a href="tel:0988567890" class="btn-hotline-call" title="Bấm để gọi đặt bàn cơ sở Duy Tân">
+                  <span class="hotline-branch">🏮 Cơ Sở 3 (Duy Tân - Cầu Giấy):</span>
+                  <span class="hotline-num">📞 0988 567 890</span>
+                </a>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label class="form-label" for="bookBranch">Chọn Chi Nhánh Phục Vụ *</label>
-                <select class="form-control" id="bookBranch" required>
-                  <option value="Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm (68A Trần Hưng Đạo)" selected>Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm (68A Trần Hưng Đạo, HN)</option>
-                  <option value="Nhà Hàng TongWei - Cơ Sở Cầu Giấy (12 Duy Tân)">Nhà Hàng TongWei - Cơ Sở Cầu Giấy (12 Duy Tân, HN)</option>
-                </select>
-              </div>
+            <!-- Quick Callback Request (Điền nhanh 10 giây) -->
+            <div style="background: #ffffff; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+              <h4 style="font-family: var(--font-heading); color: var(--color-indigo); margin-bottom: 0.35rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>📝</span> Hoặc Để Lại Thông Tin (Nhà Hàng Gọi Lại Trong 3 Phút)
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 1.25rem;">
+                Dành cho Quý khách bận việc chưa tiện gọi. Lễ tân sẽ kiểm tra bàn và gọi lại tư vấn chi tiết:
+              </p>
 
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="bookGuests">Số Lượng Khách *</label>
-                  <select class="form-control" id="bookGuests">
-                    <option value="2 Khách">2 Khách (Bàn đôi ấm cúng)</option>
-                    <option value="4 Khách" selected>4 Khách (Bàn tiêu chuẩn)</option>
-                    <option value="6 Khách">6 Khách (Bàn tròn gia đình)</option>
-                    <option value="8-12 Khách">8 - 12 Khách (Bàn tiệc lớn)</option>
-                    <option value="Phòng VIP trên 15 khách">Phòng VIP riêng tư (>15 khách)</option>
-                  </select>
+              <form id="bookingForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="bookName">Họ và Tên Quý Khách *</label>
+                    <input type="text" class="form-control" id="bookName" placeholder="Ví dụ: Anh Khương / Chị Lan" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="bookPhone">Số Điện Thoại Nhận Cuộc Gọi *</label>
+                    <input type="tel" class="form-control" id="bookPhone" placeholder="0988xxxxxx" required>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="bookArea">Khu Vực Ngồi</label>
-                  <select class="form-control" id="bookArea">
-                    <option value="Sảnh Chính Ánh Kim">Sảnh Chính Nhà Hàng</option>
-                    <option value="Gần Cửa Sổ View Phố">Gần Cửa Sổ Thoáng Mát</option>
-                    <option value="Phòng VIP Cung Đình">Phòng VIP Riêng Tư (Cần đặt sớm)</option>
-                  </select>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="bookBranch">Cơ Sở Quý Khách Muốn Ghé *</label>
+                    <select class="form-control" id="bookBranch" required>
+                      <option value="Cơ Sở Nguyễn Thị Thập (5N7A Cầu Giấy)" selected>Cơ Sở 1: Nguyễn Thị Thập (5N7A Yên Hòa, Cầu Giấy)</option>
+                      <option value="Cơ Sở Hoàn Kiếm (68A Trần Hưng Đạo)">Cơ Sở 2: Hoàn Kiếm (68A Trần Hưng Đạo)</option>
+                      <option value="Cơ Sở Duy Tân (12 Duy Tân, Cầu Giấy)">Cơ Sở 3: Duy Tân (12 Duy Tân, HN)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="bookGuests">Dự Kiến Số Lượng Khách</label>
+                    <select class="form-control" id="bookGuests">
+                      <option value="2 Khách">2 Khách (Bàn đôi)</option>
+                      <option value="4 Khách" selected>4 Khách (Bàn tiêu chuẩn)</option>
+                      <option value="6 Khách">6 Khách (Bàn gia đình)</option>
+                      <option value="8-12 Khách">8 - 12 Khách (Bàn tiệc lớn)</option>
+                      <option value="Phòng VIP trên 15 khách">Phòng VIP (>15 khách)</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="form-label" for="bookNotes">Ghi Chú Đặc Biệt / Món Ăn Đặt Trước</label>
-                <textarea class="form-control" id="bookNotes" placeholder="Ví dụ: Kỷ niệm ngày cưới, chuẩn bị ghế trẻ em, hoặc món ăn yêu thích..."></textarea>
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="bookNotes">Ghi Chú Yêu Cầu (Khung giờ đến, Món ăn yêu thích, Ghế trẻ em...)</label>
+                  <textarea class="form-control" id="bookNotes" rows="2" placeholder="Ví dụ: Cần bàn gần cửa sổ, ăn tối lúc 19h..."></textarea>
+                </div>
 
-              <button type="submit" class="btn btn-primary" style="width: 100%;">
-                Xác Nhận Đặt Bàn Ngay
-              </button>
-            </form>
+                <button type="submit" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; padding: 0.85rem 1.5rem;">
+                  <span>📞</span> Gửi Yêu Cầu Gọi Lại Xác Nhận Chỗ
+                </button>
+              </form>
+            </div>
           </div>
 
           <!-- Branches Info -->
@@ -1048,10 +1055,12 @@
       </div>
 
       <div class="cart-modal-footer modal-actions-row">
-        <button class="btn btn-primary" onclick="proceedToBookingWithCart()">
-          🥢 Xác Nhận Đặt Bàn Với Thực Đơn Này
+        <a href="tel:0986688866" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-weight: 700;">
+          <span>📞</span> Bấm Gọi Hotline Đặt Bàn Ngay (0986 688 866)
+        </a>
+        <button class="btn btn-outline" onclick="proceedToBookingWithCart()">
+          <span>📝</span> Hoặc Để Lại Số Để Nhân Viên Gọi Lại
         </button>
-        <button class="btn btn-outline" onclick="closeModal('cartModal')">Tiếp Tục Chọn</button>
       </div>
     </div>
   </div>
