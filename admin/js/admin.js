@@ -2196,6 +2196,8 @@ function updatePublishUI() {
 }
 
 function openScheduleModal() {
+  const modal = document.getElementById('scheduleModal');
+  if (!modal) return;
   updatePublishUI();
   updateWebsiteMenuModeUI();
   renderMenuPagesTable();
@@ -2579,8 +2581,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeData();
   updatePublishUI();
 
-  // Run auto-publish timer check every 15 seconds
-  setInterval(checkAutoPublishSchedule, 15000);
+  // Auto-publish schedule interval disabled per user request
+  // setInterval(checkAutoPublishSchedule, 15000);
 
   // Sidebar Menu Clicks
   document.querySelectorAll('.sidebar-menu .menu-item').forEach(btn => {

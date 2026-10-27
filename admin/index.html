@@ -163,21 +163,9 @@
       </div>
 
       <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
-        <div class="staging-badge" title="Tất cả chỉnh sửa đang lưu ở môi trường cục bộ (Local Staging)">
-          <span class="dot"></span>
-          <span>Lưu cục bộ (Local)</span>
-        </div>
-
-        <div class="timer-pill" id="schedulePill" onclick="openScheduleModal()" title="Bấm để xem hoặc đổi lịch hẹn tự động xuất bản">
-          <span>⏰ Tự động: <strong id="scheduleTimeDisplay">16:40</strong></span>
-        </div>
-
-        <button class="btn-publish-online" id="btnPublishOnline" onclick="triggerPublishToGithub()" title="Bấm để đẩy toàn bộ thay đổi lên GitHub Pages online">
-          <span>🚀 Xuất bản lên online</span>
-        </button>
-
-        <a href="/" target="_blank" class="btn btn-outline btn-sm" title="Mở trang chủ khách hàng trong tab mới">
-          👁️ Xem web ↗
+        <a href="/" target="_blank" class="btn btn-primary btn-sm" title="Mở trang chủ website trong tab mới" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 600;">
+          <span>👁️ Xem website</span>
+          <span>↗</span>
         </a>
       </div>
     </header>
@@ -276,9 +264,6 @@
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="switchTab('branches')">
                 <span>🏭 Cập nhật cơ sở & xưởng HACCP</span>
               </button>
-              <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
-                💡 <b>Môi trường lưu cục bộ:</b> Mọi chỉnh sửa được lưu ngay trong trình duyệt. Khi sẵn sàng, bấm <b>"Xuất bản lên online"</b> để đẩy lên GitHub Pages.
-              </div>
             </div>
           </div>
         </div>
@@ -844,10 +829,6 @@
                   <p style="margin: 0.25rem 0 0; font-size: 0.85rem;">Nhớ bấm nút Đăng Xuất ở góc dưới thanh điều hướng sau khi hoàn tất phiên làm việc trên các máy tính dùng chung tại nhà hàng.</p>
                 </div>
               </div>
-
-              <div style="background: #fdf8ed; border-left: 3px solid var(--color-gold); padding: 0.75rem 1rem; border-radius: 4px; font-size: 0.82rem; color: #7a5611; margin-top: 1.5rem;">
-                💡 <strong>Lưu ý:</strong> Mọi thay đổi được lưu trữ cục bộ trên máy. Nhấn <b>"Xuất bản lên online"</b> hoặc chờ lịch tự động lúc <b>16:40</b> để cập nhật lên GitHub Pages.
-              </div>
             </div>
           </div>
         </div>
@@ -1306,46 +1287,7 @@
     </div>
   </div>
 
-  <!-- 9. Schedule Modal (Hẹn Giờ Xuất Bản GitHub) -->
-  <div class="modal-overlay" id="scheduleModal">
-    <div class="modal-card" style="max-width: 520px;">
-      <button class="modal-close" onclick="closeModal('scheduleModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.45rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Hẹn giờ tự động xuất bản</h3>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Hệ thống sẽ giữ mọi chỉnh sửa ở môi trường cục bộ (local) và chỉ tự động đẩy lên GitHub Pages vào đúng khung giờ bạn chọn.</p>
 
-      <form id="scheduleForm" onsubmit="handleScheduleFormSubmit(event)">
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label class="form-label">Khung giờ hẹn tự động đẩy code hàng ngày *</label>
-          <input type="time" class="form-control" id="scheduleTimeInput" value="16:40" required style="font-size: 1.25rem; font-weight: 700; color: var(--color-indigo-dark); text-align: center;">
-          <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; display: block;">Mặc định: <strong>16:40 (4h40 chiều)</strong></small>
-        </div>
-
-        <div class="form-group" style="background: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-          <div>
-            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">Bật chế độ tự động xuất bản</div>
-            <div style="font-size: 0.78rem; color: var(--text-secondary);">Khi đến giờ hẹn, server sẽ tự động chạy git commit & push lên GitHub</div>
-          </div>
-          <input type="checkbox" id="autoPublishToggle" style="width: 22px; height: 22px; cursor: pointer;" checked>
-        </div>
-
-        <div style="background: #eef2ff; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--color-indigo-dark); line-height: 1.6;">
-          <div style="font-weight: 700; margin-bottom: 0.25rem;">ℹ️ Cơ chế hoạt động:</div>
-          <div>• Tất cả chỉnh sửa (món ăn, cơ sở, nhượng quyền, tin tức...) được lưu an toàn tại máy cục bộ (local).</div>
-          <div>• Bạn có thể nhấn nút <strong>"🚀 Xuất bản lên online"</strong> bất kỳ lúc nào để đẩy ngay lập tức.</div>
-          <div>• Hoặc để máy chủ tự động đẩy đúng lúc <strong><span id="modalSchedulePreview">16:40</span></strong> hàng ngày.</div>
-        </div>
-
-        <div style="display: flex; gap: 1rem;">
-          <button type="submit" class="btn btn-primary" style="flex: 1;">
-            💾 Lưu cài đặt hẹn giờ
-          </button>
-          <button type="button" class="btn btn-outline" onclick="triggerPublishToGithub()">
-            🚀 Xuất bản ngay bây giờ
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- Toast Container -->
   <div class="toast-container" id="adminToastContainer"></div>

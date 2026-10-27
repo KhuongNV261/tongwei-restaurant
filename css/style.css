@@ -1474,6 +1474,31 @@ textarea.form-control {
   margin-bottom: 0.5rem;
 }
 
+.branch-call-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) !important; /* Dùng bo góc vừa phải ~8px thay vì viên thuốc tròn để tăng tối đa diện tích hiển thị */
+  white-space: normal !important; /* Cho phép xuống dòng nếu màn hình siêu nhỏ */
+  word-break: break-word;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+@media (max-width: 400px) {
+  .branch-call-btn {
+    font-size: 0.86rem;
+    padding: 0.7rem 0.75rem;
+  }
+}
+
 /* 12. FOOTER */
 .footer {
   background: var(--color-indigo-dark);
@@ -3597,4 +3622,54 @@ textarea:focus-visible,
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
+}
+
+/* Mobile optimizations for buttons preventing text overflow */
+@media (max-width: 480px) {
+  .btn-hotline-call {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.75rem 0.85rem;
+  }
+  .btn-hotline-call .hotline-branch {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+  .btn-hotline-call .hotline-num {
+    font-size: 0.95rem;
+  }
+  .branch-card {
+    padding: 1.15rem 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .btn-hotline-call {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.65rem 0.75rem;
+  }
+}
+
+.booking-submit-btn {
+  white-space: normal !important;
+  word-break: break-word;
+  text-align: center;
+  line-height: 1.35;
+  border-radius: var(--radius-md) !important;
+}
+
+@media (max-width: 480px) {
+  .booking-submit-btn {
+    font-size: 0.92rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
+
+.cart-modal-footer .btn,
+.modal-actions-row .btn {
+  border-radius: var(--radius-md) !important;
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.35;
 }

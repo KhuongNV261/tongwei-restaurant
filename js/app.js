@@ -1145,8 +1145,8 @@ function renderBranches() {
           </div>
           ${b.scale ? `<div class="branch-detail" style="font-size: 0.85rem; color: var(--color-text-secondary);"><span>🏛️</span><span>${b.scale}</span></div>` : ''}
           <div style="margin-top: 0.85rem;">
-            <a href="tel:${(b.phone || '0989123456').split('/')[0].trim().replace(/\s+/g, '')}" class="btn btn-primary btn-sm" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; font-weight: 700; text-decoration: none;">
-              <span>📞</span> Bấm Gọi Đặt Bàn Cơ Sở Này (${(b.phone || '').split('/')[0].trim()})
+            <a href="tel:${(b.phone || '0989123456').split('/')[0].trim().replace(/\s+/g, '')}" class="btn btn-primary branch-call-btn">
+              📞 Gọi Đặt Bàn: ${(b.phone || '').split('/')[0].trim()}
             </a>
           </div>
         </div>
