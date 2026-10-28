@@ -17,209 +17,594 @@ const state = {
   selectedDish: null
 };
 
-// Master 25 Concept Photos Data
-let masterAlbum = [
+// Master Concept & Space Photos Data (35 Curated Photos)
+// Master Real Space Photos Data (10 Curated Real Photos from TongWei Facebook)
+const REAL_SPACE_PHOTOS = [
+  // 1. Cơ Sở 2 • Nguyễn Thị Thập (5 real photos from official Facebook post)
   {
-    "id": 1,
-    "src": "assets/images/concept/concept_1.jpg",
-    "title": "Bộ Sưu Tập Thức Uống Nhiệt Đới",
-    "category": "drinks",
-    "categoryName": "Thức Uống",
-    "desc": "Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn."
+    id: 101,
+    order: 1,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_1.jpg',
+    title: 'Mặt Tiền & Đại Sảnh Giao Hòa Mới (5N7A Nguyễn Thị Thập)',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
+    desc: 'Mặt tiền và không gian sảnh đón khách sang trọng, ấm cúng tại 5N7A Nguyễn Thị Thập, P. Yên Hoà, Cầu Giấy.'
   },
   {
-    "id": 2,
-    "src": "assets/images/concept/concept_2.jpg",
-    "title": "Văn Hóa Cố Sự & Bàn Mạt Chược",
-    "category": "banquet",
-    "categoryName": "Văn Hóa & Không Gian",
-    "desc": "Nét sinh hoạt hoài niệm tao nhã, nơi thực khách vừa thưởng vị dimsum nóng vừa thư giãn bên bàn mạt chược truyền thống."
+    id: 102,
+    order: 2,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_4.jpg',
+    title: 'Phòng Ăn Sang Trọng Tone Gỗ Ấm',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
+    desc: 'Không gian phòng ăn sang trọng với tone gỗ ấm, ánh đèn vàng ấm áp chuẩn phong vị ẩm thực Quảng Đông.'
   },
   {
-    "id": 3,
-    "src": "assets/images/concept/concept_3.jpg",
-    "title": "Mâm Cơm Quảng Đông & Trà Đạo",
-    "category": "banquet",
-    "categoryName": "Bàn Tiệc Đại Yến",
-    "desc": "Bàn ăn chuẩn vị gia đình với các món xào lửa lớn, thịt nướng xá xíu thơm ngát và ấm trà thảo mộc ấm lòng."
+    id: 103,
+    order: 3,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_2.jpg',
+    title: 'Bàn Tiệc Sum Vầy Gia Đình Giao Hoà',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
+    desc: 'Bàn tiệc đại yến gia đình sum vầy, kết nối cảm xúc trọn vẹn bên các món ăn đậm đà chuẩn vị.'
   },
   {
-    "id": 4,
-    "src": "assets/images/concept/concept_4.jpg",
-    "title": "Đại Tiệc Sum Vầy Gia Tộc",
-    "category": "banquet",
-    "categoryName": "Bàn Tiệc Đại Yến",
-    "desc": "Bố trí bàn tiệc tròn hoành tráng với thịt nướng mật ong, xiên nướng thơm lừng và các món khai vị cung đình."
+    id: 104,
+    order: 4,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_3.jpg',
+    title: 'Góc Bàn Đôi Riêng Tư View Kính Phố',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
+    desc: 'Bàn ăn đôi lãng mạn, thoáng đãng với ô cửa kính view phố dành cho cặp đôi và bạn bè.'
   },
   {
-    "id": 5,
-    "src": "assets/images/concept/concept_5.jpg",
-    "title": "Thịt Nướng Xá Xíu & Trà Cổ Thụ",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Thịt nướng xém cạnh mật ong rừng chấm cùng tương ngọt đặc chế, nhấp ngụm trà Thiết Quan Âm lưu lại dư vị tao nhã."
+    id: 105,
+    order: 5,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_5.jpg',
+    title: 'Góc Decor Mỹ Vị Giao Hoà & Đèn Lồng',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
+    desc: 'Họa tiết đèn lồng nghệ nhân và phong cách kiến trúc đặc trưng của thương hiệu Đồng Vị TongWei.'
+  },
+
+  // 2. Cơ Sở 1 • Hoàn Kiếm (5 real photos from official Facebook page)
+  {
+    id: 106,
+    order: 6,
+    src: 'assets/images/branches/fb_tongwei_branch_2.png',
+    title: 'Mặt Tiền & Đại Sảnh Flagship 68A Trần Hưng Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian nhà hàng sang trọng, phòng VIP tiếp khách và hội nghị đẳng cấp tại trung tâm Hoàn Kiếm.'
   },
   {
-    "id": 6,
-    "src": "assets/images/concept/concept_6.jpg",
-    "title": "Bàn Tiệc Cơm Chiên Hoàng Kim & Canh Tiềm",
-    "category": "banquet",
-    "categoryName": "Bàn Tiệc Đại Yến",
-    "desc": "Thố cơm chiên giòn rụm kết hợp quạt cổ trang trí và nồi súp tiềm dưỡng nhan ninh cách thủy 4 tiếng đồng hồ."
+    id: 107,
+    order: 7,
+    src: 'assets/images/branches/fb_tongwei_branch_1.jpg',
+    title: 'Phòng Tiệc VIP Hoàng Kim Cách Âm',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian phòng VIP cách âm riêng biệt với bàn tròn xoay phong cách hoàng gia Quảng Đông.'
   },
   {
-    "id": 7,
-    "src": "assets/images/concept/concept_7.jpg",
-    "title": "Tháp Xửng Dimsum Trúc Bốc Khói",
-    "category": "dimsum",
-    "categoryName": "Dimsum Nghệ Nhân",
-    "desc": "Há cảo tôm sò điệp trong suốt, xíu mại tôm thịt gạch cua và bánh bao kim sa nóng hổi nghi ngút khói thơm."
+    id: 108,
+    order: 8,
+    src: 'assets/images/branches/fb_tongwei_branch_13.jpg',
+    title: 'Khu Bàn Ăn Gia Đình Hoàn Kiếm',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Thiết kế tao nhã mang đậm cảm hứng di sản, ánh đèn ấm áp cho bữa ăn sum vầy gia tộc.'
   },
   {
-    "id": 8,
-    "src": "assets/images/concept/concept_8.jpg",
-    "title": "Set Điểm Tâm Sáng & Súp Khai Vị",
-    "category": "dimsum",
-    "categoryName": "Dimsum Nghệ Nhân",
-    "desc": "Nét đẹp văn hóa 'ẩm thực thán trà' trứ danh của xứ Cảng Thơm, mở đầu ngày mới ngập tràn năng lượng tích cực."
+    id: 109,
+    order: 9,
+    src: 'assets/images/branches/fb_tongwei_branch_14.jpg',
+    title: 'Sảnh Tiếp Đón & Quầy Trà Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian sảnh tiếp đón trang trọng với nghệ thuật pha trà truyền thống xứ Cảng Thơm.'
   },
   {
-    "id": 9,
-    "src": "assets/images/concept/concept_9.jpg",
-    "title": "Bánh Bao Đào Tiên Trường Thọ",
-    "category": "dimsum",
-    "categoryName": "Dimsum Nghệ Nhân",
-    "desc": "Tác phẩm thủ công nặn tay cầu kỳ mang sắc hồng đào tiên, nhân hạt sen ngọt thanh biểu trưng cho phúc lộc dồi dào."
-  },
-  {
-    "id": 10,
-    "src": "assets/images/concept/concept_10.jpg",
-    "title": "Đại Tiệc Hội Nghị & Tiệc Cưới",
-    "category": "banquet",
-    "categoryName": "Bàn Tiệc Đại Yến",
-    "desc": "Không gian bài trí trang nhã chuẩn mực phục vụ các buổi họp mặt đối tác quan trọng và tiệc mừng gia đình."
-  },
-  {
-    "id": 11,
-    "src": "assets/images/concept/concept_11.jpg",
-    "title": "Mỹ Vị Nướng Quay & Dimsum Đầy Đủ",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Mâm tiệc đại yến hội tụ tinh hoa: vịt quay da giòn, sườn xá xíu bóng bẩy cùng xửng dimsum tươi ngon mỗi ngày."
-  },
-  {
-    "id": 12,
-    "src": "assets/images/concept/concept_12.jpg",
-    "title": "Bàn Tiệc Toàn Bích 12 Món Mỹ Vị",
-    "category": "banquet",
-    "categoryName": "Bàn Tiệc Đại Yến",
-    "desc": "Sự cân bằng hoàn hảo giữa âm dương ngũ hành trong ẩm thực Quảng Đông đương đại."
-  },
-  {
-    "id": 13,
-    "src": "assets/images/concept/concept_13.jpg",
-    "title": "Súp Bí Đỏ Hạt Sen Hoàng Kim",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Chất súp sánh mịn óng ánh vàng, vị ngọt tự nhiên từ bí đỏ hữu cơ kết hợp hạt sen ninh nhừ bổ dưỡng."
-  },
-  {
-    "id": 14,
-    "src": "assets/images/concept/concept_14.jpg",
-    "title": "Mộc Nhĩ Đen Ngâm Chua Ngọt",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Món khai vị giòn sần sật thanh mát được ngâm cùng giấm đen lâu năm và ớt cay nhẹ kích thích trọn vẹn vị giác."
-  },
-  {
-    "id": 15,
-    "src": "assets/images/concept/concept_15.jpg",
-    "title": "Cánh Vịt Tiềm Cay Thảo Mộc",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Thấm đẫm 12 vị thảo mộc cùng ớt khô Tứ Xuyên, màu cánh gián hấp dẫn, thơm lừng cay dịu."
-  },
-  {
-    "id": 16,
-    "src": "assets/images/concept/concept_16.jpg",
-    "title": "Cổ Vịt Rút Xương Sốt Tiềm Đậm Đà",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Món nhắm ẩm thực truyền thống với thớ thịt săn chắc, gia vị ngấm sâu đến từng thớ thịt."
-  },
-  {
-    "id": 17,
-    "src": "assets/images/concept/concept_17.jpg",
-    "title": "Đậu Hũ Non Trứng Bắc Thảo Sốt Cay",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Sự hòa quyện tuyệt vời giữa đậu hũ non mát lành và trứng bắc thảo bùi béo ngậy sốt ớt gừng thanh vị."
-  },
-  {
-    "id": 18,
-    "src": "assets/images/concept/concept_18.jpg",
-    "title": "Đặc Sản Trứng Bắc Thảo Ngũ Vị",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Món ăn thanh lọc vị giác kinh điển không thể thiếu trong các bữa tiệc Quảng Đông sang trọng."
-  },
-  {
-    "id": 19,
-    "src": "assets/images/concept/concept_19.jpg",
-    "title": "Món Tiềm Cay Cổ Truyền",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Nước sốt tương già sánh bóng thơm ngào ngạt, kích thích khứu giác ngay từ cái nhìn đầu tiên."
-  },
-  {
-    "id": 20,
-    "src": "assets/images/concept/concept_20.jpg",
-    "title": "Bộ Đôi Khai Vị Thanh Nhã",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Bàn tiệc khởi đầu đầy duyên dáng với món nguội truyền thống chuẩn phong vị Quảng Đông."
-  },
-  {
-    "id": 21,
-    "src": "assets/images/concept/concept_21.jpg",
-    "title": "Súp Dưỡng Nhan Thảo Mộc Cung Đình",
-    "category": "appetizer",
-    "categoryName": "Khai Vị & Dưỡng Sinh",
-    "desc": "Món canh bồi bổ nguyên khí, dưỡng ẩm làn da dành cho cả gia đình sau ngày dài bận rộn."
-  },
-  {
-    "id": 22,
-    "src": "assets/images/concept/concept_22.jpg",
-    "title": "Đậu Que Xào Thịt Xá Xíu Bóng Bẩy",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Chảo lửa lớn khóa chặt độ giòn ngọt của đậu non, hòa quyện từng lát xá xíu thơm mùi than hồng."
-  },
-  {
-    "id": 23,
-    "src": "assets/images/concept/concept_23.jpg",
-    "title": "Rau Củ Tươi Xào Tôm Khô Tàu Xì",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Hương vị đậm đà thơm ngát từ đậu tàu xì lên men tự nhiên và tôm khô biển sâu hảo hạng."
-  },
-  {
-    "id": 24,
-    "src": "assets/images/concept/concept_24.jpg",
-    "title": "Thịt Xá Xíu Nướng Mật Ong Rừng",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Món nướng signature của TongWei: thịt ba chỉ rút sườn ướp mật ong hoa rừng nướng vàng ruộm óng ánh."
-  },
-  {
-    "id": 25,
-    "src": "assets/images/concept/concept_25.jpg",
-    "title": "Xá Xíu Phủ Ớt Tươi & Hành Hoa",
-    "category": "bbq",
-    "categoryName": "Món Quay & Nướng",
-    "desc": "Màu sắc rực rỡ mang ngụ ý sung túc phát tài, vị ngọt đậm đà khó cưỡng."
+    id: 110,
+    order: 10,
+    src: 'assets/images/branches/fb_tongwei_branch_15.jpg',
+    title: 'Góc Thưởng Vị & Đèn Lồng Di Sản Cổ Điển',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian thưởng vị ấm cúng đậm chất di sản văn hóa ẩm thực Trung Hoa.'
   }
 ];
+
+const DEFAULT_MASTER_ALBUM = [
+  // 1. Cơ Sở 2 • Nguyễn Thị Thập (5 photos from official Facebook)
+  {
+    id: 101,
+    order: 1,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_1.jpg',
+    title: 'Không Gian Giao Hoà Mới — TongWei Nguyễn Thị Thập',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    desc: 'Mặt tiền và không gian đón khách trang nhã, ấm cúng tại 5N7A Nguyễn Thị Thập, P. Yên Hoà, Cầu Giấy.'
+  },
+  {
+    id: 102,
+    order: 2,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_4.jpg',
+    title: 'Phòng Ăn Sang Trọng Tone Gỗ Ấm',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    desc: 'Không gian phòng ăn sang trọng với tone gỗ ấm, ánh đèn vàng ấm áp chuẩn phong vị ẩm thực Quảng Đông.'
+  },
+  {
+    id: 103,
+    order: 3,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_2.jpg',
+    title: 'Bàn Tiệc Sum Vầy Giao Hoà',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    desc: 'Bàn tiệc đại yến gia đình sum vầy, kết nối cảm xúc trọn vẹn bên các món ăn đậm đà chuẩn vị.'
+  },
+  {
+    id: 104,
+    order: 4,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_3.jpg',
+    title: 'Góc Bàn Đôi Riêng Tư View Kính',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    desc: 'Bàn ăn đôi lãng mạn, thoáng đãng với ô cửa kính view phố dành cho cặp đôi và bạn bè.'
+  },
+  {
+    id: 105,
+    order: 5,
+    src: 'assets/images/branches/nguyen_thi_thap_fb_5.jpg',
+    title: 'Góc Decor Mỹ Vị Giao Hoà',
+    category: 'space_ntt',
+    categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
+    desc: 'Họa tiết đèn lồng nghệ nhân và phong cách kiến trúc đặc trưng của thương hiệu Đồng Vị TongWei.'
+  },
+
+  // 2. Cơ Sở 1 • Hoàn Kiếm (5 photos Flagship 68A Trần Hưng Đạo)
+  {
+    id: 106,
+    order: 6,
+    src: 'assets/images/branches/fb_tongwei_branch_2.png',
+    title: 'Mặt Tiền & Đại Sảnh Flagship 68A Trần Hưng Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    desc: 'Không gian nhà hàng sang trọng, phòng VIP tiếp khách và hội nghị đẳng cấp tại trung tâm Hoàn Kiếm.'
+  },
+  {
+    id: 107,
+    order: 7,
+    src: 'assets/images/branches/fb_tongwei_branch_1.jpg',
+    title: 'Phòng Tiệc VIP Hoàng Kim',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    desc: 'Không gian phòng VIP cách âm riêng biệt với bàn tròn xoay phong cách hoàng gia Quảng Đông.'
+  },
+  {
+    id: 108,
+    order: 8,
+    src: 'assets/images/branches/fb_tongwei_branch_13.jpg',
+    title: 'Khu Bàn Ăn Gia Đình Hoàn Kiếm',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    desc: 'Thiết kế tao nhã mang đậm cảm hứng di sản, ánh đèn ấm áp cho bữa ăn sum vầy gia tộc.'
+  },
+  {
+    id: 109,
+    order: 9,
+    src: 'assets/images/branches/fb_tongwei_branch_14.jpg',
+    title: 'Sảnh Tiếp Đón & Quầy Trà Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    desc: 'Không gian sảnh tiếp đón trang trọng với nghệ thuật pha trà truyền thống xứ Cảng Thơm.'
+  },
+  {
+    id: 110,
+    order: 10,
+    src: 'assets/images/branches/fb_tongwei_branch_15.jpg',
+    title: 'Góc Thưởng Vị & Đèn Lồng Cổ Điển',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    desc: 'Kiến trúc hoa văn chạm khắc tinh xảo và ánh sáng đèn lồng ấm cúng chuẩn mực di sản Quảng Đông.'
+  },
+
+  // 3. Dimsum Nghệ Nhân
+  {
+    id: 7,
+    order: 11,
+    src: 'assets/images/concept/concept_7.jpg',
+    title: 'Tháp Xửng Dimsum Trúc Bốc Khói',
+    category: 'dimsum',
+    categoryName: '🥢 Dimsum Nghệ Nhân',
+    desc: 'Há cảo tôm sò điệp trong suốt, xíu mại tôm thịt gạch cua và bánh bao kim sa nóng hổi nghi ngút khói thơm.'
+  },
+  {
+    id: 8,
+    order: 12,
+    src: 'assets/images/concept/concept_8.jpg',
+    title: 'Set Điểm Tâm Sáng & Súp Khai Vị',
+    category: 'dimsum',
+    categoryName: '🥢 Dimsum Nghệ Nhân',
+    desc: 'Nét đẹp văn hóa ẩm thực thán trà trứ danh của xứ Cảng Thơm, mở đầu ngày mới ngập tràn năng lượng tích cực.'
+  },
+  {
+    id: 9,
+    order: 13,
+    src: 'assets/images/concept/concept_9.jpg',
+    title: 'Bánh Bao Đào Tiên Trường Thọ',
+    category: 'dimsum',
+    categoryName: '🥢 Dimsum Nghệ Nhân',
+    desc: 'Tác phẩm thủ công nặn tay cầu kỳ mang sắc hồng đào tiên, nhân hạt sen ngọt thanh biểu trưng cho phúc lộc dồi dào.'
+  },
+
+  // 4. Bàn Tiệc Đại Yến
+  {
+    id: 12,
+    order: 14,
+    src: 'assets/images/concept/concept_12.jpg',
+    title: 'Bàn Tiệc Toàn Bích 12 Món Mỹ Vị',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Sự cân bằng hoàn hảo giữa âm dương ngũ hành trong ẩm thực Quảng Đông đương đại.'
+  },
+  {
+    id: 2,
+    order: 15,
+    src: 'assets/images/concept/concept_2.jpg',
+    title: 'Văn Hóa Cố Sự & Bàn Mạt Chược',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Nét sinh hoạt hoài niệm tao nhã bên bàn mạt chược truyền thống và trà thơm.'
+  },
+  {
+    id: 3,
+    order: 16,
+    src: 'assets/images/concept/concept_3.jpg',
+    title: 'Mâm Cơm Quảng Đông & Trà Đạo',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Bàn ăn chuẩn vị gia đình với các món xào lửa lớn, thịt nướng xá xíu thơm ngát và trà thảo mộc ấm lòng.'
+  },
+  {
+    id: 4,
+    order: 17,
+    src: 'assets/images/concept/concept_4.jpg',
+    title: 'Đại Tiệc Sum Vầy Gia Tộc',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Thịt nướng mật ong, xiên nướng than hoa và các món khai vị cung đình.'
+  },
+  {
+    id: 6,
+    order: 18,
+    src: 'assets/images/concept/concept_6.jpg',
+    title: 'Bàn Tiệc Cơm Chiên Hoàng Kim & Canh Tiềm',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Thố cơm chiên tôm khô giòn rụm và canh tiềm thảo mộc cách thủy 4 tiếng đồng hồ.'
+  },
+  {
+    id: 10,
+    order: 19,
+    src: 'assets/images/concept/concept_10.jpg',
+    title: 'Đại Tiệc Hội Nghị & Tiệc Cưới',
+    category: 'banquet',
+    categoryName: '👑 Bàn Tiệc Đại Yến',
+    desc: 'Bố trí bàn tiệc tròn hoành tráng phục vụ sự kiện thượng khách và hôn lễ sang trọng.'
+  },
+
+  // 5. Món Quay & Nướng
+  {
+    id: 24,
+    order: 20,
+    src: 'assets/images/concept/concept_24.jpg',
+    title: 'Thịt Xá Xíu Nướng Mật Ong Rừng',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Món signature của TongWei: thịt ba chỉ rút sườn nướng mật ong vàng ruộm óng ánh thơm phức.'
+  },
+  {
+    id: 5,
+    order: 21,
+    src: 'assets/images/concept/concept_5.jpg',
+    title: 'Thịt Nướng Xá Xíu & Trà Cổ Thụ',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Lớp thịt nướng xém cạnh mật ong rừng chấm cùng tương ngọt đặc chế, nhấp ngụm trà Thiết Quan Âm.'
+  },
+  {
+    id: 11,
+    order: 22,
+    src: 'assets/images/concept/concept_11.jpg',
+    title: 'Mỹ Vị Nướng Quay & Dimsum Đầy Đủ',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Vịt quay da giòn, sườn nướng mật ong và dimsum tươi mới đậm đà phong vị xứ Cảng.'
+  },
+  {
+    id: 22,
+    order: 23,
+    src: 'assets/images/concept/concept_22.jpg',
+    title: 'Đậu Que Xào Thịt Xá Xíu Bóng Bẩy',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Chảo lửa lớn giữ trọn sắc xanh và độ giòn ngọt tự nhiên hòa quyện sốt xá xíu.'
+  },
+  {
+    id: 23,
+    order: 24,
+    src: 'assets/images/concept/concept_23.jpg',
+    title: 'Rau Củ Tươi Xào Tôm Khô Tàu Xì',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Hương vị khí chảo đặc trưng thơm lừng từ đậu tàu xì lên men tự nhiên và tôm khô hảo hạng.'
+  },
+  {
+    id: 25,
+    order: 25,
+    src: 'assets/images/concept/concept_25.jpg',
+    title: 'Xá Xíu Phủ Ớt Tươi & Hành Hoa',
+    category: 'bbq',
+    categoryName: '🍗 Món Quay & Nướng',
+    desc: 'Sắc đỏ mang lại may mắn, kích thích trọn vẹn vị giác thực khách với vị ngọt thơm đậm đà.'
+  },
+
+  // 6. Thức Uống
+  {
+    id: 1,
+    order: 26,
+    src: 'assets/images/concept/concept_1.jpg',
+    title: 'Bộ Sưu Tập Thức Uống Nhiệt Đới',
+    category: 'drinks',
+    categoryName: '🍵 Thức Uống',
+    desc: 'Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn.'
+  },
+
+  // 7. Khai Vị & Súp
+  {
+    id: 13,
+    order: 27,
+    src: 'assets/images/concept/concept_13.jpg',
+    title: 'Súp Bí Đỏ Hạt Sen Hoàng Kim',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Chất súp sánh mịn óng ánh vàng, vị ngọt tự nhiên từ bí đỏ hữu cơ kết hợp hạt sen ninh nhừ bổ dưỡng.'
+  },
+  {
+    id: 14,
+    order: 28,
+    src: 'assets/images/concept/concept_14.jpg',
+    title: 'Mộc Nhĩ Đen Ngâm Chua Ngọt',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Món khai vị giòn sần sật thanh mát được ngâm cùng giấm đen lâu năm và ớt cay nhẹ kích thích trọn vẹn vị giác.'
+  },
+  {
+    id: 15,
+    order: 29,
+    src: 'assets/images/concept/concept_15.jpg',
+    title: 'Cánh Vịt Tiềm Cay Thảo Mộc',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Thấm đẫm 12 vị thảo mộc cùng ớt khô Tứ Xuyên, màu cánh gián hấp dẫn, thơm lừng cay dịu.'
+  },
+  {
+    id: 16,
+    order: 30,
+    src: 'assets/images/concept/concept_16.jpg',
+    title: 'Cổ Vịt Rút Xương Sốt Tiềm Đậm Đà',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Món nhắm ẩm thực truyền thống với thớ thịt săn chắc, gia vị ngấm sâu đến từng thớ thịt.'
+  },
+  {
+    id: 17,
+    order: 31,
+    src: 'assets/images/concept/concept_17.jpg',
+    title: 'Đậu Hũ Non Trứng Bắc Thảo Sốt Cay',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Sự hòa quyện tuyệt vời giữa đậu hũ non mát lành và trứng bắc thảo bùi béo ngậy sốt ớt gừng thanh vị.'
+  },
+  {
+    id: 18,
+    order: 32,
+    src: 'assets/images/concept/concept_18.jpg',
+    title: 'Đặc Sản Trứng Bắc Thảo Ngũ Vị',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Thanh lọc vị giác kinh điển trong bàn tiệc sang trọng chuẩn vị Hồng Kông.'
+  },
+  {
+    id: 19,
+    order: 33,
+    src: 'assets/images/concept/concept_19.jpg',
+    title: 'Món Tiềm Cay Cổ Truyền',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Màu hổ phách óng ánh từ tương già thượng phẩm lên men tự nhiên làm ấm lòng thực khách.'
+  },
+  {
+    id: 20,
+    order: 34,
+    src: 'assets/images/concept/concept_20.jpg',
+    title: 'Bộ Đôi Khai Vị Thanh Nhã',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Khởi đầu bữa tiệc thanh lịch chuẩn phong vị cố sự và trà đạo tao nhã.'
+  },
+  {
+    id: 21,
+    order: 35,
+    src: 'assets/images/concept/concept_21.jpg',
+    title: 'Súp Dưỡng Nhan Thảo Mộc Cung Đình',
+    category: 'appetizer',
+    categoryName: 'Khai Vị & Súp',
+    desc: 'Món canh bồi bổ nguyên khí, dưỡng ẩm làn da dành riêng cho phái đẹp.'
+  }
+];
+
+// Curated order for 'all' tab: balanced alternation of space and culinary creations
+const curatedAllOrder = [
+  101, // NTT 1 - Hero NTT
+  7,   // Dimsum Tháp Xửng Dimsum Trúc Bốc Khói
+  106, // HK 1 - Flagship 68A Trần Hưng Đạo
+  12,  // Banquet Bàn Tiệc Toàn Bích 12 Món
+  102, // NTT 2 - Phòng Ăn Gỗ Ấm Cúng
+  24,  // BBQ Thịt Xá Xíu Nướng Mật Ong Rừng
+  107, // HK 2 - Phòng Tiệc VIP Hoàng Kim
+  1,   // Drinks Bộ Sưu Tập Thức Uống Nhiệt Đới
+  103, // NTT 3 - Bàn Tiệc Sum Vầy
+  8,   // Dimsum Điểm Tâm Sáng
+  108, // HK 3 - Khu Bàn Ăn Gia Đình
+  5,   // BBQ Thịt Nướng & Trà
+  104, // NTT 4 - Góc Bàn Đôi View Kính
+  9,   // Dimsum Bánh Bao Đào Tiên
+  109, // HK 4 - Sảnh Tiếp Đón
+  11,  // BBQ Mỹ Vị Nướng Quay
+  105, // NTT 5 - Decor Đèn Lồng Mỹ Vị
+  110, // HK 5 - Góc Thưởng Vị
+  2, 3, 4, 6, 10, 22, 23, 25, 13, 14, 15, 16, 17, 18, 19, 20, 21
+];
+
+// Sort DEFAULT_MASTER_ALBUM according to curatedAllOrder
+DEFAULT_MASTER_ALBUM.sort((a, b) => {
+  const idxA = curatedAllOrder.indexOf(a.id);
+  const idxB = curatedAllOrder.indexOf(b.id);
+  return (idxA !== -1 ? idxA : 999) - (idxB !== -1 ? idxB : 999);
+});
+
+let masterAlbum = [...DEFAULT_MASTER_ALBUM];
+
+// Sync with Admin Media Management (if modified in Admin Portal, sanitize Duy Tan)
+try {
+  const savedAdminPhotos = localStorage.getItem('tongwei_photos') || localStorage.getItem('tongwei_space_gallery');
+  if (savedAdminPhotos) {
+    const parsed = JSON.parse(savedAdminPhotos);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      masterAlbum = parsed.filter(it => it.category !== 'space_dt' && !(it.title && it.title.includes('Duy Tân')));
+    }
+  }
+} catch (e) {
+  console.warn('Fallback to DEFAULT_MASTER_ALBUM:', e);
+}
+
+// Hero Showcase Gallery Data (4 Masterpiece Photos)
+const heroGalleryData = [
+  {
+    id: 'hero-1',
+    src: 'assets/images/home/home_gallery_1.jpg',
+    title: 'Xửng Dimsum Nghệ Nhân Bốc Khói',
+    categoryName: 'Mỹ Vị Thủ Công',
+    desc: 'Xửng dimsum nghệ nhân bốc khói nghi ngút mang dấu ấn thương hiệu TongWei, kết tinh tinh hoa ẩm thực Quảng Đông truyền thống với lớp vỏ mỏng dai và nhân tươi đậm đà.'
+  },
+  {
+    id: 'hero-2',
+    src: 'assets/images/home/home_gallery_2.jpg',
+    title: 'Bàn Tiệc Đại Yến Toàn Bích 12 Món',
+    categoryName: 'Bàn Tiệc Đại Yến',
+    desc: 'Bàn tiệc đại yến toàn bích 12 món đặc sắc chuẩn vị Quảng Đông, giao thoa trọn vẹn giữa sắc – hương – vị và cảm xúc sum vầy ấm cúng gia đình.'
+  },
+  {
+    id: 'hero-3',
+    src: 'assets/images/home/home_gallery_3.jpg',
+    title: 'Ngỗng Quay Triều Châu & Bàn Mạt Chược',
+    categoryName: 'Món Quay & Cố Sự',
+    desc: 'Ngỗng quay Triều Châu da giòn óng ả, cháo dưỡng sinh ngọt thanh bên bàn mạt chược văn hóa truyền thống tao nhã của người Quảng Đông.'
+  },
+  {
+    id: 'hero-4',
+    src: 'assets/images/home/home_gallery_4.jpg',
+    title: 'Bộ Sưu Tập Đồ Uống Nhiệt Đới Thượng Phẩm',
+    categoryName: 'Thức Uống Thượng Phẩm',
+    desc: 'Bộ sưu tập thức uống nhiệt đới thượng phẩm thanh mát kết hợp thảo mộc thiên nhiên, thanh nhiệt và giải ngấy, tròn đầy mỹ vị bữa tiệc.'
+  }
+];
+
+window.switchHeroImage = function(src, index) {
+  state.currentHeroIndex = index;
+  const mainImg = document.getElementById('heroMainImage');
+  const tag = document.getElementById('heroImageTag');
+  const caption = document.getElementById('heroImageCaption');
+  const frame = document.getElementById('heroMainFrame');
+  const data = heroGalleryData[index];
+
+  if (mainImg && data) {
+    mainImg.style.opacity = '0.3';
+    setTimeout(() => {
+      mainImg.src = data.src;
+      mainImg.alt = data.title;
+      mainImg.style.opacity = '1';
+    }, 120);
+  }
+  if (tag && data) tag.textContent = data.categoryName;
+  if (caption && data) caption.textContent = data.title;
+  if (frame && data) frame.title = 'Xem ảnh ' + data.title + ' (Phóng to)';
+
+  document.querySelectorAll('.hero-thumb-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === index);
+  });
+};
+
+window.openHeroLightbox = function() {
+  const data = heroGalleryData[state.currentHeroIndex || 0];
+  if (!data) return;
+  state.isViewingMenuInLightbox = false;
+  state.isViewingHeroInLightbox = true;
+  state.currentHeroLightboxIndex = state.currentHeroIndex || 0;
+
+  const modal = document.getElementById('lightboxModal');
+  const img = document.getElementById('lightboxImg');
+  const counter = document.getElementById('lightboxCounter');
+  const cat = document.getElementById('lightboxCategory');
+  const caption = document.getElementById('lightboxCaption');
+  const desc = document.getElementById('lightboxDesc');
+
+  if (img) img.src = data.src;
+  if (counter) counter.textContent = 'Hero Showcase ' + (state.currentHeroLightboxIndex + 1) + ' / ' + heroGalleryData.length;
+  if (cat) cat.textContent = data.categoryName;
+  if (caption) caption.textContent = data.title;
+  if (desc) desc.textContent = data.desc;
+
+  if (modal) modal.classList.add('active');
+};
+
+window.switchBranchPhoto = function(branchCode, src, caption, idx, btn) {
+  const imgEl = document.getElementById('branchMainImg' + branchCode);
+  const capEl = document.getElementById('branchCap' + branchCode);
+  const mainWrap = imgEl ? imgEl.closest('.branch-gallery-main') : null;
+
+  if (imgEl) {
+    imgEl.style.opacity = '0.3';
+    setTimeout(() => {
+      imgEl.src = src;
+      imgEl.alt = caption;
+      imgEl.style.opacity = '1';
+    }, 120);
+  }
+  if (capEl) capEl.textContent = caption;
+  if (mainWrap) {
+    mainWrap.setAttribute('onclick', "openMasterAlbum('" + src + "')");
+  }
+
+  // Update active state in parent bar
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.branch-thumb-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+};
 
 // DOM Elements
 const elements = {
@@ -553,39 +938,97 @@ function updateCartUI() {
 function renderLookbookGrid() {
   if (!elements.lookbookGrid) return;
 
-  let filtered = masterAlbum;
-  if (state.lookbookCategory !== 'all') {
-    filtered = masterAlbum.filter(item => item.category === state.lookbookCategory);
+  // Space Gallery Data: Strictly Real Restaurant Spaces (5 for NTT, 5 for HK)
+  let spacePhotos = [...REAL_SPACE_PHOTOS];
+
+  // Try sync with admin space gallery if valid
+  try {
+    const saved = localStorage.getItem('tongwei_space_gallery') || localStorage.getItem('tongwei_photos');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const spaceOnly = parsed.filter(it => 
+          (it.category === 'space_ntt' || it.category === 'space_hk' || (it.src && (it.src.includes('nguyen_thi_thap') || it.src.includes('branch')))) &&
+          it.category !== 'space_dt' && !(it.title && it.title.includes('Duy Tân'))
+        );
+        // Only use parsed if it has sufficient branch photos
+        if (spaceOnly.length >= 8) {
+          spacePhotos = spaceOnly;
+        }
+      }
+    }
+  } catch (e) {}
+
+  // Update masterAlbum for Lightbox slider to strictly contain space photos
+  masterAlbum = spacePhotos;
+
+  const cat = state.lookbookCategory || 'all';
+  let filtered = spacePhotos;
+
+  if (cat === 'space_ntt') {
+    filtered = spacePhotos.filter(it => it.category === 'space_ntt' || (it.src && it.src.includes('nguyen_thi_thap')));
+    elements.lookbookGrid.className = 'lookbook-grid editorial-mosaic-ntt';
+  } else if (cat === 'space_hk') {
+    filtered = spacePhotos.filter(it => it.category === 'space_hk' || (it.src && !it.src.includes('nguyen_thi_thap')));
+    elements.lookbookGrid.className = 'lookbook-grid editorial-mosaic-hk';
+  } else {
+    // 'all' - Show both branches in space-all-grid
+    filtered = spacePhotos;
+    elements.lookbookGrid.className = 'lookbook-grid space-all-grid';
   }
 
-  // Limit to 8 items unless expanded
-  const displayCount = state.isLookbookExpanded ? filtered.length : Math.min(8, filtered.length);
-  const itemsToShow = filtered.slice(0, displayCount);
+  // Ensure state.currentAlbumList points to filtered
+  state.currentAlbumList = filtered;
 
-  elements.lookbookGrid.innerHTML = itemsToShow.map(item => {
-    const originalIndex = masterAlbum.findIndex(it => it.id === item.id);
+  elements.lookbookGrid.innerHTML = filtered.map((item, index) => {
+    let layoutClass = '';
+    if (cat === 'space_ntt') {
+      if (index === 0) layoutClass = 'mosaic-item-hero';
+      else if (index === 1) layoutClass = 'mosaic-item-side mosaic-item-side-1';
+      else if (index === 2) layoutClass = 'mosaic-item-side mosaic-item-side-2';
+      else if (index === 3) layoutClass = 'mosaic-item-bottom mosaic-item-bottom-1';
+      else if (index === 4) layoutClass = 'mosaic-item-bottom mosaic-item-bottom-2';
+    } else if (cat === 'space_hk') {
+      if (index === 0) layoutClass = 'mosaic-hk-hero';
+      else if (index === 1) layoutClass = 'mosaic-hk-side-1';
+      else if (index === 2) layoutClass = 'mosaic-hk-side-2';
+      else if (index === 3) layoutClass = 'mosaic-hk-bottom-1';
+      else if (index === 4) layoutClass = 'mosaic-hk-bottom-2';
+    } else {
+      // cat === 'all'
+      if (index === 0) layoutClass = 'space-item-ntt-hero';
+      else if (index === 1) layoutClass = 'space-item-ntt-side-1';
+      else if (index === 2) layoutClass = 'space-item-ntt-side-2';
+      else if (index === 3) layoutClass = 'space-item-ntt-bottom-1';
+      else if (index === 4) layoutClass = 'space-item-ntt-bottom-2';
+      else if (index === 5) layoutClass = 'space-item-hk-hero';
+      else if (index === 6) layoutClass = 'space-item-hk-side-1';
+      else if (index === 7) layoutClass = 'space-item-hk-side-2';
+      else if (index === 8) layoutClass = 'space-item-hk-bottom-1';
+      else if (index === 9) layoutClass = 'space-item-hk-bottom-2';
+    }
+
     return `
-      <div class="lookbook-item" onclick="openMasterAlbum(${originalIndex})">
+      <div class="lookbook-item ${layoutClass}" onclick="openMasterAlbum(${index})" title="Xem ảnh phóng to: ${item.title}">
         <img src="${item.src}" alt="${item.title}" loading="lazy">
         <div class="lookbook-overlay">
-          <span class="lookbook-tag">${item.categoryName}</span>
-          <h4 class="lookbook-title">${item.title}</h4>
+          <div class="lookbook-overlay-top">
+            <span class="lookbook-tag tag-gold">${item.categoryName}</span>
+            <span class="lookbook-zoom-badge" title="Phóng to ảnh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+          <div class="lookbook-overlay-bottom">
+            <h4 class="lookbook-title">${item.title}</h4>
+            ${item.desc ? `<p class="lookbook-desc-hint">${item.desc}</p>` : ''}
+          </div>
         </div>
       </div>
     `;
   }).join('');
 
   if (elements.toggleLookbookBtn) {
-    const remaining = filtered.length - displayCount;
-    if (filtered.length <= 8) {
-      elements.toggleLookbookBtn.style.display = 'none';
-    } else {
-      elements.toggleLookbookBtn.style.display = 'inline-flex';
-      const icon = document.getElementById('lbToggleIcon');
-      const text = document.getElementById('lbToggleText');
-      if (text) text.textContent = state.isLookbookExpanded ? 'Thu Gọn Ảnh Trên Trang' : `Xem Thêm ${remaining} Ảnh`;
-      if (icon) icon.textContent = state.isLookbookExpanded ? '▴' : '▾';
-    }
+    elements.toggleLookbookBtn.style.display = 'none'; // All 10 space photos always visible in full glory!
   }
 }
 
@@ -594,20 +1037,57 @@ window.toggleLookbookExpand = function() {
   renderLookbookGrid();
 };
 
-// 7. Master Lightbox Modal Slider (Full-Screen Carousel for all 25 images)
-window.openMasterAlbum = function(index) {
+// 7. Master Lightbox Modal Slider (Full-Screen Carousel for Gallery)
+window.openMasterAlbum = function(target) {
   state.isViewingMenuInLightbox = false;
-  state.currentAlbumIndex = (index >= 0 && index < masterAlbum.length) ? index : 0;
+  state.isViewingHeroInLightbox = false;
+
+  let activeList = masterAlbum;
+  const currentCat = state.lookbookCategory || 'all';
+
+  if (currentCat !== 'all') {
+    const filtered = masterAlbum.filter(item => {
+      if (currentCat === 'space_ntt') return item.category === 'space_ntt' || (item.src && item.src.includes('nguyen_thi_thap'));
+      if (currentCat === 'space_hk') return item.category === 'space_hk' || (item.src && (item.src.includes('branch_1') || item.src.includes('branch_2') || item.src.includes('branch_13') || item.src.includes('branch_14') || item.src.includes('branch_15')));
+      return item.category === currentCat;
+    });
+    if (filtered.length > 0) activeList = filtered;
+  }
+  state.currentAlbumList = activeList;
+
+  let foundIndex = 0;
+  if (typeof target === 'string') {
+    const idx = activeList.findIndex(it => it.src && it.src.includes(target));
+    if (idx !== -1) {
+      foundIndex = idx;
+    } else {
+      const idxAll = masterAlbum.findIndex(it => it.src && it.src.includes(target));
+      if (idxAll !== -1) {
+        state.currentAlbumList = masterAlbum;
+        foundIndex = idxAll;
+      }
+    }
+  } else if (typeof target === 'number') {
+    if (target >= 0 && target < activeList.length) {
+      foundIndex = target;
+    } else if (target >= 0 && target < masterAlbum.length) {
+      state.currentAlbumList = masterAlbum;
+      foundIndex = target;
+    }
+  }
+
+  state.currentAlbumIndex = foundIndex;
   updateLightboxContent();
   if (elements.lightboxModal) elements.lightboxModal.classList.add('active');
 };
 
 function updateLightboxContent() {
-  const item = masterAlbum[state.currentAlbumIndex];
+  const list = state.currentAlbumList || masterAlbum;
+  const item = list[state.currentAlbumIndex];
   if (!item) return;
 
   if (elements.lightboxImg) elements.lightboxImg.src = item.src;
-  if (elements.lightboxCounter) elements.lightboxCounter.textContent = `Ảnh ${state.currentAlbumIndex + 1} / ${masterAlbum.length}`;
+  if (elements.lightboxCounter) elements.lightboxCounter.textContent = 'Ảnh ' + (state.currentAlbumIndex + 1) + ' / ' + list.length;
   if (elements.lightboxCategory) elements.lightboxCategory.textContent = item.categoryName;
   if (elements.lightboxCaption) elements.lightboxCaption.textContent = item.title;
   if (elements.lightboxDesc) elements.lightboxDesc.textContent = item.desc;
@@ -619,7 +1099,14 @@ window.prevAlbumPhoto = function() {
     openMenuLightboxModal(state.currentMenuLightboxIndex);
     return;
   }
-  state.currentAlbumIndex = (state.currentAlbumIndex - 1 + masterAlbum.length) % masterAlbum.length;
+  if (state.isViewingHeroInLightbox) {
+    state.currentHeroLightboxIndex = (state.currentHeroLightboxIndex - 1 + heroGalleryData.length) % heroGalleryData.length;
+    switchHeroImage(heroGalleryData[state.currentHeroLightboxIndex].src, state.currentHeroLightboxIndex);
+    openHeroLightbox();
+    return;
+  }
+  const list = state.currentAlbumList || masterAlbum;
+  state.currentAlbumIndex = (state.currentAlbumIndex - 1 + list.length) % list.length;
   updateLightboxContent();
 };
 
@@ -629,7 +1116,14 @@ window.nextAlbumPhoto = function() {
     openMenuLightboxModal(state.currentMenuLightboxIndex);
     return;
   }
-  state.currentAlbumIndex = (state.currentAlbumIndex + 1) % masterAlbum.length;
+  if (state.isViewingHeroInLightbox) {
+    state.currentHeroLightboxIndex = (state.currentHeroLightboxIndex + 1) % heroGalleryData.length;
+    switchHeroImage(heroGalleryData[state.currentHeroLightboxIndex].src, state.currentHeroLightboxIndex);
+    openHeroLightbox();
+    return;
+  }
+  const list = state.currentAlbumList || masterAlbum;
+  state.currentAlbumIndex = (state.currentAlbumIndex + 1) % list.length;
   updateLightboxContent();
 };
 
@@ -921,51 +1415,6 @@ function setupEventListeners() {
     dateInput.min = `${yyyy}-${mm}-${dd}`;
   }
 
-  // Booking Form Submission
-  if (elements.bookingForm) {
-    elements.bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('bookName')?.value?.trim() || 'Khách đặt bàn';
-      const phone = document.getElementById('bookPhone')?.value?.trim() || '';
-      const guests = document.getElementById('bookGuests')?.value || '4 Khách';
-      const date = document.getElementById('bookDate')?.value || '';
-      const time = document.getElementById('bookTime')?.value || '';
-      const branchVal = document.getElementById('bookBranch')?.value || 'Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm';
-      const areaVal = document.getElementById('bookArea')?.value || 'Sảnh Chính Nhà Hàng';
-
-      // Persist to Admin Booking inbox in localStorage
-      try {
-        const bookings = JSON.parse(localStorage.getItem('tongwei_bookings') || '[]');
-        const preOrderText = state.cart.length > 0 
-          ? state.cart.map(i => `${i.dish.name} (x${i.quantity})`).join(', ') 
-          : 'Gọi món trực tiếp tại bàn';
-        bookings.unshift({
-          id: 'BK-' + Date.now().toString().slice(-4),
-          name: name,
-          customer: name,
-          phone: phone,
-          date: date,
-          time: time,
-          guests: guests,
-          branch: branchVal,
-          area: areaVal,
-          preOrder: preOrderText,
-          status: 'pending'
-        });
-        localStorage.setItem('tongwei_bookings', JSON.stringify(bookings));
-      } catch (err) {
-        console.warn('Cannot persist booking to localStorage', err);
-      }
-
-      showToast(`Cảm ơn Quý khách <b>${name}</b>! Hotline cơ sở sẽ gọi trực tiếp đến số <b>${phone}</b> trong 3 phút để kiểm tra sơ đồ bàn thực tế và xác nhận giữ chỗ cho Quý khách.`, 'success');
-      elements.bookingForm.reset();
-      
-      if (state.cart.length > 0) {
-        showToast(`Đã đồng bộ ${state.cart.length} món ăn yêu thích vào hồ sơ đặt bàn của Quý khách!`, 'success');
-      }
-    });
-  }
-
   // Franchise Form Submission
   if (elements.franchiseForm) {
     elements.franchiseForm.addEventListener('submit', (e) => {
@@ -1043,135 +1492,208 @@ window.proceedToBookingWithCart = function() {
   const targetSection = document.getElementById('dat-ban');
   if (targetSection) {
     targetSection.scrollIntoView({ behavior: 'smooth' });
-    const notesInput = document.getElementById('bookNotes');
-    if (notesInput && state.cart.length > 0) {
-      const itemsSummary = state.cart.map(it => `${it.dish.name} (x${it.quantity})`).join(', ');
-      notesInput.value = `[Thực đơn gọi trước]: ${itemsSummary}`;
+    if (typeof showToast === 'function') {
+      showToast('Vui lòng chọn cơ sở gần nhất và bấm gọi Hotline để đặt bàn ngay trong 1 phút!', 'info');
     }
   }
 };
 
-// Render Branches dynamically from localStorage (tongwei_branches)
+// Render Branches dynamically from localStorage (tongwei_branches) with interactive galleries
 function renderBranches() {
   const container = document.getElementById('branchesContainer');
-  const select = document.getElementById('bookBranch');
-  const stored = localStorage.getItem('tongwei_branches');
+  const defaultBranches = [
+    {
+      id: 'CS-01',
+      stt: 1,
+      name: 'Nhà Hàng TongWei - Cơ Sở 1: Hoàn Kiếm (Flagship)',
+      shortName: 'Cơ Sở 1 (Hoàn Kiếm)',
+      address: '68A Trần Hưng Đạo, P. Cửa Nam, Hoàn Kiếm, Hà Nội',
+      phone: '039 736 0228 / 0989 123 456',
+      hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+      scale: '180 Chỗ ngồi • 4 Phòng VIP Hoàng Kim',
+      status: 'active'
+    },
+    {
+      id: 'CS-02',
+      stt: 2,
+      name: 'Nhà Hàng TongWei - Cơ Sở 2: Nguyễn Thị Thập (Cầu Giấy)',
+      shortName: 'Cơ Sở 2 (Nguyễn Thị Thập)',
+      address: '5N7A Nguyễn Thị Thập, P. Yên Hoà, Cầu Giấy, Hà Nội',
+      phone: '032 889 5693 / 0986 688 866',
+      hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+      scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược',
+      status: 'active'
+    }
+  ];
+
   let branches = [];
+  const stored = localStorage.getItem('tongwei_branches');
   if (stored) {
     try {
       branches = JSON.parse(stored);
-    } catch (e) {}
-  }
-  if (!branches || branches.length === 0) {
-    branches = [
-      {
-        id: 'CS-03',
-        name: 'Nhà Hàng TongWei - Cơ Sở Nguyễn Thị Thập (Soft Opening)',
-        address: '5N7A Nguyễn Thị Thập, Phường Yên Hòa, Cầu Giấy, Hà Nội',
-        phone: '0986 688 866 / 024 3999 8888',
-        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
-        scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược • Tặng 01 Xửng Đại Long Bao (15.10 - 30.10)',
-        status: 'active'
-      },
-      {
-        id: 'CS-01',
-        name: 'Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm (Flagship)',
-        address: '68A Trần Hưng Đạo, Phường Cửa Nam, Hoàn Kiếm, Hà Nội',
-        phone: '0989 123 456 / 024 3987 6543',
-        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
-        scale: '180 Chỗ ngồi • 4 Phòng VIP Hoàng Kim',
-        status: 'active'
-      },
-      {
-        id: 'CS-02',
-        name: 'Nhà Hàng TongWei - Cơ Sở Cầu Giấy',
-        address: '12 Duy Tân, Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội',
-        phone: '0988 567 890 / 024 3888 9999',
-        hours: '10:00 - 14:00 | 17:30 - 22:30',
-        scale: '140 Chỗ ngồi • 3 Phòng VIP',
-        status: 'active'
+      if (Array.isArray(branches)) {
+        // Strictly filter out any CS-03 or Duy Tân
+        branches = branches.filter(b => b.id !== 'CS-03' && !b.name?.includes('Duy Tân') && !b.address?.includes('Duy Tân'));
       }
-    ];
-  } else {
-    // If branches exist from older localStorage, make sure CS-03 (Nguyen Thi Thap) is included
-    const hasNTT = branches.some(b => b.id === 'CS-03' || (b.address && b.address.includes('Nguyễn Thị Thập')));
-    if (!hasNTT) {
-      branches.unshift({
-        id: 'CS-03',
-        name: 'Nhà Hàng TongWei - Cơ Sở Nguyễn Thị Thập (Soft Opening)',
-        address: '5N7A Nguyễn Thị Thập, Phường Yên Hòa, Cầu Giấy, Hà Nội',
-        phone: '0986 688 866 / 024 3999 8888',
-        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
-        scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược • Tặng 01 Xửng Đại Long Bao (15.10 - 30.10)',
-        status: 'active'
-      });
-      try {
-        localStorage.setItem('tongwei_branches', JSON.stringify(branches));
-      } catch (e) {}
+    } catch (e) {
+      branches = [];
     }
   }
 
-  // Populate Select Dropdown in Booking Form
-  if (select) {
-    select.innerHTML = branches.map(b => `
-      <option value="${b.name}">
-        ${b.name} (${b.address.split(',')[0]}) ${b.status === 'upcoming' ? ' - [Sắp khai trương]' : ''}
-      </option>
-    `).join('');
+  if (!branches || branches.length === 0) {
+    branches = defaultBranches;
+    try {
+      localStorage.setItem('tongwei_branches', JSON.stringify(branches));
+    } catch (e) {}
+  } else {
+    // Ensure both CS-01 and CS-02 are present and have correct hotlines
+    defaultBranches.forEach(defB => {
+      const idx = branches.findIndex(b => b.id === defB.id);
+      if (idx === -1) {
+        branches.push(defB);
+      } else {
+        if (!branches[idx].stt) branches[idx].stt = defB.stt;
+        if (defB.id === 'CS-01' && (!branches[idx].phone || !branches[idx].phone.includes('039 736 0228'))) {
+          branches[idx].phone = defB.phone;
+        }
+        if (defB.id === 'CS-02' && (!branches[idx].phone || !branches[idx].phone.includes('032 889 5693'))) {
+          branches[idx].phone = defB.phone;
+        }
+      }
+    });
+    try {
+      localStorage.setItem('tongwei_branches', JSON.stringify(branches));
+    } catch (e) {}
   }
 
-  // Populate Branches Cards on main website
+  // Sort strictly by STT
+  branches.sort((a, b) => Number(a.stt || 0) - Number(b.stt || 0));
+
+  // Populate booking form select dropdown if present
+  const bookSelect = document.getElementById('bookBranch');
+  if (bookSelect) {
+    bookSelect.innerHTML = branches.map(b => `<option value="${b.name}">${b.name} (${b.address.split(',')[0]})</option>`).join('');
+  }
+
+  // Render cards in container with rich interactive galleries
   if (container) {
-    container.innerHTML = `
-      ${branches.map(b => `
-        <div class="branch-card">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <h4 style="margin: 0; color: var(--color-indigo-dark); font-size: 1.15rem;">${b.name}</h4>
-            <span style="background: ${b.status === 'upcoming' ? 'rgba(217,119,6,0.1)' : 'rgba(22,163,74,0.1)'}; color: ${b.status === 'upcoming' ? '#d97706' : '#16a34a'}; border: 1px solid currentColor; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); white-space: nowrap;">
-              ${b.status === 'upcoming' ? '⏳ Sắp Khai Trương' : '✔ Đang Hoạt Động'}
-            </span>
-          </div>
-          <div class="branch-detail">
-            <span>📍</span>
-            <span>${b.address}</span>
-          </div>
-          <div class="branch-detail">
-            <span>📞</span>
-            <span>Hotline Đặt Bàn: <b style="color: var(--color-brand-red);">${b.phone}</b></span>
-          </div>
-          <div class="branch-detail">
-            <span>⏰</span>
-            <span>Giờ phục vụ: ${b.hours}</span>
-          </div>
-          ${b.scale ? `<div class="branch-detail" style="font-size: 0.85rem; color: var(--color-text-secondary);"><span>🏛️</span><span>${b.scale}</span></div>` : ''}
-          <div style="margin-top: 0.85rem;">
-            <a href="tel:${(b.phone || '0989123456').split('/')[0].trim().replace(/\s+/g, '')}" class="btn btn-primary branch-call-btn">
-              📞 Gọi Đặt Bàn: ${(b.phone || '').split('/')[0].trim()}
-            </a>
+    const galleryCS01 = `
+      <div class="branch-gallery-widget" id="galleryWidgetCS01">
+        <div class="branch-gallery-main" onclick="openMasterAlbum('fb_tongwei_branch_2.png')" title="Bấm để xem ảnh phóng to toàn màn hình">
+          <img id="branchMainImgCS01" src="assets/images/branches/fb_tongwei_branch_2.png" alt="Mặt Tiền & Đại Sảnh Flagship 68A Trần Hưng Đạo" class="branch-main-img">
+          <div class="branch-gallery-overlay">
+            <span class="branch-gallery-pill" id="branchCapCS01">Đại Sảnh Flagship Hoàn Kiếm</span>
+            <span class="branch-gallery-zoom">🔍 Phóng to</span>
           </div>
         </div>
-      `).join('')}
-
-      <div class="branch-card" style="background: rgba(29, 61, 116, 0.03); border: 1.5px dashed var(--color-indigo);">
-        <h4>Xưởng Chế Biến Trung Tâm HACCP & ISO 22000</h4>
-        <div class="branch-detail">
-          <span>🏭</span>
-          <span>Cụm Công Nghiệp Thực Phẩm Sạch Hà Nội</span>
+        <div class="branch-thumbs-bar" role="tablist" aria-label="Bộ sưu tập ảnh Cơ Sở 1">
+          <button type="button" class="branch-thumb-item active" onclick="switchBranchPhoto('CS01', 'assets/images/branches/fb_tongwei_branch_2.png', 'Đại Sảnh Flagship 68A Trần Hưng Đạo', 0, this)" title="Đại Sảnh Flagship">
+            <img src="assets/images/branches/fb_tongwei_branch_2.png" alt="Flagship" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/fb_tongwei_branch_1.jpg', 'Phòng Tiệc VIP Hoàng Kim', 1, this)" title="Phòng VIP Hoàng Kim">
+            <img src="assets/images/branches/fb_tongwei_branch_1.jpg" alt="Phòng VIP" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/fb_tongwei_branch_13.jpg', 'Khu Bàn Ăn Gia Đình Hoàn Kiếm', 2, this)" title="Khu Bàn Ăn Gia Đình">
+            <img src="assets/images/branches/fb_tongwei_branch_13.jpg" alt="Bàn Ăn" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/fb_tongwei_branch_14.jpg', 'Sảnh Tiếp Đón & Quầy Trà Đạo', 3, this)" title="Sảnh Trà Đạo">
+            <img src="assets/images/branches/fb_tongwei_branch_14.jpg" alt="Trà Đạo" loading="lazy">
+          </button>
         </div>
-        <div class="branch-detail">
-          <span>📦</span>
-          <span>Cung ứng 28+ sản phẩm cấp đông IQF -40°C cho toàn hệ thống</span>
-        </div>
-        <div class="branch-detail">
-          <span>🤝</span>
-          <span>Phòng Cung Ứng & Hợp Tác Sỉ: <b style="color: var(--color-indigo);">0912 888 999</b></span>
-        </div>
-      </div>
-
-      <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border);">
-        <img src="assets/images/branding/fb_cover_banner.png" alt="TongWei Brand Cover" style="width: 100%; height: 160px; object-fit: cover;">
       </div>
     `;
+
+    const galleryCS02 = `
+      <div class="branch-gallery-widget" id="galleryWidgetCS02">
+        <div class="branch-gallery-main" onclick="openMasterAlbum('nguyen_thi_thap_fb_1.jpg')" title="Bấm để xem ảnh phóng to toàn màn hình">
+          <img id="branchMainImgCS02" src="assets/images/branches/nguyen_thi_thap_fb_1.jpg" alt="Không Gian Giao Hoà Mới — TongWei Nguyễn Thị Thập" class="branch-main-img">
+          <div class="branch-gallery-overlay">
+            <span class="branch-gallery-pill" id="branchCapCS02">Không Gian Giao Hoà Mới</span>
+            <span class="branch-gallery-zoom">🔍 Phóng to</span>
+          </div>
+        </div>
+        <div class="branch-thumbs-bar" role="tablist" aria-label="Bộ sưu tập ảnh Cơ Sở 2">
+          <button type="button" class="branch-thumb-item active" onclick="switchBranchPhoto('CS02', 'assets/images/branches/nguyen_thi_thap_fb_1.jpg', 'Không Gian Giao Hoà Mới — Nguyễn Thị Thập', 0, this)" title="Không Gian Giao Hoà Mới">
+            <img src="assets/images/branches/nguyen_thi_thap_fb_1.jpg" alt="Không Gian Mới" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS02', 'assets/images/branches/nguyen_thi_thap_fb_4.jpg', 'Phòng Ăn Sang Trọng Tone Gỗ Ấm', 1, this)" title="Phòng Ăn Gỗ Ấm">
+            <img src="assets/images/branches/nguyen_thi_thap_fb_4.jpg" alt="Phòng Ăn Gỗ" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS02', 'assets/images/branches/nguyen_thi_thap_fb_2.jpg', 'Bàn Tiệc Sum Vầy Giao Hoà', 2, this)" title="Bàn Tiệc Sum Vầy">
+            <img src="assets/images/branches/nguyen_thi_thap_fb_2.jpg" alt="Bàn Tiệc" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS02', 'assets/images/branches/nguyen_thi_thap_fb_3.jpg', 'Góc Bàn Đôi Riêng Tư View Kính', 3, this)" title="Bàn Đôi View Kính">
+            <img src="assets/images/branches/nguyen_thi_thap_fb_3.jpg" alt="Bàn Đôi" loading="lazy">
+          </button>
+          <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS02', 'assets/images/branches/nguyen_thi_thap_fb_5.jpg', 'Góc Decor Mỹ Vị Giao Hoà', 4, this)" title="Decor Mỹ Vị">
+            <img src="assets/images/branches/nguyen_thi_thap_fb_5.jpg" alt="Decor" loading="lazy">
+          </button>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = branches.map(b => {
+      const mainPhone = (b.phone || '039 736 0228').split('/')[0].trim();
+      const rawTel = mainPhone.replace(/\s+/g, '');
+      const secondaryPhone = (b.phone || '').split('/')[1] ? (' / ' + (b.phone || '').split('/')[1].trim()) : '';
+      const mapQuery = encodeURIComponent(b.address || b.name);
+      const isCS01 = b.id === 'CS-01';
+      const branchGalleryHtml = isCS01 ? galleryCS01 : galleryCS02;
+
+      return `
+        <article class="branch-direct-card" id="branch-card-${b.id}">
+          <div class="branch-direct-header">
+            <span class="branch-stt-tag">🏮 Cơ Sở ${b.stt || 1}</span>
+            <span class="branch-status-tag">${b.status === 'upcoming' ? '⏳ Sắp Khai Trương' : '✔ Đang Hoạt Động'}</span>
+          </div>
+          <h3 class="branch-direct-name">${b.name}</h3>
+
+          ${branchGalleryHtml}
+
+          <div class="branch-direct-meta">
+            <div class="branch-meta-row">
+              <span class="branch-meta-icon">📍</span>
+              <div class="branch-meta-text">
+                <strong>Địa chỉ:</strong>
+                <span>${b.address}</span>
+              </div>
+            </div>
+            <div class="branch-meta-row">
+              <span class="branch-meta-icon">📞</span>
+              <div class="branch-meta-text">
+                <strong>Hotline đặt bàn:</strong>
+                <span class="branch-hotline-highlight">${mainPhone}</span>
+                <span style="font-size: 0.82rem; color: var(--color-text-secondary);">${secondaryPhone}</span>
+              </div>
+            </div>
+            <div class="branch-meta-row">
+              <span class="branch-meta-icon">⏰</span>
+              <div class="branch-meta-text">
+                <strong>Giờ mở cửa:</strong>
+                <span>${b.hours || '10:00 - 14:00 | 17:30 - 22:30'}</span>
+              </div>
+            </div>
+            ${b.scale ? `
+            <div class="branch-meta-row">
+              <span class="branch-meta-icon">🏛️</span>
+              <div class="branch-meta-text">
+                <strong>Quy mô:</strong>
+                <span>${b.scale}</span>
+              </div>
+            </div>` : ''}
+          </div>
+          <div class="branch-direct-actions">
+            <a href="tel:${rawTel}" class="branch-btn-call-direct" title="Bấm gọi đặt bàn ngay cho ${b.name}">
+              <span>📞</span>
+              <span>BẤM GỌI ĐẶT BÀN: ${mainPhone}</span>
+            </a>
+            <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" rel="noopener noreferrer" class="branch-btn-map-direct" title="Chỉ đường Google Maps đến ${b.name}">
+              <span>🗺️ Chỉ Đường (Google Maps) ↗</span>
+            </a>
+          </div>
+        </article>
+      `;
+    }).join('');
   }
 }
 

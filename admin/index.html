@@ -25,22 +25,45 @@
         <div class="login-subtitle">Cổng Quản Trị Hệ Thống • CMS Portal</div>
       </div>
       <div class="login-body">
-        <div class="login-hint-box">
-          <div>
-            <strong>Tài khoản mặc định:</strong><br>
-            Tên: <code>admin</code> • Pass: <code>123456</code>
+        <div class="login-hint-box" style="display: block; padding: 0.85rem 1rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #7a5611; margin-bottom: 0.55rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>⚡ TÀI KHOẢN MẪU & ĐIỀN NHANH:</span>
+            <span style="font-size: 0.72rem; font-weight: 600; color: #9a6d17;">Mật khẩu: <b>123456</b></span>
           </div>
-          <button type="button" class="quick-fill-btn" onclick="quickFillLogin('admin', '123456')">
-            ⚡ Điền Mẫu
-          </button>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
+            <button type="button" class="quick-fill-btn" onclick="quickFillLogin('admin', '123456', 'all')" title="⚡ Quản trị viên: admin / 123456 (Vào được TẤT CẢ cơ sở)" style="text-align: left; padding: 0.45rem 0.6rem;">
+              👑 <b>Quản trị viên</b> (Toàn cơ sở)
+            </button>
+            <button type="button" class="quick-fill-btn" onclick="quickFillLogin('bep_truong', '123456', 'all')" title="⚡ Bếp trưởng: bep_truong / 123456" style="text-align: left; padding: 0.45rem 0.6rem; background: #4338ca;">
+              👨‍🍳 <b>Bếp trưởng</b> (Thực đơn)
+            </button>
+            <button type="button" class="quick-fill-btn" onclick="quickFillLogin('letan_hk1', '123456', 'CS-01')" title="⚡ Lễ tân CS1 (Hoàn Kiếm): letan_hk1 / 123456" style="text-align: left; padding: 0.45rem 0.6rem; background: #1e3a8a;">
+              🏛️ <b>Lễ tân CS1</b> (Hoàn Kiếm)
+            </button>
+            <button type="button" class="quick-fill-btn" onclick="quickFillLogin('letan_ntt1', '123456', 'CS-02')" title="⚡ Lễ tân CS2 (Nguyễn Thị Thập): letan_ntt1 / 123456" style="text-align: left; padding: 0.45rem 0.6rem; background: #c2410c;">
+              🏮 <b>Lễ tân CS2</b> (Ng.Thị Thập)
+            </button>
+          </div>
         </div>
 
         <div class="login-alert" id="loginAlert"></div>
 
         <form id="loginForm" onsubmit="handleLoginSubmit(event)">
           <div class="form-group" style="margin-bottom: 1.15rem;">
+            <label class="form-label" style="font-weight: 700; color: var(--color-indigo-dark); display: flex; justify-content: space-between; align-items: center;">
+              <span>Cơ Sở Làm Việc *</span>
+              <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-secondary);" id="loginBranchHint">Đơn vị trực thuộc</span>
+            </label>
+            <select class="form-control" id="loginBranch" required style="font-weight: 600; color: var(--color-indigo-dark);">
+              <option value="all">👑 Tất Cả Cơ Sở (Toàn hệ thống)</option>
+              <option value="CS-01">🏛️ Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)</option>
+              <option value="CS-02">🏮 Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.15rem;">
             <label class="form-label" style="font-weight: 700; color: var(--color-indigo-dark);">Tên Đăng Nhập *</label>
-            <input type="text" class="form-control" id="loginUsername" placeholder="Nhập tên đăng nhập (vd: admin)" required autofocus>
+            <input type="text" class="form-control" id="loginUsername" placeholder="Nhập tên đăng nhập (vd: admin, letan_hk1)" required autofocus>
           </div>
 
           <div class="form-group" style="margin-bottom: 1.5rem;">
@@ -101,10 +124,10 @@
       </a>
 
       <div class="menu-section-label">Kinh doanh & vận hành</div>
-      <a class="menu-item" data-tab="bookings">
-        <span class="menu-icon">🛎️</span>
-        <span>Lịch đặt bàn</span>
-        <span class="menu-badge" style="background: var(--status-success);" id="bookingCountBadge">3</span>
+      <a class="menu-item" data-tab="branches">
+        <span class="menu-icon">🏭</span>
+        <span>Cơ sở & xưởng HACCP</span>
+        <span class="menu-badge" style="background: var(--color-indigo);" id="branchMenuBadge">2</span>
       </a>
       <a class="menu-item" data-tab="franchise">
         <span class="menu-icon">🤝</span>
@@ -113,10 +136,6 @@
       <a class="menu-item" data-tab="careers">
         <span class="menu-icon">💼</span>
         <span>Tuyển dụng & ứng viên</span>
-      </a>
-      <a class="menu-item" data-tab="branches">
-        <span class="menu-icon">🏭</span>
-        <span>Cơ sở & xưởng HACCP</span>
       </a>
 
       <div class="menu-section-label">Hệ thống & tài khoản</div>
@@ -158,11 +177,28 @@
         <button id="sidebarToggle" class="btn btn-outline btn-sm" style="display: none;" aria-label="Toggle Sidebar">☰</button>
         <div class="header-search">
           <span>🔍</span>
-          <input type="text" id="globalSearch" placeholder="Tìm kiếm nhanh món ăn, khách đặt bàn, đối tác...">
+          <input type="text" id="globalSearch" placeholder="Tìm kiếm nhanh món ăn, cơ sở, nhân sự...">
         </div>
       </div>
 
       <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Header Active Working Branch Pill & Quick Switcher -->
+        <div class="header-branch-pill" id="headerBranchWidget" style="display: flex; align-items: center; gap: 0.5rem; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 9999px; padding: 0.35rem 0.85rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <span id="headerBranchIcon" style="font-size: 1.1rem;">👑</span>
+          <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15;">
+            <span style="font-size: 0.65rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Cơ sở làm việc</span>
+            <span id="headerBranchText" style="font-size: 0.85rem; font-weight: 700; color: var(--color-indigo-dark);">Tất cả cơ sở</span>
+          </div>
+          <!-- Fast Switcher Dropdown for Admin -->
+          <div id="headerBranchSwitcherWrap" style="display: none; margin-left: 0.35rem;">
+            <select id="headerBranchSelect" onchange="handleHeaderBranchSwitch(this.value)" title="Chuyển đổi nhanh cơ sở làm việc" style="padding: 0.25rem 0.55rem; font-size: 0.8rem; font-weight: 700; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; color: var(--color-indigo-dark); cursor: pointer;">
+              <option value="all">👑 Tất Cả Cơ Sở (Toàn hệ thống)</option>
+              <option value="CS-01">🏛️ CS1: 68A Trần Hưng Đạo (Hoàn Kiếm)</option>
+              <option value="CS-02">🏮 CS2: 5N7A Nguyễn Thị Thập (Cầu Giấy)</option>
+            </select>
+          </div>
+        </div>
+
         <a href="/" target="_blank" class="btn btn-primary btn-sm" title="Mở trang chủ website trong tab mới" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 600;">
           <span>👁️ Xem website</span>
           <span>↗</span>
@@ -178,7 +214,7 @@
         <div class="page-header">
           <div class="page-title-wrap">
             <h1>Bảng điều khiển tổng quan</h1>
-            <p class="page-subtitle">Hệ thống giám sát thực đơn, khách đặt bàn và đối tác nhượng quyền thời gian thực.</p>
+            <p class="page-subtitle">Hệ thống giám sát thực đơn, 2 cơ sở nhà hàng và nhân sự trực thời gian thực.</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
             <button class="btn btn-outline btn-sm" onclick="refreshDashboardStats()">Làm mới dữ liệu</button>
@@ -187,7 +223,7 @@
 
         <!-- Stats Row -->
         <div class="stats-grid">
-          <div class="stat-card">
+          <div class="stat-card" onclick="switchTab('dishes')" style="cursor: pointer;" title="Xem quản lý món ăn">
             <div class="stat-info">
               <span>Tổng số món ăn</span>
               <div class="stat-number" id="kpiDishesCount">28</div>
@@ -195,71 +231,113 @@
             <div class="stat-icon-wrap">🥟</div>
           </div>
 
-          <div class="stat-card">
+          <div class="stat-card" onclick="switchTab('branches')" style="cursor: pointer;" title="Xem quản lý cơ sở">
             <div class="stat-info">
-              <span>Đơn đặt bàn hôm nay</span>
-              <div class="stat-number" id="kpiBookingsCount" style="color: var(--status-success);">14</div>
+              <span>Hệ Thống Cơ Sở (2 Chi Nhánh)</span>
+              <div class="stat-number" id="kpiBranchesCount" style="color: var(--color-indigo);">2</div>
             </div>
-            <div class="stat-icon-wrap" style="color: var(--status-success); background: #dcfce7;">🛎️</div>
+            <div class="stat-icon-wrap" style="color: var(--color-indigo); background: #e0e7ff;">🏛️</div>
           </div>
 
-          <div class="stat-card">
+          <div class="stat-card" onclick="switchTab('media')" style="cursor: pointer;" title="Xem thư viện không gian">
             <div class="stat-info">
-              <span>Hồ sơ ứng tuyển mới</span>
-              <div class="stat-number" id="kpiApplicantsCount" style="color: var(--color-brand-red);">5</div>
+              <span>Thư Viện Không Gian (Ảnh Thực Tế)</span>
+              <div class="stat-number" id="kpiPhotosCount" style="color: var(--color-gold);">24</div>
             </div>
-            <div class="stat-icon-wrap" style="color: var(--color-brand-red); background: #fee2e2;">💼</div>
+            <div class="stat-icon-wrap" style="color: var(--color-gold); background: #fef3c7;">🖼️</div>
           </div>
 
-          <div class="stat-card">
+          <div class="stat-card" onclick="switchTab('users')" style="cursor: pointer;" title="Xem phân công lễ tân trực">
             <div class="stat-info">
-              <span>Đối tác nhượng quyền</span>
-              <div class="stat-number" id="kpiFranchiseCount" style="color: var(--color-gold);">8</div>
+              <span>Lễ Tân Phân Công Trực</span>
+              <div class="stat-number" id="kpiReceptionCount" style="color: #0f766e;">4</div>
             </div>
-            <div class="stat-icon-wrap" style="color: var(--color-gold); background: #fef3c7;">🤝</div>
+            <div class="stat-icon-wrap" style="color: #0f766e; background: #ccfbf1;">👥</div>
           </div>
         </div>
 
-        <!-- Recent Activity & Quick Shortcuts -->
-        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 1.5rem;">
-          <!-- Left: Recent Bookings -->
-          <div class="card-container">
+        <!-- Row 1: Danh Sách Cơ Sở & Hotline + Phân Công Lễ Tân Trực -->
+        <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <!-- Left: Danh Sách Cơ Sở & Hotline -->
+          <div class="card-container" style="margin-bottom: 0;">
             <div class="card-header">
-              <h3>Lịch đặt bàn gần đây</h3>
-              <button class="btn btn-outline btn-sm" onclick="switchTab('bookings')">Xem tất cả ↗</button>
+              <h3>Hệ thống cơ sở & Hotline trực tiếp</h3>
+              <button class="btn btn-outline btn-sm" onclick="switchTab('branches')">Quản lý cơ sở ↗</button>
             </div>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Khách hàng</th>
-                    <th>Thời gian</th>
-                    <th>Số khách</th>
-                    <th>Khu vực</th>
+                    <th style="width: 55px; text-align: center;">STT</th>
+                    <th>Tên cơ sở</th>
+                    <th>Địa chỉ</th>
+                    <th>Hotline cơ sở</th>
                     <th>Trạng thái</th>
                   </tr>
                 </thead>
-                <tbody id="dashboardBookingsTbody">
+                <tbody id="dashboardBranchesTbody">
                   <!-- Populated by JS -->
                 </tbody>
               </table>
             </div>
           </div>
 
+          <!-- Right: Phân Công Lễ Tân Trực -->
+          <div class="card-container" style="margin-bottom: 0;">
+            <div class="card-header">
+              <h3>Phân công lễ tân trực (4 nhân sự)</h3>
+              <button class="btn btn-outline btn-sm" onclick="switchTab('users')">Quản lý nhân sự ↗</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Cơ sở</th>
+                    <th>Lễ tân</th>
+                    <th>Hotline trực</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardReceptionTbody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Ảnh Không Gian Mới Nhất & Thao Tác Nhanh -->
+        <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem;">
+          <!-- Left: Ảnh Không Gian Mới Nhất -->
+          <div class="card-container" style="margin-bottom: 0;">
+            <div class="card-header">
+              <h3>Ảnh không gian mới nhất (Thực tế 2 cơ sở)</h3>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-primary btn-sm" onclick="openAddPhotoModal()">+ Thêm ảnh mới</button>
+                <button class="btn btn-outline btn-sm" onclick="switchTab('media')">Xem thư viện ↗</button>
+              </div>
+            </div>
+            <div style="padding: 1.15rem;">
+              <div id="dashboardRecentPhotosGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.85rem;">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
           <!-- Right: Quick Actions Card -->
-          <div class="card-container">
+          <div class="card-container" style="margin-bottom: 0;">
             <div class="card-header">
               <h3>Thao tác nhanh</h3>
             </div>
-            <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 0.85rem;">
+            <div style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="openDishModal()">
                 <span>🥟 Thêm món dimsum / hải sản</span>
               </button>
+              <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="openAddPhotoModal()">
+                <span>🖼️ Tải lên ảnh không gian cơ sở</span>
+              </button>
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="openEventModal()">
                 <span>📰 Đăng sự kiện & ưu đãi mới</span>
-              </button>
-              <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="switchTab('media')">
-                <span>🖼️ Quản trị 25 ảnh concept</span>
               </button>
               <button class="btn btn-outline" style="justify-content: flex-start; width: 100%;" onclick="switchTab('branches')">
                 <span>🏭 Cập nhật cơ sở & xưởng HACCP</span>
@@ -280,21 +358,39 @@
 
         <!-- WEBSITE MENU DISPLAY MODE SWITCHER -->
         <div class="menu-display-mode-card">
-          <div>
-            <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-brand-red); display: flex; align-items: center; gap: 0.35rem;">
-              <span>🌐</span> CẤU HÌNH HIỂN THỊ TRANG CHỦ
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-brand-red); display: flex; align-items: center; gap: 0.35rem;">
+                <span>🌐</span> CẤU HÌNH HIỂN THỊ TRANG CHỦ
+              </div>
+              <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin: 0.25rem 0; font-size: 1.22rem;">Chế độ hiển thị Thực Đơn trên Website</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+                Khách vào trang chủ đang xem: <b id="currentMenuModeLabel" style="color: var(--color-brand-red);">📖 Quyển Thực Đơn (Sách ảnh thiết kế)</b>
+              </p>
             </div>
-            <h3 style="font-family: var(--font-heading); color: var(--color-indigo-dark); margin: 0.25rem 0; font-size: 1.22rem;">Chế độ hiển thị Thực Đơn trên Website</h3>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-              Khách vào trang chủ đang xem: <b id="currentMenuModeLabel" style="color: var(--color-brand-red);">📖 Quyển Thực Đơn (Sách ảnh thiết kế)</b>
-            </p>
+            <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="mode-btn active" id="btnModeSelectBook" onclick="setWebsiteMenuMode('book')">
+                <span>📖</span> Hiện Quyển Thực Đơn (Sách)
+              </button>
+              <button type="button" class="mode-btn" id="btnModeSelectDishes" onclick="setWebsiteMenuMode('dishes')">
+                <span>🍽️</span> Hiện Danh Sách Món Ăn
+              </button>
+            </div>
           </div>
-          <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
-            <button type="button" class="mode-btn active" id="btnModeSelectBook" onclick="setWebsiteMenuMode('book')">
-              <span>📖</span> Hiện Quyển Thực Đơn (Sách)
-            </button>
-            <button type="button" class="mode-btn" id="btnModeSelectDishes" onclick="setWebsiteMenuMode('dishes')">
-              <span>🍽️</span> Hiện Danh Sách Món Ăn
+
+          <!-- OPTION: ẨN / HIỆN THÔNG TIN MÔ TẢ TRANG MENU -->
+          <div style="margin-top: 1.15rem; padding-top: 0.95rem; border-top: 1.5px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.85rem;">
+            <div>
+              <strong style="color: var(--color-indigo-dark); font-size: 0.92rem; display: flex; align-items: center; gap: 0.35rem;">
+                <span>📑</span> Tùy chọn thông tin mô tả & thumbnail trang menu:
+              </strong>
+              <p style="margin: 0.2rem 0 0; font-size: 0.82rem; color: var(--text-secondary);">
+                Ẩn hoặc hiện khung chữ mô tả, tiêu đề món và hàng thumbnail bên dưới cuốn menu trên trang chủ.
+              </p>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" id="btnToggleMenuDescription" onclick="toggleMenuDescriptionMode()" style="font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 1.15rem; border-radius: var(--radius-full); transition: var(--transition);">
+              <span id="menuDescToggleIcon">🚫</span>
+              <span id="menuDescToggleText">Đang ẨN thông tin mô tả (Bấm để Hiện)</span>
             </button>
           </div>
         </div>
@@ -447,32 +543,36 @@
         </div>
       </section>
 
-      <!-- ==================== TAB 4: THƯ VIỆN ẢNH (MEDIA) ==================== -->
+      <!-- ==================== TAB 4: THƯ VIỆN ẢNH & KHÔNG GIAN CƠ SỞ (MEDIA) ==================== -->
       <section class="tab-pane" id="pane-media">
         <div class="page-header">
           <div class="page-title-wrap">
-            <h1>Thư viện ảnh & concept lookbook</h1>
-            <p class="page-subtitle">Quản trị toàn bộ 25 bức ảnh concept ẩm thực nghệ nhân tải từ Google Drive của TongWei.</p>
+            <h1>Quản lý Không Gian & Thư Viện Ảnh Cơ Sở</h1>
+            <p class="page-subtitle">Quản trị hình ảnh không gian 2 cơ sở (Hoàn Kiếm, Nguyễn Thị Thập) và album ẩm thực nghệ nhân. Mọi thay đổi đồng bộ ngay lập tức với trang chủ.</p>
           </div>
-          <div style="display: flex; gap: 0.75rem;">
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
             <button type="button" class="btn btn-outline btn-sm" id="btnToggleMediaView" onclick="toggleMediaViewMode()">
               Chuyển xem dạng bảng 📋
             </button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="openMediaUploader()">Tải thêm ảnh mới 📁</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openAddPhotoModal()">
+              Thêm Ảnh Mới ➕
+            </button>
           </div>
         </div>
 
         <div class="card-container">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
             <div class="table-controls" id="mediaFilterControls">
-              <button class="table-filter-btn active" data-cat="all">Tất cả 25 ảnh</button>
-              <button class="table-filter-btn" data-cat="banquet">Bàn tiệc đại yến</button>
-              <button class="table-filter-btn" data-cat="dimsum">Dimsum nghệ nhân</button>
-              <button class="table-filter-btn" data-cat="bbq">Món quay & nướng</button>
-              <button class="table-filter-btn" data-cat="appetizer">Khai vị & súp</button>
-              <button class="table-filter-btn" data-cat="drinks">Thức uống</button>
+              <button class="table-filter-btn active" data-cat="all">🌟 Tất cả ảnh</button>
+              <button class="table-filter-btn" data-cat="space_ntt">🏮 Cơ Sở Nguyễn Thị Thập</button>
+              <button class="table-filter-btn" data-cat="space_hk">🏛️ Cơ Sở Hoàn Kiếm</button>
+              <button class="table-filter-btn" data-cat="dimsum">🥢 Dimsum Nghệ Nhân</button>
+              <button class="table-filter-btn" data-cat="banquet">👑 Bàn Tiệc Đại Yến</button>
+              <button class="table-filter-btn" data-cat="bbq">🍗 Món Quay & Nướng</button>
+              <button class="table-filter-btn" data-cat="drinks">🍵 Thức Uống</button>
+              <button class="table-filter-btn" data-cat="appetizer">🥗 Khai Vị & Súp</button>
             </div>
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">Nhấp vào ảnh để chỉnh sửa thông tin hoặc xem ảnh phóng to</span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Nhấp vào ảnh hoặc nút Sửa để chỉnh sửa thông tin, cơ sở, đường dẫn ảnh</span>
           </div>
 
           <div class="media-grid" id="adminMediaGrid">
@@ -486,9 +586,9 @@
                 <tr>
                   <th style="width: 140px; text-align: center;">STT / Thứ tự vị trí</th>
                   <th style="width: 100px;">Ảnh xem trước</th>
-                  <th>Tiêu đề ảnh</th>
-                  <th>Phân loại album</th>
-                  <th>Mô tả & lời bình</th>
+                  <th>Tiêu đề & Tệp ảnh</th>
+                  <th>Cơ sở / Phân loại</th>
+                  <th>Mô tả chi tiết</th>
                   <th style="text-align: right; width: 140px;">Thao tác</th>
                 </tr>
               </thead>
@@ -500,41 +600,6 @@
         </div>
       </section>
 
-      <!-- ==================== TAB 5: LỊCH ĐẶT BÀN (BOOKINGS) ==================== -->
-      <section class="tab-pane" id="pane-bookings">
-        <div class="page-header">
-          <div class="page-title-wrap">
-            <h1>Quản lý lịch đặt bàn</h1>
-            <p class="page-subtitle">Theo dõi khách đặt bàn trực tuyến, giờ hẹn đến và thực đơn chọn trước.</p>
-          </div>
-          <button class="btn btn-primary" onclick="openNewBookingModal()">
-            + Tiếp nhận đặt bàn mới
-          </button>
-        </div>
-
-        <div class="card-container">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Mã bàn</th>
-                  <th>Họ tên khách</th>
-                  <th>Số điện thoại</th>
-                  <th>Ngày & giờ đến</th>
-                  <th>Số lượng</th>
-                  <th>Khu vực ngồi</th>
-                  <th>Món gọi trước</th>
-                  <th>Trạng thái</th>
-                  <th style="text-align: right;">Hành động</th>
-                </tr>
-              </thead>
-              <tbody id="bookingsTbody">
-                <!-- Filled by JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
 
       <!-- ==================== TAB 6: NHƯỢNG QUYỀN (FRANCHISE) ==================== -->
       <section class="tab-pane" id="pane-franchise">
@@ -657,19 +722,19 @@
         <div class="card-container" style="margin-bottom: 2rem;">
           <div class="card-header">
             <h3>Danh sách chi nhánh nhà hàng TongWei</h3>
-            <span class="badge badge-indigo" id="branchCountBadge">2 Chi nhánh</span>
+            <span class="badge badge-indigo" id="branchCountBadge">3 Chi nhánh</span>
           </div>
           <div class="table-responsive">
-            <table class="data-table">
+            <table class="data-table" id="branchesTable">
               <thead>
                 <tr>
-                  <th>Mã cơ sở</th>
-                  <th>Tên cơ sở & khu vực</th>
-                  <th>Địa chỉ thực tế</th>
+                  <th style="width: 70px; text-align: center;">STT</th>
+                  <th>Tên cơ sở</th>
+                  <th>Địa chỉ</th>
                   <th>Hotline đặt bàn</th>
-                  <th>Giờ phục vụ</th>
+                  <th>Quy mô</th>
                   <th>Trạng thái</th>
-                  <th style="text-align: right;">Hành động</th>
+                  <th style="text-align: right; width: 140px;">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="branchesTbody">
@@ -731,18 +796,30 @@
         </div>
 
         <div class="card-container">
-          <div class="card-header">
-            <h3>Danh sách tài khoản quản trị</h3>
-            <span class="badge badge-indigo" id="usersListCountBadge">3 Tài khoản</span>
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <h3>Danh sách tài khoản quản trị & nhân sự</h3>
+              <span class="badge badge-indigo" id="usersListCountBadge">7 Tài khoản</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="userFilterBranch" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin: 0;">Lọc theo cơ sở:</label>
+              <select id="userFilterBranch" onchange="renderUsersTable()" class="form-control" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.85rem; font-weight: 600; color: var(--color-indigo-dark);">
+                <option value="all_filter">🔍 Tất cả cơ sở</option>
+                <option value="all">👑 Tất Cả Cơ Sở (Toàn hệ thống)</option>
+                <option value="CS-01">🏛️ Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)</option>
+                <option value="CS-02">🏮 Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)</option>
+              </select>
+            </div>
           </div>
 
           <div class="table-responsive">
-            <table class="data-table">
+            <table class="data-table" id="usersTable">
               <thead>
                 <tr>
                   <th>Tài khoản / Họ tên</th>
                   <th>Tên đăng nhập</th>
                   <th>Vai trò</th>
+                  <th>Cơ Sở Làm Việc</th>
                   <th>Trạng thái</th>
                   <th>Ngày tạo</th>
                   <th style="text-align: right;">Hành động</th>
@@ -1004,23 +1081,34 @@
     </div>
   </div>
 
-  <!-- 3. Photo Metadata Editor Modal -->
+  <!-- 3. Photo Metadata Editor & Creator Modal -->
   <div class="modal-overlay" id="photoModal">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 650px;">
       <button class="modal-close" onclick="closeModal('photoModal')">✕</button>
-      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Chỉnh sửa ảnh concept</h3>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật tiêu đề, danh mục và lời bình cho bức ảnh nghệ thuật.</p>
+      <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;" id="photoModalTitle">Chỉnh sửa ảnh không gian / món ăn</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;" id="photoModalSubtitle">Cập nhật tiêu đề, cơ sở/danh mục, đường dẫn ảnh và lời bình.</p>
 
       <form id="photoForm">
         <input type="hidden" id="photoEditId">
 
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-          <img src="" alt="Photo Preview" id="photoModalPreview" style="max-height: 200px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 1.25rem; background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
+          <img src="" alt="Photo Preview" id="photoModalPreview" style="max-height: 220px; max-width: 100%; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin: 0 auto; object-fit: contain; display: block;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Đường dẫn tệp ảnh (URL hoặc assets/...) *</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" class="form-control" id="photoSrc" placeholder="assets/images/branches/nguyen_thi_thap_fb_1.jpg" required oninput="previewPhotoSrc(this.value)">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openMediaSelectorForGallery()" style="flex-shrink: 0;" title="Chọn từ danh sách ảnh có sẵn trong hệ thống">Chọn ảnh có sẵn 🖼️</button>
+          </div>
+          <small style="color: var(--text-secondary); font-size: 0.75rem; display: block; margin-top: 0.25rem;">
+            Ví dụ cơ sở NTT: <code>assets/images/branches/nguyen_thi_thap_fb_1.jpg</code> đến <code>nguyen_thi_thap_fb_5.jpg</code>
+          </small>
         </div>
 
         <div class="form-group">
           <label class="form-label">Tiêu đề ảnh *</label>
-          <input type="text" class="form-control" id="photoTitle" required>
+          <input type="text" class="form-control" id="photoTitle" placeholder="Ví dụ: Mặt Tiền & Bảng Hiệu Giao Hoà Mới" required>
         </div>
 
         <div class="form-row">
@@ -1030,29 +1118,31 @@
             <small style="color: var(--text-secondary); font-size: 0.75rem; display: block; margin-top: 0.2rem;">Vị trí hiển thị</small>
           </div>
           <div class="form-group" style="flex: 1;">
-            <label class="form-label">Phân loại album *</label>
+            <label class="form-label">Cơ sở / Phân loại album *</label>
             <select class="form-control" id="photoCategory" required>
-              <option value="banquet">Bàn tiệc đại yến</option>
-              <option value="dimsum">Dimsum nghệ nhân</option>
-              <option value="bbq">Món quay & nướng</option>
-              <option value="appetizer">Khai vị & súp</option>
-              <option value="drinks">Thức uống</option>
+              <option value="space_ntt">🏮 Cơ Sở Nguyễn Thị Thập</option>
+              <option value="space_hk">🏛️ Cơ Sở Hoàn Kiếm</option>
+              <option value="dimsum">🥢 Dimsum Nghệ Nhân</option>
+              <option value="banquet">👑 Bàn Tiệc Đại Yến</option>
+              <option value="bbq">🍗 Món Quay & Nướng</option>
+              <option value="drinks">🍵 Thức Uống</option>
+              <option value="appetizer">🥗 Khai Vị & Súp</option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mô tả & lời bình ẩm thực *</label>
-          <textarea class="form-control" id="photoDesc" rows="3" required></textarea>
+          <label class="form-label">Mô tả & lời bình không gian / ẩm thực *</label>
+          <textarea class="form-control" id="photoDesc" rows="3" placeholder="Nhập mô tả góc chụp hoặc trải nghiệm không gian, hương vị ẩm thực..." required></textarea>
         </div>
 
         <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; align-items: center; flex-wrap: wrap;">
-          <button type="button" class="btn btn-danger" onclick="deletePhotoFromModal()" style="font-weight: 700;">
+          <button type="button" class="btn btn-danger" id="photoModalDeleteBtn" onclick="deletePhotoFromModal()" style="font-weight: 700;">
             🗑️ Xóa ảnh này
           </button>
           <div style="flex: 1;"></div>
           <button type="button" class="btn btn-outline" onclick="closeModal('photoModal')">Đóng</button>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" id="photoModalSubmitBtn">
             💾 Lưu thông tin ảnh
           </button>
         </div>
@@ -1080,31 +1170,36 @@
     <div class="modal-card" style="max-width: 650px;">
       <button class="modal-close" onclick="closeModal('branchModal')">✕</button>
       <h3 id="branchModalTitle" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-indigo-dark); margin-bottom: 0.25rem;">Thêm cơ sở mới</h3>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật thông tin chi nhánh nhà hàng để hiển thị trên website đặt bàn và liên hệ.</p>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Cập nhật thông tin chi nhánh nhà hàng để hiển thị trên website và liên hệ hotline.</p>
 
       <form id="branchForm">
         <input type="hidden" id="branchEditId">
 
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Tên cơ sở chi nhánh *</label>
-            <input type="text" class="form-control" id="modalBranchName" placeholder="VD: Nhà Hàng TongWei - Cơ Sở Cầu Giấy" required>
+          <div class="form-group" style="flex: 0 0 130px;">
+            <label class="form-label">Số thứ tự (STT) *</label>
+            <input type="number" class="form-control" id="modalBranchStt" min="1" placeholder="1, 2, 3..." required>
           </div>
-          <div class="form-group">
-            <label class="form-label">Tên rút gọn (Hiển thị form đặt bàn) *</label>
-            <input type="text" class="form-control" id="modalBranchShortName" placeholder="VD: Cơ sở 2 (Cầu Giấy)" required>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Tên cơ sở chi nhánh *</label>
+            <input type="text" class="form-control" id="modalBranchName" placeholder="VD: Cơ Sở 1 - Hoàn Kiếm (Flagship)" required>
           </div>
         </div>
 
         <div class="form-group">
+          <label class="form-label">Tên rút gọn (Hiển thị nhãn ngắn) *</label>
+          <input type="text" class="form-control" id="modalBranchShortName" placeholder="VD: Cơ Sở 1 (Hoàn Kiếm)" required>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">Địa chỉ thực tế đầy đủ *</label>
-          <input type="text" class="form-control" id="modalBranchAddress" placeholder="VD: 12 Duy Tân, P. Dịch Vọng Hậu, Cầu Giấy, Hà Nội" required>
+          <input type="text" class="form-control" id="modalBranchAddress" placeholder="VD: 68A Trần Hưng Đạo, P. Cửa Nam, Hoàn Kiếm, Hà Nội" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Hotline đặt bàn / CSKH *</label>
-            <input type="text" class="form-control" id="modalBranchPhone" placeholder="VD: 0988 567 890 / 024 3888 9999" required>
+            <label class="form-label">Hotline / Số điện thoại liên hệ *</label>
+            <input type="text" class="form-control" id="modalBranchPhone" placeholder="VD: 039 736 0228 / 0989 123 456" required>
           </div>
           <div class="form-group">
             <label class="form-label">Giờ mở cửa phục vụ *</label>
@@ -1114,8 +1209,8 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Quy mô & tiện ích</label>
-            <input type="text" class="form-control" id="modalBranchScale" placeholder="VD: 140 Chỗ ngồi • 3 Phòng VIP • Bãi đỗ xe ô tô">
+            <label class="form-label">Quy mô chỗ ngồi & tiện ích</label>
+            <input type="text" class="form-control" id="modalBranchScale" placeholder="VD: 180 Chỗ ngồi • 4 Phòng VIP Hoàng Kim">
           </div>
           <div class="form-group">
             <label class="form-label">Trạng thái hoạt động</label>
@@ -1221,16 +1316,25 @@
           <input type="text" class="form-control" id="newFullName" placeholder="VD: Nguyễn Văn Hoàng (Bếp Phó)" required>
         </div>
 
-        <div class="form-row" style="margin-bottom: 1.15rem;">
-          <div class="form-group" style="flex: 1;">
+        <div class="form-row" style="margin-bottom: 1.15rem; display: flex; gap: 0.75rem;">
+          <div class="form-group" style="flex: 1.1;">
             <label class="form-label">Vai trò & phân quyền *</label>
-            <select class="form-control" id="newRoleSelect" required>
+            <select class="form-control" id="newRoleSelect" required onchange="handleUserRoleChange(this.value)">
               <option value="admin">Quản trị viên cấp cao (Toàn quyền hệ thống)</option>
-              <option value="kitchen">Quản lý bếp & thực đơn (Chỉnh sửa món, công thức)</option>
-              <option value="cashier" selected>Vận hành đặt bàn & CSKH (Tiếp nhận khách)</option>
+              <option value="receptionist" selected>Lễ tân tiếp đón & CSKH (Phụ trách cơ sở)</option>
+              <option value="kitchen">Quản lý bếp & thực đơn (Chỉnh sửa món)</option>
+              <option value="cashier">Thu ngân & Kế toán ca (Thanh toán)</option>
             </select>
           </div>
-          <div class="form-group" id="userStatusGroup" style="flex: 0 0 140px; display: none;">
+          <div class="form-group" style="flex: 1.1;">
+            <label class="form-label">Đơn vị / Cơ sở làm việc *</label>
+            <select class="form-control" id="addUserBranch" required>
+              <option value="all">👑 Tất Cả Cơ Sở (Toàn hệ thống)</option>
+              <option value="CS-01" selected>🏛️ Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)</option>
+              <option value="CS-02">🏮 Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)</option>
+            </select>
+          </div>
+          <div class="form-group" id="userStatusGroup" style="flex: 0 0 130px; display: none;">
             <label class="form-label">Trạng thái</label>
             <select class="form-control" id="userStatusSelect">
               <option value="active">✔ Hoạt động</option>

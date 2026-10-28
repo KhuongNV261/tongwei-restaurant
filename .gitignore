@@ -17,3 +17,8 @@ check_missing_css.js
 generate_schema.js
 frontend_audit_results.json
 
+# Temporary debug scripts and dump files
+scripts/*.png
+scripts/*.html
+scripts/test_*.png
+scripts/preview_*.png

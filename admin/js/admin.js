@@ -14,7 +14,6 @@ const adminState = {
   events: [],
   photos: [],
   mediaFilterCat: 'all',
-  bookings: [],
   candidates: [],
   jobs: [],
   franchiseLeads: [],
@@ -177,64 +176,8 @@ async function initializeData() {
     localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
   }
 
-  // 3. Concept Photos (25)
-  const savedPhotos = localStorage.getItem('tongwei_photos');
-  if (savedPhotos) {
-    adminState.photos = JSON.parse(savedPhotos);
-  } else {
-    adminState.photos = [
-      { id: 1, order: 1, src: 'assets/images/concept/concept_1.jpg', title: 'Bộ Sưu Tập Thức Uống Nhiệt Đới', category: 'drinks', categoryName: 'Thức Uống', desc: 'Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn.' },
-      { id: 2, src: 'assets/images/concept/concept_2.jpg', title: 'Văn Hóa Cố Sự & Bàn Mạt Chược', category: 'banquet', categoryName: 'Văn Hóa & Không Gian', desc: 'Nét sinh hoạt hoài niệm tao nhã bên bàn mạt chược truyền thống và trà thơm.' },
-      { id: 3, src: 'assets/images/concept/concept_3.jpg', title: 'Mâm Cơm Quảng Đông & Trà Đạo', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Bàn ăn chuẩn vị gia đình với các món xào lửa lớn, thịt nướng xá xíu thơm ngát.' },
-      { id: 4, src: 'assets/images/concept/concept_4.jpg', title: 'Đại Tiệc Sum Vầy Gia Tộc', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Thịt nướng mật ong, xiên nướng than hoa và các món khai vị cung đình.' },
-      { id: 5, src: 'assets/images/concept/concept_5.jpg', title: 'Thịt Nướng Xá Xíu & Trà Cổ Thụ', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Lớp thịt nướng xém cạnh mật ong rừng chấm cùng tương ngọt đặc chế.' },
-      { id: 6, src: 'assets/images/concept/concept_6.jpg', title: 'Cơm Chiên Hoàng Kim & Canh Tiềm', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Thố cơm chiên tôm khô giòn rụm và canh tiềm thảo mộc cách thủy 4 tiếng.' },
-      { id: 7, src: 'assets/images/concept/concept_7.jpg', title: 'Tháp Xửng Dimsum Trúc Bốc Khói', category: 'dimsum', categoryName: 'Dimsum Nghệ Nhân', desc: 'Há cảo tôm sò điệp trong suốt và xíu mại gạch cua nóng hổi.' },
-      { id: 8, src: 'assets/images/concept/concept_8.jpg', title: 'Set Điểm Tâm Sáng & Súp Khai Vị', category: 'dimsum', categoryName: 'Dimsum Nghệ Nhân', desc: 'Phong cách ẩm thực thán trà tinh tế của người Quảng Châu.' },
-      { id: 9, src: 'assets/images/concept/concept_9.jpg', title: 'Bánh Bao Đào Tiên Trường Thọ', category: 'dimsum', categoryName: 'Dimsum Nghệ Nhân', desc: 'Tác phẩm thủ công nặn tay mang ý nghĩa chúc thọ cát tường.' },
-      { id: 10, src: 'assets/images/concept/concept_10.jpg', title: 'Đại Tiệc Hội Nghị & Tiệc Cưới', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Bố trí bàn tiệc tròn hoành tráng phục vụ sự kiện thượng khách.' },
-      { id: 11, src: 'assets/images/concept/concept_11.jpg', title: 'Tuyệt Tác Quay Nướng Quảng Đông', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Vịt quay da giòn, sườn nướng mật ong và dimsum tươi mới.' },
-      { id: 12, src: 'assets/images/concept/concept_12.jpg', title: 'Bàn Tiệc Toàn Bích 12 Món Mỹ Vị', category: 'banquet', categoryName: 'Bàn Tiệc Đại Yến', desc: 'Sự cân bằng hoàn hảo giữa âm dương ngũ hành trong ẩm thực Quảng Đông.' },
-      { id: 13, src: 'assets/images/concept/concept_13.jpg', title: 'Súp Bí Đỏ Hạt Sen Hoàng Kim', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Vị bùi béo mịn từ bí ngô sạch ninh nhừ cùng hạt sen bồi bổ sức khỏe.' },
-      { id: 14, src: 'assets/images/concept/concept_14.jpg', title: 'Mộc Nhĩ Đen Ngâm Chua Ngọt', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Món khai vị giòn sần sật ngâm giấm đen Trấn Giang lâu năm.' },
-      { id: 15, src: 'assets/images/concept/concept_15.jpg', title: 'Cánh Vịt Tiềm Cay Thảo Mộc', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Hương vị cay nồng quyến rũ từ ớt Tứ Xuyên và 12 vị thảo mộc.' },
-      { id: 16, src: 'assets/images/concept/concept_16.jpg', title: 'Cổ Vịt Rút Xương Sốt Tiềm Đậm Đà', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Món nhắm ẩm thực truyền thống với thớ thịt săn chắc ngấm đẫm gia vị.' },
-      { id: 17, src: 'assets/images/concept/concept_17.jpg', title: 'Đậu Hũ Non Trứng Bắc Thảo Sốt Cay', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Đậu hũ mát lạnh kết hợp trứng bắc thảo bùi béo ngậy sốt ớt gừng.' },
-      { id: 18, src: 'assets/images/concept/concept_18.jpg', title: 'Đặc Sản Trứng Bắc Thảo Ngũ Vị', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Thanh lọc vị giác kinh điển trong bàn tiệc sang trọng.' },
-      { id: 19, src: 'assets/images/concept/concept_19.jpg', title: 'Món Tiềm Cay Cổ Truyền', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Màu hổ phách óng ánh từ tương già thượng phẩm lên men tự nhiên.' },
-      { id: 20, src: 'assets/images/concept/concept_20.jpg', title: 'Bộ Đôi Khai Vị Thanh Nhã', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Khởi đầu bữa tiệc thanh lịch chuẩn phong vị cố sự.' },
-      { id: 21, src: 'assets/images/concept/concept_21.jpg', title: 'Súp Dưỡng Nhan Thảo Mộc Cung Đình', category: 'appetizer', categoryName: 'Khai Vị & Súp', desc: 'Món canh bồi bổ nguyên khí, dưỡng ẩm làn da dành riêng cho phái đẹp.' },
-      { id: 22, src: 'assets/images/concept/concept_22.jpg', title: 'Đậu Que Xào Thịt Xá Xíu Bóng Bẩy', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Chảo lửa lớn giữ trọn sắc xanh và độ giòn ngọt tự nhiên của rau quả sạch.' },
-      { id: 23, src: 'assets/images/concept/concept_23.jpg', title: 'Rau Củ Tươi Xào Tôm Khô Tàu Xì', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Hương vị khí chảo đặc trưng thơm lừng từ tàu xì và tôm khô hảo hạng.' },
-      { id: 24, src: 'assets/images/concept/concept_24.jpg', title: 'Thịt Xá Xíu Nướng Mật Ong Rừng', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Món signature của TongWei: thịt ba chỉ nướng mật ong vàng ruộm thơm phức.' },
-      { id: 25, src: 'assets/images/concept/concept_25.jpg', title: 'Xá Xíu Phủ Ớt Tươi & Hành Hoa', category: 'bbq', categoryName: 'Món Quay & Nướng', desc: 'Sắc đỏ mang lại may mắn, kích thích trọn vẹn vị giác thực khách.' }
-    ];
-    localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
-  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
-  }
-
-  // 4. Bookings
-  const savedBookings = localStorage.getItem('tongwei_bookings');
-  if (savedBookings) {
-    try {
-      const parsed = JSON.parse(savedBookings);
-      // Auto-migrate: ensure every booking has 'name' populated from 'customer' if needed
-      adminState.bookings = parsed.map(b => {
-        if (!b.name && b.customer) b.name = b.customer;
-        return b;
-      });
-      localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
-    } catch (e) {
-      console.error(e);
-    }
-  } else {
-    adminState.bookings = [
-      { id: 'TB-101', name: 'Nguyễn Hoàng Long', customer: 'Nguyễn Hoàng Long', phone: '0988 234 567', date: '2026-10-21', time: '18:30', guests: '4 Khách', branch: 'Cơ Sở 1 (Hoàn Kiếm)', area: 'Gần Cửa Sổ', preOrder: 'Bánh bao kim sa (x2), Cá lăng hấp tàu xì (x1)', status: 'confirmed' },
-      { id: 'TB-102', name: 'Trần Thị Thu Trang', customer: 'Trần Thị Thu Trang', phone: '0912 345 678', date: '2026-10-21', time: '19:00', guests: '6 Khách', branch: 'Cơ Sở 1 (Hoàn Kiếm)', area: 'Phòng VIP Cung Đình', preOrder: 'Thịt xá xíu mật ong (x2), Canh gà tiềm dưỡng sinh (x1)', status: 'confirmed' },
-      { id: 'TB-103', name: 'Lê Minh Tuấn', customer: 'Lê Minh Tuấn', phone: '0936 789 012', date: '2026-10-22', time: '12:00', guests: '2 Khách', branch: 'Cơ Sở 2 (Cầu Giấy)', area: 'Sảnh Chính', preOrder: 'Há cảo tôm sò điệp (x1), Bánh xếp áp chảo (x1)', status: 'pending' }
-    ];
-    localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
-  }
+  // 3. Space Gallery & Concept Photos
+  loadAdminPhotos();
 
   // 5. Jobs & Applicants
   adminState.jobs = [
@@ -314,42 +257,98 @@ async function initializeData() {
   }
 
   adminState.franchiseLeads = [
-    { name: 'Đỗ Hữu Thắng', phone: '0989 333 444', city: 'Hà Nội (Cầu Giấy)', budget: '1.5 - 2.5 Tỷ (Standard)', note: 'Đã có sẵn mặt bằng phố Duy Tân 160m2', date: '21/10/2026', status: 'contacted' },
+    { name: 'Đỗ Hữu Thắng', phone: '0989 333 444', city: 'Hà Nội (Cầu Giấy)', budget: '1.5 - 2.5 Tỷ (Standard)', note: 'Đã có sẵn mặt bằng tại Cầu Giấy 160m2', date: '21/10/2026', status: 'contacted' },
     { name: 'Nguyễn Thị Bích Ngọc', phone: '0903 555 666', city: 'Hải Phòng', budget: '800 Tr - 1.2 Tỷ (Express)', note: 'Mặt bằng phố đi bộ Hải Phòng', date: '20/10/2026', status: 'new' },
     { name: 'Lê Văn Khải', phone: '0918 777 888', city: 'TP. Hồ Chí Minh (Quận 1)', budget: 'Trên 3.5 Tỷ (Flagship)', note: 'Cần tư vấn nhượng quyền độc quyền khu vực', date: '19/10/2026', status: 'meeting' },
     { name: 'Vũ Đình Dũng', phone: '0972 888 111', city: 'Đà Nẵng', budget: '1.5 - 2.5 Tỷ (Standard)', note: 'Mặt bằng đường Bạch Đằng ven sông Hàn', date: '18/10/2026', status: 'contacted' }
   ];
 
-  // 7. Branches (Cơ Sở Nhà Hàng)
+  // 7. Branches (Cơ Sở Nhà Hàng - Chuẩn 2 cơ sở thực tế)
+  const defaultBranches = [
+    {
+      id: 'CS-01',
+      stt: 1,
+      name: 'Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)',
+      shortName: 'Cơ Sở 1 (Hoàn Kiếm)',
+      address: '68A Trần Hưng Đạo, P. Cửa Nam, Hoàn Kiếm, Hà Nội',
+      phone: '039 736 0228 / 0989 123 456',
+      hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+      scale: '180 Chỗ ngồi • 4 Phòng VIP Hoàng Kim',
+      status: 'active'
+    },
+    {
+      id: 'CS-02',
+      stt: 2,
+      name: 'Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)',
+      shortName: 'Cơ Sở 2 (Nguyễn Thị Thập)',
+      address: '5N7A Nguyễn Thị Thập, P. Yên Hoà, Cầu Giấy, Hà Nội',
+      phone: '032 889 5693 / 0986 688 866',
+      hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
+      scale: '160 Chỗ ngồi • 3 Phòng VIP Mạt Chược',
+      status: 'active'
+    }
+  ];
+
   const savedBranches = localStorage.getItem('tongwei_branches');
   if (savedBranches) {
     try {
-      adminState.branches = JSON.parse(savedBranches);
-    } catch (e) {}
-  }
-  if (!adminState.branches || adminState.branches.length === 0) {
-    adminState.branches = [
-      {
-        id: 'CS-01',
-        name: 'Nhà Hàng TongWei - Cơ Sở Hoàn Kiếm (Flagship)',
-        shortName: 'Cơ Sở 1 (Hoàn Kiếm)',
-        address: '68A Trần Hưng Đạo, Phường Cửa Nam, Hoàn Kiếm, Hà Nội',
-        phone: '0989 123 456 / 024 3987 6543',
-        hours: '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)',
-        scale: '180 Chỗ ngồi • 4 Phòng VIP Cung Đình • Quầy Trà Đạo',
-        status: 'active'
-      },
-      {
-        id: 'CS-02',
-        name: 'Nhà Hàng TongWei - Cơ Sở Cầu Giấy',
-        shortName: 'Cơ Sở 2 (Cầu Giấy)',
-        address: '12 Duy Tân, Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội',
-        phone: '0988 567 890 / 024 3888 9999',
-        hours: '10:00 - 14:00 | 17:30 - 22:30',
-        scale: '140 Chỗ ngồi • 3 Phòng VIP • Có bãi đỗ xe ô tô',
-        status: 'active'
+      let parsed = JSON.parse(savedBranches);
+        // Strictly purge any CS-03 or Duy Tân
+        parsed = parsed.filter(b => b.id !== 'CS-03' && !b.name?.includes('Duy Tân') && !b.address?.includes('Duy Tân'));
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        let updated = false;
+        // Purge any CS-03 / Duy Tân branches
+        const origLen = parsed.length;
+        parsed = parsed.filter(b => b.id !== 'CS-03' && !b.name?.includes('Duy Tân') && !b.address?.includes('Duy Tân'));
+        if (parsed.length !== origLen) updated = true;
+
+        parsed = parsed.map((b, idx) => {
+          if (!b.stt) {
+            b.stt = idx + 1;
+            updated = true;
+          }
+          return b;
+        });
+
+        // Ensure default branches have the exact requested hotline and name
+        defaultBranches.forEach(defB => {
+          const found = parsed.find(b => b.id === defB.id || (b.address && defB.address && b.address.includes(defB.address.split(',')[0])));
+          if (!found) {
+            parsed.push(defB);
+            updated = true;
+          } else {
+            if (defB.stt && found.stt !== defB.stt) {
+              found.stt = defB.stt;
+              updated = true;
+            }
+            if (defB.id === 'CS-01' && (!found.phone || !found.phone.includes('039 736 0228'))) {
+              found.phone = defB.phone;
+              found.name = defB.name;
+              updated = true;
+            }
+            if (defB.id === 'CS-02' && (!found.phone || !found.phone.includes('032 889 5693'))) {
+              found.phone = defB.phone;
+              found.name = defB.name;
+              updated = true;
+            }
+          }
+        });
+
+        parsed.sort((a, b) => Number(a.stt || 0) - Number(b.stt || 0));
+        adminState.branches = parsed;
+        if (updated) {
+          localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
+        }
+      } else {
+        adminState.branches = defaultBranches;
+        localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
       }
-    ];
+    } catch (e) {
+      adminState.branches = defaultBranches;
+      localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
+    }
+  } else {
+    adminState.branches = defaultBranches;
     localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
   }
 
@@ -366,57 +365,136 @@ async function initializeData() {
     } catch(e) {}
   }
 
-  // 9. Users Initialization
+  // 9. Users Initialization (Bao gồm Quản trị viên và 2 Lễ tân mẫu cho mỗi cơ sở)
+  const defaultUsers = [
+    {
+      id: 'usr_admin',
+      username: 'admin',
+      password: '123456',
+      fullName: 'Khuongnv (Quản trị viên)',
+      role: 'admin',
+      roleName: 'Quản trị viên cấp cao',
+      branchId: 'all',
+      branchName: 'Tất cả cơ sở',
+      status: 'active',
+      createdAt: '2026-10-21',
+      avatar: 'KN'
+    },
+    // Cơ Sở 1 (Hoàn Kiếm - 68A Trần Hưng Đạo) - 2 Lễ tân thực tế
+    {
+      id: 'usr_lt_hk1',
+      username: 'letan_hk1',
+      password: '123456',
+      fullName: 'Nguyễn Thu Hà',
+      role: 'receptionist',
+      roleName: 'Lễ tân tiếp đón & CSKH',
+      branchId: 'CS-01',
+      branchName: 'Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)',
+      phone: '039 736 0228',
+      shift: 'Ca Sáng (09:30 - 15:00)',
+      status: 'active',
+      createdAt: '2026-10-22',
+      avatar: 'TH'
+    },
+    {
+      id: 'usr_lt_hk2',
+      username: 'letan_hk2',
+      password: '123456',
+      fullName: 'Trần Minh Trang',
+      role: 'receptionist',
+      roleName: 'Lễ tân tiếp đón & CSKH',
+      branchId: 'CS-01',
+      branchName: 'Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)',
+      phone: '0989 123 456',
+      shift: 'Ca Tối (17:00 - 22:30)',
+      status: 'active',
+      createdAt: '2026-10-22',
+      avatar: 'MT'
+    },
+    // Cơ Sở 2 (Nguyễn Thị Thập - 5N7A Nguyễn Thị Thập) - 2 Lễ tân thực tế
+    {
+      id: 'usr_lt_ntt1',
+      username: 'letan_ntt1',
+      password: '123456',
+      fullName: 'Lê Mai Anh',
+      role: 'receptionist',
+      roleName: 'Lễ tân tiếp đón & CSKH',
+      branchId: 'CS-02',
+      branchName: 'Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)',
+      phone: '032 889 5693',
+      shift: 'Ca Sáng (09:30 - 15:00)',
+      status: 'active',
+      createdAt: '2026-10-22',
+      avatar: 'MA'
+    },
+    {
+      id: 'usr_lt_ntt2',
+      username: 'letan_ntt2',
+      password: '123456',
+      fullName: 'Phạm Hương Ly',
+      role: 'receptionist',
+      roleName: 'Lễ tân tiếp đón & CSKH',
+      branchId: 'CS-02',
+      branchName: 'Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)',
+      phone: '0986 688 866',
+      shift: 'Ca Tối (17:00 - 22:30)',
+      status: 'active',
+      createdAt: '2026-10-22',
+      avatar: 'HL'
+    },
+    
+    // Bếp trưởng chuyên môn
+    {
+      id: 'usr_kitchen',
+      username: 'bep_truong',
+      password: '123456',
+      fullName: 'Lý Quốc Dũng (Bếp trưởng)',
+      role: 'kitchen',
+      roleName: 'Quản lý bếp & thực đơn',
+      branchId: 'all',
+      branchName: 'Tất cả cơ sở',
+      status: 'active',
+      createdAt: '2026-10-22',
+      avatar: 'QD'
+    }
+  ];
+
   const savedUsers = localStorage.getItem('tongwei_users');
   if (savedUsers) {
     try {
       adminState.users = JSON.parse(savedUsers);
-      // Normalize roleName casing for existing users
-      adminState.users.forEach(u => {
-        if (u.role === 'admin') u.roleName = 'Quản trị viên cấp cao';
-        else if (u.role === 'kitchen') u.roleName = 'Quản lý bếp & thực đơn';
-        else if (u.role === 'cashier') u.roleName = 'Vận hành đặt bàn & CSKH';
-        if (u.username === 'admin') u.fullName = 'Khuongnv (Quản trị viên)';
+      // Purge any Duy Tân or letan_dt users
+      adminState.users = adminState.users.filter(u => 
+        u.username !== 'letan_dt1' && 
+        u.username !== 'letan_dt2' && 
+        u.branchId !== 'CS-03' && 
+        !(u.branchName && u.branchName.includes('Duy Tân'))
+      );
+
+      defaultUsers.forEach(defU => {
+        const found = adminState.users.find(u => u.username.toLowerCase() === defU.username.toLowerCase());
+        if (!found) {
+          adminState.users.push(defU);
+        } else {
+          found.branchId = defU.branchId;
+          found.branchName = defU.branchName;
+          if (defU.phone) found.phone = defU.phone;
+          if (defU.shift) found.shift = defU.shift;
+          if (found.username === 'admin') {
+            found.fullName = 'Khuongnv (Quản trị viên)';
+            found.branchId = 'all';
+            found.branchName = 'Tất cả cơ sở';
+            found.roleName = 'Quản trị viên cấp cao';
+          }
+        }
       });
       localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
-    } catch(e) {}
-  }
-  if (!adminState.users || adminState.users.length === 0) {
-    adminState.users = [
-      {
-        id: 'usr_admin',
-        username: 'admin',
-        password: '123456',
-        fullName: 'Khuongnv (Quản trị viên)',
-        role: 'admin',
-        roleName: 'Quản trị viên cấp cao',
-        status: 'active',
-        createdAt: '2026-10-21',
-        avatar: 'AD'
-      },
-      {
-        id: 'usr_kitchen',
-        username: 'bep_truong',
-        password: '123456',
-        fullName: 'Lý Quốc Dũng (Bếp trưởng)',
-        role: 'kitchen',
-        roleName: 'Quản lý bếp & thực đơn',
-        status: 'active',
-        createdAt: '2026-10-22',
-        avatar: 'QD'
-      },
-      {
-        id: 'usr_cashier',
-        username: 'thu_ngan',
-        password: '123456',
-        fullName: 'Trần Mỹ Linh (Lễ tân / Thu ngân)',
-        role: 'cashier',
-        roleName: 'Vận hành đặt bàn & CSKH',
-        status: 'active',
-        createdAt: '2026-10-22',
-        avatar: 'ML'
-      }
-    ];
+    } catch(e) {
+      adminState.users = defaultUsers;
+      localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
+    }
+  } else {
+    adminState.users = defaultUsers;
     localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
   }
 
@@ -425,7 +503,6 @@ async function initializeData() {
   renderDishesTable();
   renderEventsTable();
   renderAdminMedia();
-  renderBookingsTable();
   renderFranchiseView();
   renderCareersView();
   renderBranchesView();
@@ -435,45 +512,105 @@ async function initializeData() {
 
 // ==================== DASHBOARD & KPIS ====================
 function refreshDashboardStats() {
-  document.getElementById('kpiDishesCount').textContent = adminState.dishes.length;
-  document.getElementById('menuCountBadge').textContent = adminState.dishes.length;
-  document.getElementById('countAllDishes').textContent = adminState.dishes.length;
-  document.getElementById('kpiBookingsCount').textContent = adminState.bookings.length;
-  document.getElementById('bookingCountBadge').textContent = adminState.bookings.filter(b => b.status === 'confirmed').length;
-  document.getElementById('kpiApplicantsCount').textContent = adminState.candidates.length;
-  document.getElementById('kpiFranchiseCount').textContent = adminState.franchiseLeads.length;
+  const dishesEl = document.getElementById('kpiDishesCount');
+  if (dishesEl) dishesEl.textContent = adminState.dishes.length;
+  const menuBadge = document.getElementById('menuCountBadge');
+  if (menuBadge) menuBadge.textContent = adminState.dishes.length;
+  const countAll = document.getElementById('countAllDishes');
+  if (countAll) countAll.textContent = adminState.dishes.length;
+
+  const branchesEl = document.getElementById('kpiBranchesCount');
+  if (branchesEl) branchesEl.textContent = adminState.branches.length;
+  const branchMenuBadge = document.getElementById('branchMenuBadge');
+  if (branchMenuBadge) branchMenuBadge.textContent = adminState.branches.length;
+  const branchBadge = document.getElementById('branchCountBadge');
+  if (branchBadge) branchBadge.textContent = `${adminState.branches.length} Chi nhánh`;
+
+  const photosEl = document.getElementById('kpiPhotosCount');
+  if (photosEl) photosEl.textContent = adminState.photos ? adminState.photos.length : 0;
+  const mediaBadge = document.getElementById('mediaCountBadge');
+  if (mediaBadge) mediaBadge.textContent = adminState.photos ? adminState.photos.length : 0;
+
+  const receptionists = (adminState.users || []).filter(u => u.role === 'receptionist');
+  const receptionEl = document.getElementById('kpiReceptionCount');
+  if (receptionEl) receptionEl.textContent = receptionists.length || 4;
+
+  const applicantsEl = document.getElementById('kpiApplicantsCount');
+  if (applicantsEl) applicantsEl.textContent = adminState.candidates.length;
+  const franchiseEl = document.getElementById('kpiFranchiseCount');
+  if (franchiseEl) franchiseEl.textContent = adminState.franchiseLeads.length;
 
   const eventBadge = document.getElementById('eventCountBadge');
   if (eventBadge) eventBadge.textContent = adminState.events ? adminState.events.length : 0;
 
-  const mediaBadge = document.getElementById('mediaCountBadge');
-  if (mediaBadge) mediaBadge.textContent = adminState.photos ? adminState.photos.length : 0;
-
-  // Recent Bookings in Dashboard Table
-  const tbody = document.getElementById('dashboardBookingsTbody');
+  // 1. Render Dashboard Branches Table
+  const tbody = document.getElementById('dashboardBranchesTbody');
   if (tbody) {
-    const recents = adminState.bookings.slice(0, 5);
-    tbody.innerHTML = recents.map(b => {
-      const displayName = b.name || b.customer || 'Khách Đặt Bàn';
-      const displayPhone = b.phone || 'Chưa cung cấp';
-      const displayTime = b.time ? `${b.time} ${b.date ? `(${b.date})` : ''}` : (b.date || 'Hôm nay');
-      const displayArea = b.branch ? b.branch.split(':')[0] : (b.area || 'Sảnh Chính');
+    const sorted = [...adminState.branches].sort((a, b) => Number(a.stt || 0) - Number(b.stt || 0));
+    tbody.innerHTML = sorted.map((b, idx) => `
+      <tr>
+        <td style="text-align: center;"><span class="badge badge-indigo">#${b.stt || (idx + 1)}</span></td>
+        <td>
+          <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${b.name}</div>
+          ${b.scale ? `<div style="font-size: 0.78rem; color: var(--text-muted);">${b.scale}</div>` : ''}
+        </td>
+        <td style="max-width: 220px; font-size: 0.88rem;">${b.address}</td>
+        <td><b style="color: var(--color-brand-red); font-size: 0.95rem;">${b.phone}</b></td>
+        <td>
+          <span class="badge ${b.status === 'upcoming' ? 'badge-warning' : 'badge-success'}">
+            ${b.status === 'upcoming' ? '⏳ Sắp mở' : '✔ Hoạt động'}
+          </span>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // 2. Render Dashboard Reception Staff Table (Phân công lễ tân trực)
+  const receptionTbody = document.getElementById('dashboardReceptionTbody');
+  if (receptionTbody) {
+    receptionTbody.innerHTML = receptionists.map((u, idx) => {
+      const isMorning = idx % 2 === 0;
+      const shiftText = u.shift || (isMorning ? 'Ca Sáng (09:30 - 15:00)' : 'Ca Tối (17:00 - 22:30)');
+      const statusBadge = isMorning
+        ? `<span class="badge badge-success" style="font-size: 0.75rem;">🟢 Đang trực ca</span>`
+        : `<span class="badge badge-indigo" style="font-size: 0.75rem;">🔵 Sẵn sàng</span>`;
+      const branchBadge = u.branchId === 'CS-01'
+        ? `<span class="badge" style="background: rgba(30, 58, 138, 0.1); color: #1e3a8a; border: 1px solid rgba(30, 58, 138, 0.25); font-size: 0.75rem;">🏛️ Hoàn Kiếm</span>`
+        : `<span class="badge" style="background: rgba(194, 65, 12, 0.1); color: #c2410c; border: 1px solid rgba(194, 65, 12, 0.25); font-size: 0.75rem;">🏮 Nguyễn Thị Thập</span>`;
 
       return `
         <tr>
+          <td>${branchBadge}</td>
           <td>
-            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${displayName}</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">${displayPhone}</div>
+            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.88rem;">${u.fullName}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">@${u.username} • ${shiftText}</div>
           </td>
-          <td>${displayTime}</td>
-          <td><b>${b.guests || '4 Khách'}</b></td>
-          <td><span class="badge badge-indigo">${displayArea}</span></td>
-          <td>
-            <span class="badge ${b.status === 'confirmed' ? 'badge-success' : 'badge-warning'}">
-              ${b.status === 'confirmed' ? 'Đã xác nhận' : 'Chờ phản hồi'}
-            </span>
-          </td>
+          <td><b style="color: var(--color-brand-red); font-size: 0.88rem;">${u.phone || '039 736 0228'}</b></td>
+          <td>${statusBadge}</td>
         </tr>
+      `;
+    }).join('');
+  }
+
+  // 3. Render Dashboard Recent Space Photos Grid (Ảnh không gian mới nhất 2 cơ sở)
+  const photosGrid = document.getElementById('dashboardRecentPhotosGrid');
+  if (photosGrid) {
+    const spacePhotos = (adminState.photos || []).filter(p => p.category === 'space_hk' || p.category === 'space_ntt' || (p.src && (p.src.includes('nguyen_thi_thap') || p.src.includes('branch_2')))).slice(0, 8);
+    const displayPhotos = spacePhotos.length > 0 ? spacePhotos : (adminState.photos || []).slice(0, 8);
+
+    photosGrid.innerHTML = displayPhotos.map(p => {
+      const imgSrc = getAdminImgSrc(p.src);
+      const branchLabel = p.category === 'space_hk' ? '🏛️ Hoàn Kiếm' : (p.category === 'space_ntt' ? '🏮 Nguyễn Thị Thập' : '🖼️ Không gian');
+      return `
+        <div onclick="openPhotoModal(${p.id})" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; background: #fff; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+          <div style="position: relative; height: 90px; background: #f1f5f9;">
+            <img src="${imgSrc}" alt="${p.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='/assets/images/branding/tongwei_avatar.png'">
+            <span style="position: absolute; bottom: 4px; left: 4px; font-size: 0.65rem; font-weight: 700; background: rgba(0,0,0,0.65); color: #fff; padding: 2px 5px; border-radius: 4px;">${branchLabel}</span>
+          </div>
+          <div style="padding: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--color-indigo-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.title}">
+            ${p.title}
+          </div>
+        </div>
       `;
     }).join('');
   }
@@ -932,7 +1069,402 @@ document.getElementById('eventForm')?.addEventListener('submit', (e) => {
   }
 });
 
-// ==================== MEDIA & CONCEPT LOOKBOOK ====================
+// ==================== MEDIA & CONCEPT LOOKBOOK CMS ====================
+const MEDIA_CAT_NAMES = {
+  space_ntt: 'Cơ Sở Nguyễn Thị Thập',
+  space_hk: 'Cơ Sở Hoàn Kiếm',
+  space: 'Không Gian Cơ Sở',
+  dimsum: 'Dimsum Nghệ Nhân',
+  banquet: 'Bàn Tiệc Đại Yến',
+  bbq: 'Món Quay & Nướng',
+  drinks: 'Thức Uống',
+  appetizer: 'Khai Vị & Súp'
+};
+
+const DEFAULT_SPACE_GALLERY = [
+  // 1. Cơ Sở Nguyễn Thị Thập (CS-02)
+  {
+    id: 101,
+    order: 1,
+    src: "assets/images/branches/nguyen_thi_thap_fb_1.jpg",
+    title: "Mặt Tiền & Bảng Hiệu Giao Hoà Mới",
+    category: "space_ntt",
+    categoryName: "Cơ Sở Nguyễn Thị Thập",
+    desc: "Mặt tiền và không gian đón khách trang nhã, ấm cúng tại 5N7A Nguyễn Thị Thập, P. Yên Hoà, Cầu Giấy."
+  },
+  {
+    id: 102,
+    order: 2,
+    src: "assets/images/branches/nguyen_thi_thap_fb_4.jpg",
+    title: "Phòng Ăn Sang Trọng Tone Gỗ Ấm",
+    category: "space_ntt",
+    categoryName: "Cơ Sở Nguyễn Thị Thập",
+    desc: "Không gian phòng ăn sang trọng với tone gỗ ấm, ánh đèn vàng ấm áp chuẩn phong vị ẩm thực Quảng Đông."
+  },
+  {
+    id: 103,
+    order: 3,
+    src: "assets/images/branches/nguyen_thi_thap_fb_2.jpg",
+    title: "Bàn Tiệc Sum Vầy Giao Hoà",
+    category: "space_ntt",
+    categoryName: "Cơ Sở Nguyễn Thị Thập",
+    desc: "Bàn tiệc đại yến gia đình sum vầy, kết nối cảm xúc trọn vẹn bên các món ăn đậm đà chuẩn vị."
+  },
+  {
+    id: 104,
+    order: 4,
+    src: "assets/images/branches/nguyen_thi_thap_fb_3.jpg",
+    title: "Góc Bàn Đôi Riêng Tư View Kính",
+    category: "space_ntt",
+    categoryName: "Cơ Sở Nguyễn Thị Thập",
+    desc: "Bàn ăn đôi lãng mạn, thoáng đãng với ô cửa kính view phố dành cho cặp đôi và bạn bè."
+  },
+  {
+    id: 105,
+    order: 5,
+    src: "assets/images/branches/nguyen_thi_thap_fb_5.jpg",
+    title: "Góc Decor Đèn Lồng Nghệ Nhân",
+    category: "space_ntt",
+    categoryName: "Cơ Sở Nguyễn Thị Thập",
+    desc: "Họa tiết đèn lồng nghệ nhân và phong cách kiến trúc đặc trưng của thương hiệu Đồng Vị TongWei."
+  },
+
+  // 2. Cơ Sở Hoàn Kiếm (CS-01 Flagship)
+  {
+    id: 106,
+    order: 6,
+    src: "assets/images/branches/fb_tongwei_branch_2.png",
+    title: "Mặt Tiền Flagship 68A Trần Hưng Đạo",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Không gian nhà hàng sang trọng, phòng VIP tiếp khách và hội nghị đẳng cấp tại trung tâm Hoàn Kiếm."
+  },
+  {
+    id: 107,
+    order: 7,
+    src: "assets/images/branches/fb_tongwei_branch_1.jpg",
+    title: "Phòng Tiệc VIP Hoàng Kim",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Không gian phòng VIP cách âm riêng biệt với bàn tròn xoay phong cách hoàng gia Quảng Đông."
+  },
+  {
+    id: 108,
+    order: 8,
+    src: "assets/images/branches/fb_tongwei_branch_13.jpg",
+    title: "Khu Bàn Ăn Gia Đình Hoàn Kiếm",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Thiết kế tao nhã mang đậm cảm hứng di sản, ánh đèn ấm áp cho bữa ăn sum vầy gia tộc."
+  },
+  {
+    id: 109,
+    order: 9,
+    src: "assets/images/branches/fb_tongwei_branch_14.jpg",
+    title: "Sảnh Tiếp Đón & Quầy Trà Đạo",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Không gian sảnh tiếp đón trang trọng với nghệ thuật pha trà truyền thống xứ Cảng Thơm."
+  },
+
+  // 3. Dimsum Nghệ Nhân
+  {
+    id: 7,
+    order: 10,
+    src: "assets/images/concept/concept_7.jpg",
+    title: "Tháp Xửng Dimsum Trúc Bốc Khói",
+    category: "dimsum",
+    categoryName: "Dimsum Nghệ Nhân",
+    desc: "Há cảo tôm sò điệp trong suốt, xíu mại tôm thịt gạch cua và bánh bao kim sa nóng hổi nghi ngút khói thơm."
+  },
+  {
+    id: 8,
+    order: 14,
+    src: "assets/images/concept/concept_8.jpg",
+    title: "Set Điểm Tâm Sáng & Súp Khai Vị",
+    category: "dimsum",
+    categoryName: "Dimsum Nghệ Nhân",
+    desc: "Nét đẹp văn hóa 'ẩm thực thán trà' trứ danh của xứ Cảng Thơm, mở đầu ngày mới ngập tràn năng lượng tích cực."
+  },
+  {
+    id: 9,
+    order: 15,
+    src: "assets/images/concept/concept_9.jpg",
+    title: "Bánh Bao Đào Tiên Trường Thọ",
+    category: "dimsum",
+    categoryName: "Dimsum Nghệ Nhân",
+    desc: "Tác phẩm thủ công nặn tay cầu kỳ mang sắc hồng đào tiên, nhân hạt sen ngọt thanh biểu trưng cho phúc lộc dồi dào."
+  },
+
+  // 5. Bàn Tiệc Đại Yến
+  {
+    id: 2,
+    order: 16,
+    src: "assets/images/concept/concept_2.jpg",
+    title: "Văn Hóa Cố Sự & Bàn Mạt Chược",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Nét sinh hoạt hoài niệm tao nhã bên bàn mạt chược truyền thống và trà thơm."
+  },
+  {
+    id: 3,
+    order: 17,
+    src: "assets/images/concept/concept_3.jpg",
+    title: "Mâm Cơm Quảng Đông & Trà Đạo",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Bàn ăn chuẩn vị gia đình với các món xào lửa lớn, thịt nướng xá xíu thơm ngát và trà thảo mộc ấm lòng."
+  },
+  {
+    id: 4,
+    order: 18,
+    src: "assets/images/concept/concept_4.jpg",
+    title: "Đại Tiệc Sum Vầy Gia Tộc",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Thịt nướng mật ong, xiên nướng than hoa và các món khai vị cung đình."
+  },
+  {
+    id: 6,
+    order: 19,
+    src: "assets/images/concept/concept_6.jpg",
+    title: "Bàn Tiệc Cơm Chiên Hoàng Kim & Canh Tiềm",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Thố cơm chiên tôm khô giòn rụm và canh tiềm thảo mộc cách thủy 4 tiếng đồng hồ."
+  },
+  {
+    id: 10,
+    order: 20,
+    src: "assets/images/concept/concept_10.jpg",
+    title: "Đại Tiệc Hội Nghị & Tiệc Cưới",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Bố trí bàn tiệc tròn hoành tráng phục vụ sự kiện thượng khách và hôn lễ sang trọng."
+  },
+  {
+    id: 12,
+    order: 21,
+    src: "assets/images/concept/concept_12.jpg",
+    title: "Bàn Tiệc Toàn Bích 12 Món Mỹ Vị",
+    category: "banquet",
+    categoryName: "Bàn Tiệc Đại Yến",
+    desc: "Sự cân bằng hoàn hảo giữa âm dương ngũ hành trong ẩm thực Quảng Đông."
+  },
+
+  // 6. Món Quay & Nướng
+  {
+    id: 5,
+    order: 22,
+    src: "assets/images/concept/concept_5.jpg",
+    title: "Thịt Nướng Xá Xíu & Trà Cổ Thụ",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Lớp thịt nướng xém cạnh mật ong rừng chấm cùng tương ngọt đặc chế, nhấp ngụm trà Thiết Quan Âm."
+  },
+  {
+    id: 11,
+    order: 23,
+    src: "assets/images/concept/concept_11.jpg",
+    title: "Mỹ Vị Nướng Quay & Dimsum Đầy Đủ",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Vịt quay da giòn, sườn nướng mật ong và dimsum tươi mới đậm đà phong vị xứ Cảng."
+  },
+  {
+    id: 22,
+    order: 24,
+    src: "assets/images/concept/concept_22.jpg",
+    title: "Đậu Que Xào Thịt Xá Xíu Bóng Bẩy",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Chảo lửa lớn giữ trọn sắc xanh và độ giòn ngọt tự nhiên của rau quả sạch hòa quyện sốt xá xíu."
+  },
+  {
+    id: 23,
+    order: 25,
+    src: "assets/images/concept/concept_23.jpg",
+    title: "Rau Củ Tươi Xào Tôm Khô Tàu Xì",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Hương vị khí chảo đặc trưng thơm lừng từ đậu tàu xì lên men tự nhiên và tôm khô hảo hạng."
+  },
+  {
+    id: 24,
+    order: 26,
+    src: "assets/images/concept/concept_24.jpg",
+    title: "Thịt Xá Xíu Nướng Mật Ong Rừng",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Món signature của TongWei: thịt ba chỉ rút sườn nướng mật ong vàng ruộm óng ánh thơm phức."
+  },
+  {
+    id: 25,
+    order: 27,
+    src: "assets/images/concept/concept_25.jpg",
+    title: "Xá Xíu Phủ Ớt Tươi & Hành Hoa",
+    category: "bbq",
+    categoryName: "Món Quay & Nướng",
+    desc: "Sắc đỏ mang lại may mắn, kích thích trọn vẹn vị giác thực khách với vị ngọt thơm đậm đà."
+  },
+
+  // 7. Thức Uống
+  {
+    id: 1,
+    order: 28,
+    src: "assets/images/concept/concept_1.jpg",
+    title: "Bộ Sưu Tập Thức Uống Nhiệt Đới",
+    category: "drinks",
+    categoryName: "Thức Uống",
+    desc: "Các dòng nước thanh mát kết hợp lá dứa non, dưa lưới mọng nước và chanh vàng thanh nhiệt giải khát trọn vẹn."
+  },
+
+  // 8. Khai Vị & Súp
+  {
+    id: 13,
+    order: 29,
+    src: "assets/images/concept/concept_13.jpg",
+    title: "Súp Bí Đỏ Hạt Sen Hoàng Kim",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Vị bùi béo mịn từ bí ngô sạch ninh nhừ cùng hạt sen bồi bổ sức khỏe."
+  },
+  {
+    id: 14,
+    order: 30,
+    src: "assets/images/concept/concept_14.jpg",
+    title: "Mộc Nhĩ Đen Ngâm Chua Ngọt",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Món khai vị giòn sần sật ngâm giấm đen Trấn Giang lâu năm thanh lọc vị giác."
+  },
+  {
+    id: 15,
+    order: 31,
+    src: "assets/images/concept/concept_15.jpg",
+    title: "Cánh Vịt Tiềm Cay Thảo Mộc",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Hương vị cay nồng quyến rũ từ ớt Tứ Xuyên và 12 vị thảo mộc thiên nhiên."
+  },
+  {
+    id: 16,
+    order: 32,
+    src: "assets/images/concept/concept_16.jpg",
+    title: "Cổ Vịt Rút Xương Sốt Tiềm Đậm Đà",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Món nhắm ẩm thực truyền thống với thớ thịt săn chắc ngấm đẫm gia vị."
+  },
+  {
+    id: 17,
+    order: 33,
+    src: "assets/images/concept/concept_17.jpg",
+    title: "Đậu Hũ Non Trứng Bắc Thảo Sốt Cay",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Đậu hũ mát lạnh kết hợp trứng bắc thảo bùi béo ngậy sốt ớt gừng tê cay dịu."
+  },
+  {
+    id: 18,
+    order: 34,
+    src: "assets/images/concept/concept_18.jpg",
+    title: "Đặc Sản Trứng Bắc Thảo Ngũ Vị",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Thanh lọc vị giác kinh điển trong bàn tiệc sang trọng chuẩn vị Hồng Kông."
+  },
+  {
+    id: 19,
+    order: 35,
+    src: "assets/images/concept/concept_19.jpg",
+    title: "Món Tiềm Cay Cổ Truyền",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Màu hổ phách óng ánh từ tương già thượng phẩm lên men tự nhiên làm ấm lòng thực khách."
+  },
+  {
+    id: 20,
+    order: 36,
+    src: "assets/images/concept/concept_20.jpg",
+    title: "Bộ Đôi Khai Vị Thanh Nhã",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Khởi đầu bữa tiệc thanh lịch chuẩn phong vị cố sự và trà đạo tao nhã."
+  },
+  {
+    id: 21,
+    order: 37,
+    src: "assets/images/concept/concept_21.jpg",
+    title: "Súp Dưỡng Nhan Thảo Mộc Cung Đình",
+    category: "appetizer",
+    categoryName: "Khai Vị & Súp",
+    desc: "Món canh bồi bổ nguyên khí, dưỡng ẩm làn da dành riêng cho phái đẹp."
+  }
+];
+
+function getAdminImgSrc(src) {
+  if (!src) return '';
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
+  if (src.startsWith('/')) return src;
+  return '/' + src;
+}
+
+function loadAdminPhotos() {
+  const stored = localStorage.getItem('tongwei_space_gallery') || localStorage.getItem('tongwei_photos');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Purge any Duy Tân or space_dt photos
+        let cleaned = parsed.filter(it => it.category !== 'space_dt' && !(it.title && it.title.includes('Duy Tân')) && !(it.desc && it.desc.includes('Duy Tân')));
+
+        cleaned.forEach(it => {
+          if (it.category === 'space') {
+            if (it.src && it.src.includes('nguyen_thi_thap')) {
+              it.category = 'space_ntt';
+              it.categoryName = 'Cơ Sở Nguyễn Thị Thập';
+            } else if (it.src && (it.src.includes('fb_tongwei_branch_2') || (it.title && (it.title.includes('Trần Hưng Đạo') || it.title.includes('Hoàn Kiếm'))))) {
+              it.category = 'space_hk';
+              it.categoryName = 'Cơ Sở Hoàn Kiếm';
+            }
+          }
+        });
+
+        // Ensure Nguyễn Thị Thập photos exist
+        const hasNTT = cleaned.some(it => it.category === 'space_ntt' || (it.src && it.src.includes('nguyen_thi_thap')));
+        if (!hasNTT) {
+          const nttPhotos = DEFAULT_SPACE_GALLERY.filter(it => it.category === 'space_ntt');
+          cleaned.unshift(...nttPhotos);
+        }
+
+        // Ensure Hoàn Kiếm photos exist
+        const hasHK = cleaned.some(it => it.category === 'space_hk');
+        if (!hasHK) {
+          const hkPhotos = DEFAULT_SPACE_GALLERY.filter(it => it.category === 'space_hk');
+          cleaned.push(...hkPhotos);
+        }
+
+        cleaned.sort((a, b) => (a.order || 0) - (b.order || 0));
+        adminState.photos = cleaned;
+        return;
+      }
+    } catch (e) {
+      console.warn('Error parsing photos in admin:', e);
+    }
+  }
+  adminState.photos = JSON.parse(JSON.stringify(DEFAULT_SPACE_GALLERY));
+  savePhotosToStorage();
+}
+
+function savePhotosToStorage() {
+  localStorage.setItem('tongwei_space_gallery', JSON.stringify(adminState.photos));
+  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  try {
+    window.dispatchEvent(new Event('storage'));
+  } catch (e) {}
+}
+
 let mediaViewMode = 'grid'; // 'grid' or 'table'
 
 function toggleMediaViewMode() {
@@ -971,76 +1503,105 @@ function renderAdminMedia() {
 
   let list = adminState.photos;
   if (adminState.mediaFilterCat !== 'all') {
-    list = list.filter(p => p.category === adminState.mediaFilterCat);
+    list = list.filter(p => {
+      if (p.category === adminState.mediaFilterCat) return true;
+      if (adminState.mediaFilterCat === 'space_ntt' && p.src && p.src.includes('nguyen_thi_thap')) return true;
+      return false;
+    });
   }
 
   // 1. Render Grid View
   if (grid) {
-    grid.innerHTML = list.map((item, index) => {
-      const imgSrc = item.src.startsWith('http') || item.src.startsWith('/') ? item.src : `/${item.src}`;
-      const orderNum = item.order || (index + 1);
-
-      return `
-        <div class="media-item" onclick="openPhotoModal(${item.id})">
-          <span class="badge" style="position: absolute; top: 8px; left: 8px; background: var(--color-indigo); color: #fff; font-weight: 800; font-size: 0.78rem; z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border-radius: var(--radius-sm);">
-            STT: #${orderNum}
-          </span>
-          <button type="button" class="media-delete-btn" onclick="deletePhoto(${item.id}, event)" title="Xóa bức ảnh này">🗑️</button>
-          <img src="${imgSrc}" alt="${item.title}" loading="lazy">
-          <div class="media-overlay">
-            <span class="badge badge-indigo" style="color: #fff; background: var(--color-brand-red); margin-bottom: 4px;">STT #${orderNum} • ${item.categoryName}</span>
-            <div class="media-title">${item.title}</div>
-          </div>
+    if (list.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-secondary); background: #ffffff; border-radius: var(--radius-md); border: 1.5px dashed var(--border-color);">
+          <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🖼️</div>
+          <p style="font-weight: 600; font-size: 1rem; color: var(--color-indigo);">Chưa có bức ảnh nào trong danh mục này</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openAddMediaModal()" style="margin-top: 0.75rem;">
+            Thêm ảnh mới vào danh mục này ➕
+          </button>
         </div>
       `;
-    }).join('');
+    } else {
+      grid.innerHTML = list.map((item, index) => {
+        const imgSrc = getAdminImgSrc(item.src);
+        const orderNum = item.order || (index + 1);
+
+        return `
+          <div class="media-item" onclick="openPhotoModal(${item.id})">
+            <span class="badge" style="position: absolute; top: 8px; left: 8px; background: var(--color-indigo); color: #fff; font-weight: 800; font-size: 0.78rem; z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border-radius: var(--radius-sm);">
+              STT: #${orderNum}
+            </span>
+            <div class="media-actions-group">
+              <button type="button" class="media-action-btn media-edit-btn" onclick="openPhotoModal(${item.id}); event.stopPropagation();" title="Chỉnh sửa ảnh này">✏️</button>
+              <button type="button" class="media-action-btn media-delete-btn" onclick="deletePhoto(${item.id}, event)" title="Xóa bức ảnh này">🗑️</button>
+            </div>
+            <img src="${imgSrc}" alt="${item.title}" loading="lazy">
+            <div class="media-overlay">
+              <span class="badge badge-indigo" style="color: #fff; background: var(--color-brand-red); margin-bottom: 4px;">STT #${orderNum} • ${item.categoryName}</span>
+              <div class="media-title">${item.title}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   }
 
   // 2. Render Table View (with Order Column & Up/Down Sort buttons)
   if (tbody) {
-    tbody.innerHTML = list.map((item, index) => {
-      const imgSrc = item.src.startsWith('http') || item.src.startsWith('/') ? item.src : `/${item.src}`;
-      const orderNum = item.order || (index + 1);
-
-      return `
+    if (list.length === 0) {
+      tbody.innerHTML = `
         <tr>
-          <td style="text-align: center;">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
-              <input type="number" class="form-control" style="width: 60px; text-align: center; font-weight: 800; color: var(--color-indigo); padding: 0.3rem 0.2rem;" value="${orderNum}" min="1" max="999" onchange="changePhotoOrder(${item.id}, this.value)" title="Nhập số thứ tự và nhấn Enter">
-              <div style="display: flex; flex-direction: column; gap: 2px;">
-                <button type="button" onclick="movePhotoPosition(${item.id}, -1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển lên trên">▲</button>
-                <button type="button" onclick="movePhotoPosition(${item.id}, 1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển xuống dưới">▼</button>
-              </div>
-            </div>
-          </td>
-          <td>
-            <img src="${imgSrc}" alt="${item.title}" style="width: 75px; height: 50px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color); cursor: pointer;" onclick="openPhotoModal(${item.id})">
-          </td>
-          <td>
-            <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${item.title}</div>
-            <small style="color: var(--text-secondary); font-size: 0.78rem;">Tệp: ${item.src}</small>
-          </td>
-          <td>
-            <span class="badge badge-indigo" style="background: rgba(29, 61, 116, 0.08); color: var(--color-indigo); font-weight: 700;">
-              ${item.categoryName}
-            </span>
-          </td>
-          <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
-            ${item.desc}
-          </td>
-          <td style="text-align: right;">
-            <div style="display: inline-flex; gap: 0.4rem;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="openPhotoModal(${item.id})" title="Chỉnh sửa">
-                ✏️ Sửa
-              </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="deletePhoto(${item.id})" title="Xóa">
-                🗑️
-              </button>
-            </div>
+          <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+            Chưa có bức ảnh nào trong danh mục này. Nhấn <b>"Thêm ảnh không gian / món mới"</b> để tải thêm ảnh!
           </td>
         </tr>
       `;
-    }).join('');
+    } else {
+      tbody.innerHTML = list.map((item, index) => {
+        const imgSrc = getAdminImgSrc(item.src);
+        const orderNum = item.order || (index + 1);
+
+        return `
+          <tr>
+            <td style="text-align: center;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                <input type="number" class="form-control" style="width: 60px; text-align: center; font-weight: 800; color: var(--color-indigo); padding: 0.3rem 0.2rem;" value="${orderNum}" min="1" max="999" onchange="changePhotoOrder(${item.id}, this.value)" title="Nhập số thứ tự và nhấn Enter">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <button type="button" onclick="movePhotoPosition(${item.id}, -1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển lên trên">▲</button>
+                  <button type="button" onclick="movePhotoPosition(${item.id}, 1)" class="btn btn-outline btn-sm" style="padding: 0 4px; font-size: 0.68rem; line-height: 1.2;" title="Di chuyển xuống dưới">▼</button>
+                </div>
+              </div>
+            </td>
+            <td>
+              <img src="${imgSrc}" alt="${item.title}" style="width: 75px; height: 50px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color); cursor: pointer;" onclick="openPhotoModal(${item.id})">
+            </td>
+            <td>
+              <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${item.title}</div>
+              <small style="color: var(--text-secondary); font-size: 0.78rem;">Tệp: ${item.src}</small>
+            </td>
+            <td>
+              <span class="badge badge-indigo" style="background: rgba(29, 61, 116, 0.08); color: var(--color-indigo); font-weight: 700;">
+                ${item.categoryName}
+              </span>
+            </td>
+            <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              ${item.desc}
+            </td>
+            <td style="text-align: right;">
+              <div style="display: inline-flex; gap: 0.4rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="openPhotoModal(${item.id})" title="Chỉnh sửa">
+                  ✏️ Sửa
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="deletePhoto(${item.id}, event)" title="Xóa">
+                  🗑️ Xóa
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
   updateMediaCountBadge();
@@ -1055,7 +1616,7 @@ function changePhotoOrder(id, newOrderVal) {
 
   item.order = newOrder;
   adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
-  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  savePhotosToStorage();
   renderAdminMedia();
   showToast(`Đã đổi thứ tự ảnh <b>${item.title}</b> thành vị trí <b>#${newOrder}</b>!`);
 }
@@ -1084,7 +1645,7 @@ function movePhotoPosition(id, direction) {
   }
 
   adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
-  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  savePhotosToStorage();
   renderAdminMedia();
   showToast(`Đã di chuyển vị trí ảnh <b>${currentPhoto.title}</b>!`);
 }
@@ -1095,17 +1656,17 @@ function updateMediaCountBadge() {
   const badge = document.getElementById('mediaCountBadge');
   if (badge) badge.textContent = count;
   const filterAllBtn = document.querySelector('#mediaFilterControls [data-cat="all"]');
-  if (filterAllBtn) filterAllBtn.textContent = `Tất cả ${count} ảnh`;
+  if (filterAllBtn) filterAllBtn.textContent = `🌟 Tất cả ${count} ảnh`;
 }
 
 function deletePhoto(id, e) {
   if (e && e.stopPropagation) e.stopPropagation();
   const p = adminState.photos.find(item => item.id === id);
   if (!p) return;
-  if (!confirm(`Bạn có chắc chắn muốn xóa bức ảnh "${p.title}" khỏi thư viện concept không?`)) return;
+  if (!confirm(`Bạn có chắc chắn muốn xóa bức ảnh "${p.title}" khỏi thư viện không?`)) return;
 
   adminState.photos = adminState.photos.filter(item => item.id !== id);
-  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  savePhotosToStorage();
   closeModal('photoModal');
   renderAdminMedia();
   showToast(`Đã xóa bức ảnh <b>${p.title}</b> khỏi thư viện!`);
@@ -1118,52 +1679,125 @@ function deletePhotoFromModal() {
 }
 window.deletePhotoFromModal = deletePhotoFromModal;
 
+function previewPhotoSrc(val) {
+  const previewImg = document.getElementById('photoModalPreview');
+  if (!previewImg) return;
+  if (!val) {
+    previewImg.src = '';
+    previewImg.style.display = 'none';
+    return;
+  }
+  previewImg.style.display = 'block';
+  previewImg.src = getAdminImgSrc(val.trim());
+}
+window.previewPhotoSrc = previewPhotoSrc;
+
+function openAddMediaModal() {
+  document.getElementById('photoEditId').value = '';
+  document.getElementById('photoModalTitle').textContent = 'Thêm ảnh không gian / món ăn mới ➕';
+  document.getElementById('photoModalSubtitle').textContent = 'Thêm ảnh góc chụp cơ sở hoặc món ăn nghệ nhân mới vào hệ thống.';
+  document.getElementById('photoTitle').value = '';
+
+  const currentCat = adminState.mediaFilterCat;
+  const defaultCat = (currentCat && currentCat !== 'all') ? currentCat : 'space_ntt';
+  document.getElementById('photoCategory').value = defaultCat;
+
+  let defaultSrc = 'assets/images/branches/nguyen_thi_thap_fb_1.jpg';
+  if (defaultCat === 'space_hk') defaultSrc = 'assets/images/branches/fb_tongwei_branch_2.png';
+  
+  if (defaultCat === 'dimsum') defaultSrc = 'assets/images/concept/concept_7.jpg';
+  if (defaultCat === 'banquet') defaultSrc = 'assets/images/concept/concept_4.jpg';
+  if (defaultCat === 'bbq') defaultSrc = 'assets/images/concept/concept_5.jpg';
+  if (defaultCat === 'drinks') defaultSrc = 'assets/images/concept/concept_1.jpg';
+
+  document.getElementById('photoSrc').value = defaultSrc;
+  document.getElementById('photoOrder').value = (adminState.photos.length + 1);
+  document.getElementById('photoDesc').value = '';
+
+  const deleteBtn = document.getElementById('photoModalDeleteBtn');
+  if (deleteBtn) deleteBtn.style.display = 'none';
+
+  previewPhotoSrc(defaultSrc);
+  openModal('photoModal');
+}
+function openAddPhotoModal() {
+  openAddMediaModal();
+}
+function openMediaModal() {
+  openAddMediaModal();
+}
+window.openAddMediaModal = openAddMediaModal;
+window.openAddPhotoModal = openAddPhotoModal;
+window.openMediaModal = openMediaModal;
+window.openMediaUploader = openAddMediaModal;
+
 function openPhotoModal(id) {
   const p = adminState.photos.find(item => item.id === id);
   if (!p) return;
 
   document.getElementById('photoEditId').value = p.id;
-  document.getElementById('photoTitle').value = p.title;
+  document.getElementById('photoModalTitle').textContent = 'Chỉnh sửa ảnh không gian / món ăn ✏️';
+  document.getElementById('photoModalSubtitle').textContent = 'Cập nhật tiêu đề, cơ sở/danh mục, đường dẫn ảnh và lời bình.';
+  document.getElementById('photoTitle').value = p.title || '';
+  document.getElementById('photoSrc').value = p.src || '';
   const orderInput = document.getElementById('photoOrder');
   if (orderInput) orderInput.value = p.order || (adminState.photos.indexOf(p) + 1);
-  document.getElementById('photoCategory').value = p.category;
-  document.getElementById('photoDesc').value = p.desc;
-  const previewImg = document.getElementById('photoModalPreview');
-  if (previewImg) previewImg.src = p.src.startsWith('http') || p.src.startsWith('/') ? p.src : `/${p.src}`;
+  document.getElementById('photoCategory').value = p.category || 'space_ntt';
+  document.getElementById('photoDesc').value = p.desc || '';
 
+  const deleteBtn = document.getElementById('photoModalDeleteBtn');
+  if (deleteBtn) deleteBtn.style.display = 'inline-flex';
+
+  previewPhotoSrc(p.src);
   openModal('photoModal');
 }
-
 window.openPhotoModal = openPhotoModal;
 
 document.getElementById('photoForm')?.addEventListener('submit', (e) => {
   e.preventDefault();
-  const id = parseInt(document.getElementById('photoEditId').value, 10);
-  const p = adminState.photos.find(item => item.id === id);
-  if (!p) return;
-
-  const catNames = {
-    banquet: 'Bàn Tiệc Đại Yến',
-    dimsum: 'Dimsum Nghệ Nhân',
-    bbq: 'Món Quay & Nướng',
-    appetizer: 'Khai Vị & Súp',
-    drinks: 'Thức Uống'
-  };
-
-  p.title = document.getElementById('photoTitle').value.trim();
+  const idVal = document.getElementById('photoEditId').value;
+  const title = document.getElementById('photoTitle').value.trim();
+  const src = document.getElementById('photoSrc').value.trim();
+  const cat = document.getElementById('photoCategory').value;
+  const desc = document.getElementById('photoDesc').value.trim();
   const orderInputVal = parseInt(document.getElementById('photoOrder')?.value, 10);
-  p.order = !isNaN(orderInputVal) && orderInputVal > 0 ? orderInputVal : (p.order || 1);
-  p.category = document.getElementById('photoCategory').value;
-  p.categoryName = catNames[p.category] || p.category;
-  p.desc = document.getElementById('photoDesc').value.trim();
 
-  // Re-sort photos by order
+  if (!idVal) {
+    // Add new photo
+    const maxId = adminState.photos.length > 0 ? Math.max(...adminState.photos.map(p => typeof p.id === 'number' ? p.id : 0)) : 0;
+    const newId = maxId + 1;
+    const newPhoto = {
+      id: newId,
+      order: !isNaN(orderInputVal) && orderInputVal > 0 ? orderInputVal : (adminState.photos.length + 1),
+      src: src,
+      title: title,
+      category: cat,
+      categoryName: MEDIA_CAT_NAMES[cat] || cat,
+      desc: desc
+    };
+    adminState.photos.push(newPhoto);
+    showToast(`Đã thêm ảnh mới: <b>${newPhoto.title}</b>!`);
+  } else {
+    // Edit existing photo
+    const id = parseInt(idVal, 10);
+    const p = adminState.photos.find(item => item.id === id);
+    if (!p) return;
+
+    p.title = title;
+    p.src = src;
+    p.category = cat;
+    p.categoryName = MEDIA_CAT_NAMES[cat] || cat;
+    p.desc = desc;
+    p.order = !isNaN(orderInputVal) && orderInputVal > 0 ? orderInputVal : (p.order || 1);
+    showToast(`Đã lưu thông tin ảnh <b>${p.title}</b>!`);
+  }
+
+  // Always sort photos by order
   adminState.photos.sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
+  savePhotosToStorage();
   closeModal('photoModal');
   renderAdminMedia();
-  showToast(`Đã lưu thông tin ảnh <b>${p.title}</b>!`);
 });
 
 // Media Picker Modal for selecting concept or dish images
@@ -1181,27 +1815,72 @@ function openMediaSelectorForEvent() {
   openModal('mediaPickerModal');
 }
 
+function openMediaSelectorForGallery() {
+  mediaPickerTargetInput = document.getElementById('photoSrc');
+  populateMediaPicker('all_system_photos');
+  openModal('mediaPickerModal');
+}
+window.openMediaSelectorForGallery = openMediaSelectorForGallery;
+
 function populateMediaPicker(type = 'concept') {
   const grid = document.getElementById('pickerGrid');
   if (!grid) return;
 
-  if (type === 'concept') {
-    grid.innerHTML = adminState.photos.map(p => `
-      <div class="media-item" onclick="selectPickerImage('${p.src}')" style="height: 120px;">
-        <img src="../${p.src}" alt="${p.title}">
-        <div class="media-overlay">
-          <div class="media-title" style="font-size: 0.72rem;">${p.title}</div>
+  if (type === 'all_system_photos' || type === 'gallery') {
+    const systemPhotos = [
+      { src: 'assets/images/branches/nguyen_thi_thap_fb_1.jpg', title: 'NTT - Mặt tiền & bảng hiệu mới' },
+      { src: 'assets/images/branches/nguyen_thi_thap_fb_4.jpg', title: 'NTT - Phòng ăn gỗ ấm cúng' },
+      { src: 'assets/images/branches/nguyen_thi_thap_fb_2.jpg', title: 'NTT - Bàn tiệc sum vầy giao hoà' },
+      { src: 'assets/images/branches/nguyen_thi_thap_fb_3.jpg', title: 'NTT - Góc bàn đôi view kính' },
+      { src: 'assets/images/branches/nguyen_thi_thap_fb_5.jpg', title: 'NTT - Decor đèn lồng nghệ nhân' },
+      { src: 'assets/images/branches/fb_tongwei_branch_2.png', title: 'Hoàn Kiếm - Mặt tiền Flagship 68A Trần Hưng Đạo' },
+      { src: 'assets/images/branches/fb_tongwei_branch_1.jpg', title: 'Hoàn Kiếm - Phòng tiệc VIP Hoàng Kim' },
+      { src: 'assets/images/branches/fb_tongwei_branch_13.jpg', title: 'Hoàn Kiếm - Bàn ăn gia đình tao nhã' },
+      { src: 'assets/images/branches/fb_tongwei_branch_14.jpg', title: 'Hoàn Kiếm - Góc tiếp khách sang trọng' },
+      ...adminState.photos.map(p => ({ src: p.src, title: p.title }))
+    ];
+
+    const seen = new Set();
+    const uniquePhotos = systemPhotos.filter(p => {
+      if (seen.has(p.src)) return false;
+      seen.add(p.src);
+      return true;
+    });
+
+    grid.innerHTML = uniquePhotos.map(p => {
+      const imgSrc = getAdminImgSrc(p.src);
+      return `
+        <div class="media-item" onclick="selectPickerImage('${p.src}')" style="height: 120px;" title="${p.title}">
+          <img src="${imgSrc}" alt="${p.title}">
+          <div class="media-overlay">
+            <div class="media-title" style="font-size: 0.72rem;">${p.title}</div>
+          </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
+  } else if (type === 'concept') {
+    grid.innerHTML = adminState.photos.map(p => {
+      const imgSrc = getAdminImgSrc(p.src);
+      return `
+        <div class="media-item" onclick="selectPickerImage('${p.src}')" style="height: 120px;">
+          <img src="${imgSrc}" alt="${p.title}">
+          <div class="media-overlay">
+            <div class="media-title" style="font-size: 0.72rem;">${p.title}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
   } else {
     // Show dishes transparent images
     const dishImages = adminState.dishes.map(d => d.image).filter(Boolean);
-    grid.innerHTML = dishImages.map(img => `
-      <div class="media-item" onclick="selectPickerImage('${img}')" style="height: 120px; background: #faf7f2; display: flex; align-items: center; justify-content: center;">
-        <img src="../${img}" alt="Dish" style="object-fit: contain; max-height: 90px;">
-      </div>
-    `).join('');
+    grid.innerHTML = dishImages.map(img => {
+      const imgSrc = getAdminImgSrc(img);
+      return `
+        <div class="media-item" onclick="selectPickerImage('${img}')" style="height: 120px; background: #faf7f2; display: flex; align-items: center; justify-content: center;">
+          <img src="${imgSrc}" alt="Dish" style="object-fit: contain; max-height: 90px;">
+        </div>
+      `;
+    }).join('');
   }
 }
 
@@ -1209,103 +1888,15 @@ function selectPickerImage(path) {
   if (mediaPickerTargetInput) {
     mediaPickerTargetInput.value = path;
     const preview = document.getElementById('dishPreviewImg');
-    if (preview) preview.src = `../${path}`;
+    if (preview) preview.src = getAdminImgSrc(path);
+    if (mediaPickerTargetInput.id === 'photoSrc') {
+      previewPhotoSrc(path);
+    }
     showToast(`Đã chọn ảnh: <b>${path}</b>`);
   }
   closeModal('mediaPickerModal');
 }
 
-// ==================== BOOKINGS MANAGEMENT ====================
-function renderBookingsTable() {
-  const tbody = document.getElementById('bookingsTbody');
-  if (!tbody) return;
-
-  tbody.innerHTML = adminState.bookings.map(b => {
-    const isConf = b.status === 'confirmed';
-    const isDone = b.status === 'completed';
-    const statusLabel = isConf ? 'Đã xác nhận' : (isDone ? 'Đã đón khách' : 'Chờ phản hồi');
-    const badgeClass = isConf ? 'badge-success' : (isDone ? 'badge-indigo' : 'badge-warning');
-    const displayName = b.name || b.customer || 'Khách đặt bàn';
-    const displayPhone = b.phone || 'Chưa cung cấp';
-    const displayTime = b.time ? `${b.time} ${b.date ? `(${b.date})` : ''}` : (b.date || 'Hôm nay');
-    const displayBranch = b.branch ? `<div style="font-size: 0.78rem; color: var(--color-indigo); font-weight: 600;">📍 ${b.branch}</div>` : '';
-
-    return `
-      <tr>
-        <td><b>${b.id}</b></td>
-        <td>
-          <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${displayName}</div>
-          ${displayBranch}
-        </td>
-        <td><a href="tel:${displayPhone}" style="color: var(--color-brand-red); font-weight: 700;">${displayPhone}</a></td>
-        <td><b>${displayTime}</b></td>
-        <td>${b.guests || '4 Khách'}</td>
-        <td><span class="badge badge-indigo">${b.area || 'Sảnh tiêu chuẩn'}</span></td>
-        <td style="max-width: 240px; font-size: 0.85rem; color: var(--text-secondary);">${b.preOrder || 'Không gọi trước'}</td>
-        <td>
-          <span class="badge ${badgeClass}">${statusLabel}</span>
-        </td>
-        <td style="text-align: right;">
-          <div style="display: flex; gap: 0.35rem; justify-content: flex-end;">
-            <button class="btn btn-outline btn-sm" onclick="cycleBookingStatus('${b.id}')" title="Chuyển trạng thái">
-              Đổi trạng thái ⇄
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="deleteBooking('${b.id}')">✕</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function cycleBookingStatus(id) {
-  const b = adminState.bookings.find(item => item.id === id);
-  if (!b) return;
-
-  if (b.status === 'pending') b.status = 'confirmed';
-  else if (b.status === 'confirmed') b.status = 'completed';
-  else b.status = 'pending';
-
-  localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
-  refreshDashboardStats();
-  renderBookingsTable();
-  showToast(`Đã cập nhật trạng thái đơn đặt bàn <b>${b.id}</b>!`);
-}
-
-function deleteBooking(id) {
-  if (confirm(`Hủy lịch đặt bàn ${id}?`)) {
-    adminState.bookings = adminState.bookings.filter(b => b.id !== id);
-    localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
-    refreshDashboardStats();
-    renderBookingsTable();
-    showToast(`Đã xóa đơn đặt bàn!`);
-  }
-}
-
-function openNewBookingModal() {
-  const name = prompt('Nhập họ tên khách hàng:');
-  if (!name) return;
-  const phone = prompt('Nhập số điện thoại:');
-  const guests = prompt('Số lượng khách (VD: 4 Khách):') || '4 Khách';
-  const time = prompt('Giờ đến (VD: 18:30):') || '18:30';
-
-  adminState.bookings.unshift({
-    id: `TB-${Math.floor(100 + Math.random() * 900)}`,
-    name,
-    phone,
-    date: new Date().toISOString().split('T')[0],
-    time,
-    guests,
-    area: 'Sảnh Chính',
-    preOrder: 'Tiếp nhận trực tiếp qua điện thoại',
-    status: 'confirmed'
-  });
-
-  localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
-  refreshDashboardStats();
-  renderBookingsTable();
-  showToast(`Đã thêm lịch đặt bàn mới cho <b>${name}</b>!`);
-}
 
 // ==================== FRANCHISE VIEW ====================
 function renderFranchiseView() {
@@ -1490,16 +2081,24 @@ function renderBranchesView() {
   if (countBadge) countBadge.textContent = `${adminState.branches.length} Chi nhánh`;
 
   if (!tbody) return;
-  tbody.innerHTML = adminState.branches.map(b => `
+
+  // Tự động sắp xếp theo STT tăng dần
+  adminState.branches.sort((a, b) => Number(a.stt || 0) - Number(b.stt || 0));
+
+  tbody.innerHTML = adminState.branches.map((b, idx) => `
     <tr>
-      <td><span class="badge badge-indigo">${b.id}</span></td>
-      <td>
-        <div style="font-weight: 700; color: var(--color-indigo-dark);">${b.name}</div>
-        <div style="font-size: 0.8rem; color: var(--color-brand-red); font-weight: 600;">${b.shortName || ''}</div>
+      <td style="text-align: center;">
+        <span class="badge badge-indigo" style="font-weight: 800; font-size: 0.95rem; padding: 0.25rem 0.65rem;">
+          ${b.stt || (idx + 1)}
+        </span>
       </td>
-      <td style="max-width: 280px; font-size: 0.9rem;">${b.address}</td>
-      <td><b style="color: var(--color-brand-red);">${b.phone}</b></td>
-      <td style="font-size: 0.85rem; color: var(--text-secondary);">${b.hours}</td>
+      <td>
+        <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.98rem;">${b.name}</div>
+        ${b.shortName ? `<div style="font-size: 0.8rem; color: var(--color-brand-red); font-weight: 600;">${b.shortName}</div>` : ''}
+      </td>
+      <td style="max-width: 260px; font-size: 0.88rem; line-height: 1.4;">${b.address}</td>
+      <td><b style="color: var(--color-brand-red); font-size: 0.95rem;">${b.phone}</b></td>
+      <td style="font-size: 0.85rem; color: var(--text-secondary); max-width: 200px;">${b.scale || 'Tiêu chuẩn'}</td>
       <td>
         <span class="badge ${b.status === 'upcoming' ? 'badge-warning' : 'badge-success'}">
           ${b.status === 'upcoming' ? '⏳ Sắp khai trương' : '✔ Đang hoạt động'}
@@ -1507,7 +2106,7 @@ function renderBranchesView() {
       </td>
       <td style="text-align: right;">
         <div style="display: flex; gap: 0.35rem; justify-content: flex-end;">
-          <button class="btn btn-outline btn-sm" onclick="openBranchModal('${b.id}')" title="Sửa thông tin">
+          <button class="btn btn-outline btn-sm" onclick="openBranchModal('${b.id}')" title="Sửa thông tin cơ sở">
             ✏️ Sửa
           </button>
           <button class="btn btn-danger btn-sm" onclick="deleteBranch('${b.id}')" title="Xóa cơ sở">
@@ -1531,23 +2130,28 @@ function openBranchModal(editId = null) {
     if (!b) return;
     if (title) title.textContent = `Chỉnh sửa: ${b.shortName || b.name}`;
     if (idInput) idInput.value = b.id;
-    document.getElementById('modalBranchName').value = b.name || '';
-    document.getElementById('modalBranchShortName').value = b.shortName || '';
-    document.getElementById('modalBranchAddress').value = b.address || '';
-    document.getElementById('modalBranchPhone').value = b.phone || '';
-    document.getElementById('modalBranchHours').value = b.hours || '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)';
-    document.getElementById('modalBranchScale').value = b.scale || '';
-    document.getElementById('modalBranchStatus').value = b.status || 'active';
+    if (document.getElementById('modalBranchStt')) document.getElementById('modalBranchStt').value = b.stt || '';
+    if (document.getElementById('modalBranchName')) document.getElementById('modalBranchName').value = b.name || '';
+    if (document.getElementById('modalBranchShortName')) document.getElementById('modalBranchShortName').value = b.shortName || '';
+    if (document.getElementById('modalBranchAddress')) document.getElementById('modalBranchAddress').value = b.address || '';
+    if (document.getElementById('modalBranchPhone')) document.getElementById('modalBranchPhone').value = b.phone || '';
+    if (document.getElementById('modalBranchHours')) document.getElementById('modalBranchHours').value = b.hours || '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)';
+    if (document.getElementById('modalBranchScale')) document.getElementById('modalBranchScale').value = b.scale || '';
+    if (document.getElementById('modalBranchStatus')) document.getElementById('modalBranchStatus').value = b.status || 'active';
   } else {
     if (title) title.textContent = 'Thêm cơ sở chi nhánh mới';
     if (idInput) idInput.value = '';
-    document.getElementById('modalBranchHours').value = '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)';
-    document.getElementById('modalBranchStatus').value = 'active';
+    const maxStt = adminState.branches.reduce((max, cur) => Math.max(max, Number(cur.stt || 0)), 0);
+    if (document.getElementById('modalBranchStt')) document.getElementById('modalBranchStt').value = maxStt + 1;
+    if (document.getElementById('modalBranchHours')) document.getElementById('modalBranchHours').value = '10:00 - 14:00 | 17:30 - 22:30 (Tất cả các ngày)';
+    if (document.getElementById('modalBranchStatus')) document.getElementById('modalBranchStatus').value = 'active';
   }
 
   openModal('branchModal');
 }
 window.openBranchModal = openBranchModal;
+window.addBranchModal = openBranchModal;
+window.editBranchModal = openBranchModal;
 
 function deleteBranch(id) {
   const b = adminState.branches.find(item => item.id === id);
@@ -1556,6 +2160,7 @@ function deleteBranch(id) {
     adminState.branches = adminState.branches.filter(item => item.id !== id);
     localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
     renderBranchesView();
+    refreshDashboardStats();
     showToast(`Đã xóa cơ sở <b>${b.name}</b> thành công!`, 'danger');
   }
 }
@@ -1565,6 +2170,7 @@ window.deleteBranch = deleteBranch;
 document.getElementById('branchForm')?.addEventListener('submit', (e) => {
   e.preventDefault();
   const editId = document.getElementById('branchEditId').value;
+  const stt = parseInt(document.getElementById('modalBranchStt')?.value, 10) || 1;
   const name = document.getElementById('modalBranchName').value.trim();
   const shortName = document.getElementById('modalBranchShortName').value.trim();
   const address = document.getElementById('modalBranchAddress').value.trim();
@@ -1576,6 +2182,7 @@ document.getElementById('branchForm')?.addEventListener('submit', (e) => {
   if (editId) {
     const b = adminState.branches.find(item => item.id === editId);
     if (b) {
+      b.stt = stt;
       b.name = name;
       b.shortName = shortName;
       b.address = address;
@@ -1589,6 +2196,7 @@ document.getElementById('branchForm')?.addEventListener('submit', (e) => {
     const nextNum = adminState.branches.length + 1;
     const newBranch = {
       id: `CS-${nextNum < 10 ? '0' + nextNum : nextNum}`,
+      stt,
       name,
       shortName,
       address,
@@ -1601,8 +2209,11 @@ document.getElementById('branchForm')?.addEventListener('submit', (e) => {
     showToast(`Đã thêm mới cơ sở <b>${name}</b> vào hệ thống!`);
   }
 
+  // Tự động sắp xếp theo STT tăng dần
+  adminState.branches.sort((a, b) => Number(a.stt || 0) - Number(b.stt || 0));
   localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
   renderBranchesView();
+  refreshDashboardStats();
   closeModal('branchModal');
 });
 
@@ -1621,6 +2232,80 @@ function saveFactorySettings() {
 window.saveFactorySettings = saveFactorySettings;
 
 // ==================== AUTHENTICATION & USER MANAGEMENT ====================
+
+// Branch Name & Badge Helpers
+function getBranchDisplayName(branchId) {
+  if (branchId === 'all') return 'Tất cả cơ sở';
+  if (branchId === 'CS-01') return 'Cơ Sở 1 - Hoàn Kiếm';
+  if (branchId === 'CS-02') return 'Cơ Sở 2 - Nguyễn Thị Thập';
+  const found = adminState.branches.find(b => b.id === branchId);
+  return found ? (found.shortName || found.name) : (branchId || 'Toàn hệ thống');
+}
+window.getBranchDisplayName = getBranchDisplayName;
+
+function getBranchBadgeInfo(branchId) {
+  switch (branchId) {
+    case 'all':
+      return { icon: '👑', name: 'Tất Cả Cơ Sở (Toàn hệ thống)', short: 'Toàn hệ thống', badge: '👑 Toàn hệ thống', color: '#b45309', bg: 'rgba(217, 119, 6, 0.12)' };
+    case 'CS-01':
+      return { icon: '🏛️', name: 'Cơ Sở 1: 68A Trần Hưng Đạo (Hoàn Kiếm)', short: 'Hoàn Kiếm', badge: '🏛️ Cơ Sở 1 - Hoàn Kiếm', color: '#1e3a8a', bg: 'rgba(30, 58, 138, 0.12)' };
+    case 'CS-02':
+      return { icon: '🏮', name: 'Cơ Sở 2: 5N7A Nguyễn Thị Thập (Cầu Giấy)', short: 'Nguyễn Thị Thập', badge: '🏮 Cơ Sở 2 - Nguyễn Thị Thập', color: '#c2410c', bg: 'rgba(194, 65, 12, 0.12)' };
+    default:
+      return { icon: '📍', name: getBranchDisplayName(branchId), short: branchId, badge: `📍 ${branchId}`, color: '#334155', bg: '#f1f5f9' };
+  }
+}
+window.getBranchBadgeInfo = getBranchBadgeInfo;
+
+function getBranchBadgeHtml(branchId) {
+  switch (branchId) {
+    case 'all':
+      return `<span class="badge" style="background: rgba(217, 119, 6, 0.12); color: #b45309; border: 1px solid rgba(217, 119, 6, 0.25); font-weight: 700;">👑 Toàn hệ thống</span>`;
+    case 'CS-01':
+      return `<span class="badge" style="background: rgba(30, 58, 138, 0.1); color: #1e3a8a; border: 1px solid rgba(30, 58, 138, 0.25); font-weight: 600;">🏛️ Hoàn Kiếm</span>`;
+    case 'CS-02':
+      return `<span class="badge" style="background: rgba(194, 65, 12, 0.1); color: #c2410c; border: 1px solid rgba(194, 65, 12, 0.25); font-weight: 600;">🏮 Nguyễn Thị Thập</span>`;
+    default:
+      return `<span class="badge badge-light">📍 ${branchId || 'Chưa phân công'}</span>`;
+  }
+}
+window.getBranchBadgeHtml = getBranchBadgeHtml;
+
+function handleHeaderBranchSwitch(newBranchId) {
+  const currentAuth = getCurrentAuthUser();
+  if (!currentAuth || currentAuth.role !== 'admin') {
+    showToast('Chỉ Quản trị viên mới có quyền chuyển đổi cơ sở làm việc!', 'danger');
+    return;
+  }
+
+  currentAuth.activeBranch = newBranchId;
+  const bInfo = getBranchBadgeInfo(newBranchId);
+  currentAuth.activeBranchName = bInfo.name;
+
+  if (localStorage.getItem('tongwei_auth_user')) {
+    localStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+  } else {
+    sessionStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
+  }
+
+  const headerBranchText = document.getElementById('headerBranchText');
+  const headerBranchIcon = document.getElementById('headerBranchIcon');
+  if (headerBranchText) headerBranchText.textContent = bInfo.name;
+  if (headerBranchIcon) headerBranchIcon.textContent = bInfo.icon;
+
+  showToast(`⚡ Quản trị viên đã chuyển cơ sở làm việc sang: <b>${bInfo.name}</b>`);
+}
+window.handleHeaderBranchSwitch = handleHeaderBranchSwitch;
+
+function handleUserRoleChange(role) {
+  const branchSelect = document.getElementById('addUserBranch');
+  if (!branchSelect) return;
+  if (role !== 'admin' && branchSelect.value === 'all') {
+    branchSelect.value = 'CS-01';
+  }
+}
+window.handleUserRoleChange = handleUserRoleChange;
+
 function getCurrentAuthUser() {
   const local = localStorage.getItem('tongwei_auth_user');
   const sess = sessionStorage.getItem('tongwei_auth_user');
@@ -1629,7 +2314,7 @@ function getCurrentAuthUser() {
   try {
     const parsed = JSON.parse(raw);
     const found = adminState.users.find(u => u.username.toLowerCase() === parsed.username.toLowerCase());
-    return found || parsed;
+    return found ? Object.assign({}, found, { activeBranch: parsed.activeBranch || found.branchId || 'all', activeBranchName: parsed.activeBranchName || found.branchName || 'Tất cả cơ sở' }) : parsed;
   } catch(e) {
     return null;
   }
@@ -1649,9 +2334,35 @@ function checkAuthState() {
     const secUserEl = document.getElementById('securityCurrentUsername');
 
     if (nameEl) nameEl.textContent = authUser.fullName || authUser.username;
-    if (roleEl) roleEl.textContent = authUser.roleName || authUser.role;
+    if (roleEl) {
+      if (authUser.role === 'admin') {
+        roleEl.textContent = authUser.roleName || 'Quản trị viên cấp cao';
+      } else {
+        const bName = authUser.branchName || getBranchDisplayName(authUser.branchId);
+        roleEl.textContent = `${authUser.roleName || authUser.role} • ${bName}`;
+      }
+    }
     if (avatarEl) avatarEl.textContent = authUser.avatar || authUser.username.substring(0, 2).toUpperCase();
     if (secUserEl) secUserEl.value = `${authUser.username} (${authUser.fullName})`;
+
+    // Update Header Active Working Branch Widget
+    const currentBranch = authUser.activeBranch || authUser.branchId || 'all';
+    const branchInfo = getBranchBadgeInfo(currentBranch);
+
+    const headerBranchText = document.getElementById('headerBranchText');
+    const headerBranchIcon = document.getElementById('headerBranchIcon');
+    const switcherWrap = document.getElementById('headerBranchSwitcherWrap');
+    const branchSelect = document.getElementById('headerBranchSelect');
+
+    if (headerBranchText) headerBranchText.textContent = branchInfo.name;
+    if (headerBranchIcon) headerBranchIcon.textContent = branchInfo.icon;
+
+    if (authUser.role === 'admin') {
+      if (switcherWrap) switcherWrap.style.display = 'block';
+      if (branchSelect) branchSelect.value = currentBranch;
+    } else {
+      if (switcherWrap) switcherWrap.style.display = 'none';
+    }
   } else {
     screen.classList.remove('hidden');
     const loginUsername = document.getElementById('loginUsername');
@@ -1659,19 +2370,23 @@ function checkAuthState() {
   }
 }
 
-function quickFillLogin(username, password) {
+function quickFillLogin(username, password, branchId = 'all') {
   const u = document.getElementById('loginUsername');
   const p = document.getElementById('loginPassword');
+  const b = document.getElementById('loginBranch');
   const alertEl = document.getElementById('loginAlert');
   if (u) u.value = username;
   if (p) p.value = password;
+  if (b && branchId) b.value = branchId;
   if (alertEl) alertEl.style.display = 'none';
 }
+window.quickFillLogin = quickFillLogin;
 
 function handleLoginSubmit(e) {
   e.preventDefault();
   const u = (document.getElementById('loginUsername')?.value || '').trim().toLowerCase();
   const p = document.getElementById('loginPassword')?.value || '';
+  const selectedBranch = document.getElementById('loginBranch')?.value || 'all';
   const alertEl = document.getElementById('loginAlert');
 
   const found = adminState.users.find(x => x.username.toLowerCase() === u);
@@ -1692,6 +2407,47 @@ function handleLoginSubmit(e) {
     return;
   }
 
+  // Branch & Role Authorization Check
+  if (found.role === 'admin') {
+    // Admin has permission to access any branch or all branches
+    found.activeBranch = selectedBranch;
+    found.activeBranchName = getBranchDisplayName(selectedBranch);
+  } else if (found.role === 'receptionist' || found.role === 'cashier') {
+    // Receptionist / Cashier is strictly assigned to their designated branch
+    const assignedBranch = found.branchId || 'CS-01';
+    const assignedBranchName = found.branchName || getBranchDisplayName(assignedBranch);
+
+    if (selectedBranch === 'all') {
+      if (alertEl) {
+        alertEl.innerHTML = `⚠️ Tài khoản lễ tân không có quyền truy cập "Tất Cả Cơ Sở". Tài khoản này được phân công tại <b>${assignedBranchName}</b>, vui lòng chọn đúng cơ sở làm việc!`;
+        alertEl.style.display = 'block';
+      }
+      return;
+    }
+
+    if (assignedBranch !== selectedBranch) {
+      if (alertEl) {
+        alertEl.innerHTML = `❌ Tài khoản lễ tân này được phân công tại <b>${assignedBranchName}</b>, vui lòng chọn đúng cơ sở!`;
+        alertEl.style.display = 'block';
+      }
+      return;
+    }
+
+    found.activeBranch = assignedBranch;
+    found.activeBranchName = assignedBranchName;
+  } else {
+    // Other staff
+    if (found.branchId && found.branchId !== 'all' && selectedBranch !== 'all' && found.branchId !== selectedBranch) {
+      if (alertEl) {
+        alertEl.innerHTML = `❌ Tài khoản này được phân công tại <b>${found.branchName || found.branchId}</b>, vui lòng chọn đúng cơ sở!`;
+        alertEl.style.display = 'block';
+      }
+      return;
+    }
+    found.activeBranch = selectedBranch;
+    found.activeBranchName = getBranchDisplayName(selectedBranch);
+  }
+
   if (alertEl) alertEl.style.display = 'none';
 
   const remember = document.getElementById('rememberMe')?.checked;
@@ -1704,7 +2460,7 @@ function handleLoginSubmit(e) {
   }
 
   checkAuthState();
-  showToast(`Xin chào ${found.fullName}! Đăng nhập cổng quản trị thành công.`);
+  showToast(`Xin chào ${found.fullName}! Đăng nhập vào <b>${found.activeBranchName || 'Hệ Thống'}</b> thành công.`);
 }
 
 function handleLogout() {
@@ -1724,14 +2480,22 @@ function renderUsersTable() {
   if (countBadge2) countBadge2.textContent = `${adminState.users.length} Tài khoản`;
 
   const currentAuth = getCurrentAuthUser();
+  const filterBranch = document.getElementById('userFilterBranch')?.value || 'all_filter';
 
-  tbody.innerHTML = adminState.users.map(u => {
+  const filteredUsers = adminState.users.filter(u => {
+    if (filterBranch === 'all_filter') return true;
+    return u.branchId === filterBranch;
+  });
+
+  tbody.innerHTML = filteredUsers.map(u => {
     const isSelf = currentAuth && currentAuth.username.toLowerCase() === u.username.toLowerCase();
     const isMasterAdmin = u.username.toLowerCase() === 'admin';
-    const roleClass = u.role === 'admin' ? 'role-admin' : (u.role === 'kitchen' ? 'role-kitchen' : 'role-cashier');
+    const roleClass = u.role === 'admin' ? 'role-admin' : (u.role === 'kitchen' ? 'role-kitchen' : (u.role === 'receptionist' ? 'role-receptionist' : 'role-cashier'));
     const statusHtml = u.status === 'active'
       ? `<span class="badge" style="background: rgba(46, 125, 50, 0.12); color: #2e7d32;">✔ Hoạt động</span>`
       : `<span class="badge" style="background: rgba(198, 40, 40, 0.12); color: #c62828;">🔒 Tạm khóa</span>`;
+
+    const branchBadgeHtml = getBranchBadgeHtml(u.branchId);
 
     return `
       <tr>
@@ -1746,6 +2510,7 @@ function renderUsersTable() {
         </td>
         <td><code>@${u.username}</code></td>
         <td><span class="role-badge ${roleClass}">${u.roleName || u.role}</span></td>
+        <td>${branchBadgeHtml}</td>
         <td>${statusHtml}</td>
         <td style="color: var(--text-muted); font-size: 0.85rem;">${u.createdAt || '2026-10-21'}</td>
         <td style="text-align: right;">
@@ -1777,10 +2542,10 @@ function openAddUserModal() {
   if (idInput) idInput.value = '';
 
   const titleEl = document.getElementById('userModalTitle');
-  if (titleEl) titleEl.textContent = 'Thêm Người Dùng Quản Trị';
+  if (titleEl) titleEl.textContent = 'Thêm Người Dùng Quản Trị & Nhân Sự';
 
   const subtitleEl = document.getElementById('userModalSubtitle');
-  if (subtitleEl) subtitleEl.textContent = 'Tạo tài khoản phân quyền truy cập cho nhân sự hệ thống nhà hàng TongWei.';
+  if (subtitleEl) subtitleEl.textContent = 'Tạo tài khoản phân quyền truy cập và phân công cơ sở trực thuộc cho nhân sự TongWei.';
 
   const btnSubmit = document.getElementById('btnSubmitUserForm');
   if (btnSubmit) btnSubmit.textContent = '➕ Tạo tài khoản';
@@ -1797,7 +2562,13 @@ function openAddUserModal() {
   const roleSelect = document.getElementById('newRoleSelect');
   if (roleSelect) {
     roleSelect.disabled = false;
-    roleSelect.value = 'cashier';
+    roleSelect.value = 'receptionist';
+  }
+
+  const branchSelect = document.getElementById('addUserBranch');
+  if (branchSelect) {
+    branchSelect.disabled = false;
+    branchSelect.value = 'CS-01';
   }
 
   const statusGroup = document.getElementById('userStatusGroup');
@@ -1832,7 +2603,7 @@ function openEditUserModal(userId) {
 
   document.getElementById('userEditId').value = u.id;
   document.getElementById('userModalTitle').textContent = `Chỉnh Sửa Tài Khoản @${u.username}`;
-  document.getElementById('userModalSubtitle').textContent = 'Cập nhật họ tên, vai trò phân quyền và trạng thái hoạt động.';
+  document.getElementById('userModalSubtitle').textContent = 'Cập nhật họ tên, vai trò phân quyền, cơ sở làm việc và trạng thái hoạt động.';
   document.getElementById('btnSubmitUserForm').textContent = '💾 Lưu thay đổi';
 
   const isMasterAdmin = u.username.toLowerCase() === 'admin';
@@ -1854,6 +2625,12 @@ function openEditUserModal(userId) {
   if (roleSelect) {
     roleSelect.value = u.role;
     roleSelect.disabled = isMasterAdmin;
+  }
+
+  const branchSelect = document.getElementById('addUserBranch');
+  if (branchSelect) {
+    branchSelect.value = u.branchId || (isMasterAdmin ? 'all' : 'CS-01');
+    branchSelect.disabled = isMasterAdmin;
   }
 
   const statusGroup = document.getElementById('userStatusGroup');
@@ -1886,7 +2663,8 @@ function handleSaveUserSubmit(e) {
   const editId = (document.getElementById('userEditId')?.value || '').trim();
   const username = (document.getElementById('newUsername')?.value || '').trim().toLowerCase();
   const fullName = (document.getElementById('newFullName')?.value || '').trim();
-  const role = document.getElementById('newRoleSelect')?.value || 'cashier';
+  const role = document.getElementById('newRoleSelect')?.value || 'receptionist';
+  const branchId = document.getElementById('addUserBranch')?.value || 'CS-01';
   const password = document.getElementById('newPassword')?.value || '';
   const status = document.getElementById('userStatusSelect')?.value || 'active';
 
@@ -1897,9 +2675,12 @@ function handleSaveUserSubmit(e) {
 
   const roleNameMap = {
     admin: 'Quản trị viên cấp cao',
+    receptionist: 'Lễ tân tiếp đón & CSKH',
     kitchen: 'Quản lý bếp & thực đơn',
-    cashier: 'Vận hành đặt bàn & CSKH'
+    cashier: 'Thu ngân & Kế toán ca'
   };
+
+  const branchName = getBranchDisplayName(branchId);
 
   // Avatar initials
   const nameParts = fullName.split(' ').filter(Boolean);
@@ -1929,7 +2710,12 @@ function handleSaveUserSubmit(e) {
     if (!isMasterAdmin) {
       user.role = role;
       user.roleName = roleNameMap[role] || 'Nhân Sự';
+      user.branchId = branchId;
+      user.branchName = branchName;
       user.status = status;
+    } else {
+      user.branchId = 'all';
+      user.branchName = 'Tất cả cơ sở';
     }
 
     if (password && password.trim().length >= 6) {
@@ -1944,6 +2730,8 @@ function handleSaveUserSubmit(e) {
       if (!isMasterAdmin) {
         currentAuth.role = user.role;
         currentAuth.roleName = user.roleName;
+        currentAuth.branchId = user.branchId;
+        currentAuth.branchName = user.branchName;
       }
       if (password && password.trim().length >= 6) {
         currentAuth.password = user.password;
@@ -1955,13 +2743,7 @@ function handleSaveUserSubmit(e) {
         sessionStorage.setItem('tongwei_auth_user', JSON.stringify(currentAuth));
       }
 
-      // Update sidebar avatar and name
-      const sidebarName = document.getElementById('sidebarUserName');
-      const sidebarRole = document.getElementById('sidebarUserRole');
-      const sidebarAvatar = document.getElementById('sidebarUserAvatar');
-      if (sidebarName) sidebarName.textContent = currentAuth.fullName;
-      if (sidebarRole) sidebarRole.textContent = currentAuth.roleName;
-      if (sidebarAvatar) sidebarAvatar.textContent = currentAuth.avatar;
+      checkAuthState();
     }
 
     localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
@@ -1988,6 +2770,8 @@ function handleSaveUserSubmit(e) {
       fullName,
       role,
       roleName: roleNameMap[role] || 'Nhân Sự',
+      branchId: role === 'admin' ? 'all' : branchId,
+      branchName: role === 'admin' ? 'Tất cả cơ sở' : branchName,
       password: initialPassword,
       status: 'active',
       createdAt: new Date().toISOString().split('T')[0],
@@ -1998,7 +2782,7 @@ function handleSaveUserSubmit(e) {
     localStorage.setItem('tongwei_users', JSON.stringify(adminState.users));
     renderUsersTable();
     closeModal('userModal');
-    showToast(`🎉 Đã tạo thành công tài khoản @${username} (${fullName})!`);
+    showToast(`🎉 Đã tạo thành công tài khoản @${username} (${fullName}) thuộc ${newUser.branchName}!`);
   }
 }
 window.handleSaveUserSubmit = handleSaveUserSubmit;
@@ -2148,7 +2932,8 @@ window.quickFillLogin = quickFillLogin;
 window.handleLoginSubmit = handleLoginSubmit;
 window.handleLogout = handleLogout;
 window.openAddUserModal = openAddUserModal;
-window.handleCreateUserSubmit = handleCreateUserSubmit;
+window.handleSaveUserSubmit = handleSaveUserSubmit;
+window.handleCreateUserSubmit = handleSaveUserSubmit;
 window.openResetPassModal = openResetPassModal;
 window.handleResetPassSubmit = handleResetPassSubmit;
 window.toggleUserStatus = toggleUserStatus;
@@ -2329,11 +3114,10 @@ function syncDataToLiveWebsite(showFeedback = true) {
   localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
   localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
   localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
-  localStorage.setItem('tongwei_bookings', JSON.stringify(adminState.bookings));
   localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
   localStorage.setItem('tongwei_franchise_packages', JSON.stringify(adminState.franchisePackages));
   if (showFeedback) {
-    showToast(`🚀 Đã đồng bộ toàn bộ dữ liệu (Món ăn, Cơ sở, Gói nhượng quyền, Đặt bàn) sang Website khách hàng! Bấm "Xem web ↗" để kiểm tra.`);
+    showToast(`🚀 Đã đồng bộ toàn bộ dữ liệu (Món ăn, Cơ sở, Gói nhượng quyền) sang Website khách hàng! Bấm "Xem web ↗" để kiểm tra.`);
   }
 }
 window.syncDataToLiveWebsite = syncDataToLiveWebsite;
@@ -2369,6 +3153,40 @@ function setWebsiteMenuMode(mode) {
 }
 window.setWebsiteMenuMode = setWebsiteMenuMode;
 
+function toggleMenuDescriptionMode() {
+  const current = localStorage.getItem('tongwei_hide_menu_description') !== 'false';
+  const nextVal = !current;
+  localStorage.setItem('tongwei_hide_menu_description', nextVal ? 'true' : 'false');
+  updateMenuDescriptionUI();
+  showToast(nextVal ? '✅ Đã kích hoạt: ẨN thông tin mô tả trang menu trên Website!' : '✅ Đã kích hoạt: HIỆN thông tin mô tả trang menu trên Website!');
+}
+window.toggleMenuDescriptionMode = toggleMenuDescriptionMode;
+
+function updateMenuDescriptionUI() {
+  const isHidden = localStorage.getItem('tongwei_hide_menu_description') !== 'false';
+  const btn = document.getElementById('btnToggleMenuDescription');
+  const icon = document.getElementById('menuDescToggleIcon');
+  const text = document.getElementById('menuDescToggleText');
+  if (btn && icon && text) {
+    if (isHidden) {
+      btn.className = 'btn btn-primary btn-sm';
+      btn.style.background = 'var(--color-brand-red)';
+      btn.style.borderColor = 'var(--color-brand-red)';
+      btn.style.color = '#ffffff';
+      icon.textContent = '🚫';
+      text.textContent = 'Đang ẨN thông tin mô tả (Bấm để Hiện)';
+    } else {
+      btn.className = 'btn btn-outline btn-sm';
+      btn.style.background = '#ffffff';
+      btn.style.borderColor = 'var(--border-color)';
+      btn.style.color = 'var(--color-indigo-dark)';
+      icon.textContent = '👁️';
+      text.textContent = 'Đang HIỆN thông tin mô tả (Bấm để Ẩn)';
+    }
+  }
+}
+window.updateMenuDescriptionUI = updateMenuDescriptionUI;
+
 function updateWebsiteMenuModeUI() {
   const mode = localStorage.getItem('tongwei_menu_display_mode') || 'book';
   const btnBook = document.getElementById('btnModeSelectBook');
@@ -2377,6 +3195,7 @@ function updateWebsiteMenuModeUI() {
 
   if (btnBook) btnBook.classList.toggle('active', mode === 'book');
   if (btnDishes) btnDishes.classList.toggle('active', mode === 'dishes');
+  updateMenuDescriptionUI();
   if (label) {
     label.textContent = mode === 'book' ? '📖 Quyển Thực Đơn (Sách ảnh thiết kế)' : '🍽️ Danh Sách Món Ăn Chi Tiết';
   }
