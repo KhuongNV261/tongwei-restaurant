@@ -363,9 +363,8 @@
 
         <!-- Filter tabs for space lookbook (Exclusively Restaurant Spaces) -->
         <div class="lookbook-tabs" id="lookbookTabs" role="tablist" aria-label="Phân loại album ảnh không gian nhà hàng">
-          <button class="lb-tab active" data-cat="all">🌟 Tất Cả Không Gian (2 Cơ Sở)</button>
-          <button class="lb-tab" data-cat="space_ntt">🏮 Cơ Sở Nguyễn Thị Thập</button>
-          <button class="lb-tab" data-cat="space_hk">🏛️ Cơ Sở Hoàn Kiếm</button>
+          <button class="lb-tab active" data-cat="space_hk">🏛️ Cơ Sở 1 • Hoàn Kiếm (Flagship)</button>
+          <button class="lb-tab" data-cat="space_ntt">🏮 Cơ Sở 2 • Nguyễn Thị Thập</button>
         </div>
 
         <!-- Space Lookbook Grid (Populated dynamically by JS) -->
@@ -377,7 +376,7 @@
         <div class="lookbook-actions">
           <button class="btn btn-primary" onclick="openMasterAlbum(0)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            <span class="btn-text-full">Khám Phá Toàn Bộ Album Không Gian 2 Cơ Sở (Slider) ↗</span><span class="btn-text-short">Xem Album Không Gian ↗</span>
+            <span class="btn-text-full">Khám Phá Toàn Bộ Album Không Gian (Slider) ↗</span><span class="btn-text-short">Xem Album Không Gian ↗</span>
           </button>
           <button class="btn btn-outline" id="toggleLookbookBtn" onclick="toggleLookbookExpand()">
             <span id="lbToggleIcon">▾</span>
@@ -842,13 +841,31 @@
 
             <!-- Branch Interactive Photo Gallery -->
             <div class="branch-gallery-widget" id="galleryWidgetCS01">
-              <div class="branch-gallery-main" onclick="openMasterAlbum('fb_tongwei_branch_2.png')" title="Bấm để xem ảnh phóng to toàn màn hình">
-                <img id="branchMainImgCS01" src="assets/images/branches/fb_tongwei_branch_2.png" alt="Mặt Tiền & Đại Sảnh Flagship 68A Trần Hưng Đạo" class="branch-main-img">
+              <div class="branch-gallery-main" onclick="openMasterAlbum('hoan_kiem_fb_1.jpg')" title="Bấm để xem ảnh phóng to toàn màn hình">
+                <img id="branchMainImgCS01" src="assets/images/branches/hoan_kiem_fb_1.jpg" alt="Đại Sảnh & Biển Đèn LED — TongWei 68A Trần Hưng Đạo" class="branch-main-img">
                 <div class="branch-gallery-overlay">
-                  <span class="branch-gallery-pill" id="branchCapCS01">Đại Sảnh Flagship Hoàn Kiếm</span>
+                  <span class="branch-gallery-pill" id="branchCapCS01">Đại Sảnh & Biển Đèn LED</span>
                   <span class="branch-gallery-zoom">🔍 Phóng to</span>
                 </div>
               </div>
+              <div class="branch-thumbs-bar" role="tablist" aria-label="Bộ sưu tập ảnh Cơ Sở 1">
+                <button type="button" class="branch-thumb-item active" onclick="switchBranchPhoto('CS01', 'assets/images/branches/hoan_kiem_fb_1.jpg', 'Đại Sảnh & Biển Đèn LED — 68A Trần Hưng Đạo', 0, this)" title="Đại Sảnh LED">
+                  <img src="assets/images/branches/hoan_kiem_fb_1.jpg" alt="Đại Sảnh LED" loading="lazy">
+                </button>
+                <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/hoan_kiem_fb_2.jpg', 'Quầy Dimsum Mái Ngói Bếp Mở', 1, this)" title="Quầy Dimsum Bếp Mở">
+                  <img src="assets/images/branches/hoan_kiem_fb_2.jpg" alt="Quầy Dimsum" loading="lazy">
+                </button>
+                <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/hoan_kiem_fb_3.jpg', 'Mặt Tiền & Đón Khách 68A Trần Hưng Đạo', 2, this)" title="Mặt Tiền Phố">
+                  <img src="assets/images/branches/hoan_kiem_fb_3.jpg" alt="Mặt Tiền Phố" loading="lazy">
+                </button>
+                <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/hoan_kiem_fb_4.jpg', 'Góc Bàn Ăn Cửa Sổ View Phố', 3, this)" title="Bàn Cửa Sổ">
+                  <img src="assets/images/branches/hoan_kiem_fb_4.jpg" alt="Bàn Cửa Sổ" loading="lazy">
+                </button>
+                <button type="button" class="branch-thumb-item" onclick="switchBranchPhoto('CS01', 'assets/images/branches/hoan_kiem_fb_5.jpg', 'Bàn Tiệc & Menu Đồng Vị', 4, this)" title="Bàn Tiệc & Menu">
+                  <img src="assets/images/branches/hoan_kiem_fb_5.jpg" alt="Bàn Tiệc & Menu" loading="lazy">
+                </button>
+              </div>
+            </div>
               <div class="branch-thumbs-bar" role="tablist" aria-label="Bộ sưu tập ảnh Cơ Sở 1">
                 <button type="button" class="branch-thumb-item active" onclick="switchBranchPhoto('CS01', 'assets/images/branches/fb_tongwei_branch_2.png', 'Đại Sảnh Flagship 68A Trần Hưng Đạo', 0, this)" title="Đại Sảnh Flagship">
                   <img src="assets/images/branches/fb_tongwei_branch_2.png" alt="Flagship" loading="lazy">

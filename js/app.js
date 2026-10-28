@@ -10,7 +10,7 @@ const state = {
   currentCategory: 'all',
   searchQuery: '',
   isMenuExpanded: false,
-  lookbookCategory: 'all',
+  lookbookCategory: 'space_hk',
   isLookbookExpanded: false,
   currentAlbumIndex: 0,
   cart: [],
@@ -20,10 +20,72 @@ const state = {
 // Master Concept & Space Photos Data (35 Curated Photos)
 // Master Real Space Photos Data (10 Curated Real Photos from TongWei Facebook)
 const REAL_SPACE_PHOTOS = [
-  // 1. Cơ Sở 2 • Nguyễn Thị Thập (5 real photos from official Facebook post)
+  // 1. Cơ Sở 1 • Hoàn Kiếm (6 ảnh thực tế chính xác tại 68A Trần Hưng Đạo)
+  {
+    id: 106,
+    order: 1,
+    src: 'assets/images/branches/hoan_kiem_fb_1.jpg',
+    title: 'Đại Sảnh & Biển Đèn LED Nhận Diện (68A Trần Hưng Đạo)',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian sảnh đón khách sang trọng với biển LED nhận diện thương hiệu TongWei tại 68A Trần Hưng Đạo.'
+  },
+  {
+    id: 107,
+    order: 2,
+    src: 'assets/images/branches/hoan_kiem_fb_2.jpg',
+    title: 'Quầy Dimsum Mái Ngói Xứ Cảng Thơm & Bếp Mở',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Quầy hấp dimsum kính với hàng trăm xửng trúc bốc khói nghi ngút và mái ngói xanh Cảng Thơm độc bản.'
+  },
+  {
+    id: 108,
+    order: 3,
+    src: 'assets/images/branches/hoan_kiem_fb_3.jpg',
+    title: 'Mặt Tiền & Không Gian Đón Khách 68A Trần Hưng Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Biển hiệu TongWei phong cách di sản rợp bóng cây xanh ngay tại mặt phố trung tâm quận Hoàn Kiếm.'
+  },
+  {
+    id: 109,
+    order: 4,
+    src: 'assets/images/branches/hoan_kiem_fb_4.jpg',
+    title: 'Góc Bàn Ăn Cửa Sổ View Phố Trần Hưng Đạo',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian bàn ăn đôi và nhóm bạn bên ô cửa sổ vòm Pháp cổ kính nhìn ra đường phố rợp bóng mát.'
+  },
+  {
+    id: 110,
+    order: 5,
+    src: 'assets/images/branches/hoan_kiem_fb_5.jpg',
+    title: 'Bàn Tiệc Giao Hòa & Cuốn Menu Đồng Vị Hoàn Kiếm',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian thưởng vị ấm cúng, bàn gỗ tự nhiên bài trí cuốn Menu Đồng Vị và gia vị truyền thống.'
+  },
+  {
+    id: 111,
+    order: 6,
+    src: 'assets/images/branches/hoan_kiem_fb_6.jpg',
+    title: 'Bếp Lửa Wok Lửa Lớn & Nghệ Thuật Ẩm Thực Quảng Đông',
+    category: 'space_hk',
+    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
+    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
+    desc: 'Không gian khu bếp chuyên nghiệp với nghệ thuật lửa chảo Wok giữ trọn khí chảo tinh túy của món xào.'
+  },
+
+  // 2. Cơ Sở 2 • Nguyễn Thị Thập (5 ảnh thực tế tại 5N7A Nguyễn Thị Thập)
   {
     id: 101,
-    order: 1,
+    order: 7,
     src: 'assets/images/branches/nguyen_thi_thap_fb_1.jpg',
     title: 'Mặt Tiền & Đại Sảnh Giao Hòa Mới (5N7A Nguyễn Thị Thập)',
     category: 'space_ntt',
@@ -33,7 +95,7 @@ const REAL_SPACE_PHOTOS = [
   },
   {
     id: 102,
-    order: 2,
+    order: 8,
     src: 'assets/images/branches/nguyen_thi_thap_fb_4.jpg',
     title: 'Phòng Ăn Sang Trọng Tone Gỗ Ấm',
     category: 'space_ntt',
@@ -43,7 +105,7 @@ const REAL_SPACE_PHOTOS = [
   },
   {
     id: 103,
-    order: 3,
+    order: 9,
     src: 'assets/images/branches/nguyen_thi_thap_fb_2.jpg',
     title: 'Bàn Tiệc Sum Vầy Gia Đình Giao Hoà',
     category: 'space_ntt',
@@ -53,7 +115,7 @@ const REAL_SPACE_PHOTOS = [
   },
   {
     id: 104,
-    order: 4,
+    order: 10,
     src: 'assets/images/branches/nguyen_thi_thap_fb_3.jpg',
     title: 'Góc Bàn Đôi Riêng Tư View Kính Phố',
     category: 'space_ntt',
@@ -63,65 +125,13 @@ const REAL_SPACE_PHOTOS = [
   },
   {
     id: 105,
-    order: 5,
+    order: 11,
     src: 'assets/images/branches/nguyen_thi_thap_fb_5.jpg',
     title: 'Góc Decor Mỹ Vị Giao Hoà & Đèn Lồng',
     category: 'space_ntt',
     categoryName: '🏮 Cơ Sở Nguyễn Thị Thập',
     branchName: 'Cơ Sở 2 - Nguyễn Thị Thập',
     desc: 'Họa tiết đèn lồng nghệ nhân và phong cách kiến trúc đặc trưng của thương hiệu Đồng Vị TongWei.'
-  },
-
-  // 2. Cơ Sở 1 • Hoàn Kiếm (5 real photos from official Facebook page)
-  {
-    id: 106,
-    order: 6,
-    src: 'assets/images/branches/fb_tongwei_branch_2.png',
-    title: 'Mặt Tiền & Đại Sảnh Flagship 68A Trần Hưng Đạo',
-    category: 'space_hk',
-    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
-    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
-    desc: 'Không gian nhà hàng sang trọng, phòng VIP tiếp khách và hội nghị đẳng cấp tại trung tâm Hoàn Kiếm.'
-  },
-  {
-    id: 107,
-    order: 7,
-    src: 'assets/images/branches/fb_tongwei_branch_1.jpg',
-    title: 'Phòng Tiệc VIP Hoàng Kim Cách Âm',
-    category: 'space_hk',
-    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
-    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
-    desc: 'Không gian phòng VIP cách âm riêng biệt với bàn tròn xoay phong cách hoàng gia Quảng Đông.'
-  },
-  {
-    id: 108,
-    order: 8,
-    src: 'assets/images/branches/fb_tongwei_branch_13.jpg',
-    title: 'Khu Bàn Ăn Gia Đình Hoàn Kiếm',
-    category: 'space_hk',
-    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
-    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
-    desc: 'Thiết kế tao nhã mang đậm cảm hứng di sản, ánh đèn ấm áp cho bữa ăn sum vầy gia tộc.'
-  },
-  {
-    id: 109,
-    order: 9,
-    src: 'assets/images/branches/fb_tongwei_branch_14.jpg',
-    title: 'Sảnh Tiếp Đón & Quầy Trà Đạo',
-    category: 'space_hk',
-    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
-    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
-    desc: 'Không gian sảnh tiếp đón trang trọng với nghệ thuật pha trà truyền thống xứ Cảng Thơm.'
-  },
-  {
-    id: 110,
-    order: 10,
-    src: 'assets/images/branches/fb_tongwei_branch_15.jpg',
-    title: 'Góc Thưởng Vị & Đèn Lồng Di Sản Cổ Điển',
-    category: 'space_hk',
-    categoryName: '🏛️ Cơ Sở Hoàn Kiếm',
-    branchName: 'Cơ Sở 1 - Hoàn Kiếm',
-    desc: 'Không gian thưởng vị ấm cúng đậm chất di sản văn hóa ẩm thực Trung Hoa.'
   }
 ];
 
@@ -960,9 +970,20 @@ function renderLookbookGrid() {
   } catch (e) {}
 
   // Update masterAlbum for Lightbox slider to strictly contain space photos
+    // Ensure Hoan Kiem uses real photos
+  spacePhotos = spacePhotos.map(it => {
+    if (it.category === 'space_hk') {
+      const match = REAL_SPACE_PHOTOS.find(r => r.id === it.id || r.src === it.src);
+      return match || it;
+    }
+    return it;
+  });
+  if (!spacePhotos.some(it => it.src && it.src.includes('hoan_kiem_fb_1'))) {
+    spacePhotos = REAL_SPACE_PHOTOS;
+  }
   masterAlbum = spacePhotos;
 
-  const cat = state.lookbookCategory || 'all';
+  const cat = state.lookbookCategory || 'space_hk';
   let filtered = spacePhotos;
 
   if (cat === 'space_ntt') {

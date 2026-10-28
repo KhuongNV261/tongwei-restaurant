@@ -3827,13 +3827,10 @@ textarea.form-control {
   height: 170px;
 }
 
-.editorial-mosaic-hk .mosaic-hk-bottom-1 {
-  grid-column: span 6;
-  height: 240px;
-}
-
-.editorial-mosaic-hk .mosaic-hk-bottom-2 {
-  grid-column: span 6;
+.editorial-mosaic-hk .mosaic-hk-bottom-1,
+.editorial-mosaic-hk .mosaic-hk-bottom-2,
+.editorial-mosaic-hk .mosaic-hk-bottom-3 {
+  grid-column: span 4;
   height: 240px;
 }
 
@@ -3848,7 +3845,8 @@ textarea.form-control {
   .editorial-mosaic-hk .mosaic-hk-side-1,
   .editorial-mosaic-hk .mosaic-hk-side-2,
   .editorial-mosaic-hk .mosaic-hk-bottom-1,
-  .editorial-mosaic-hk .mosaic-hk-bottom-2 {
+  .editorial-mosaic-hk .mosaic-hk-bottom-2,
+  .editorial-mosaic-hk .mosaic-hk-bottom-3 {
     grid-column: span 1;
     height: 200px;
   }

@@ -1129,42 +1129,60 @@ const DEFAULT_SPACE_GALLERY = [
     desc: "Họa tiết đèn lồng nghệ nhân và phong cách kiến trúc đặc trưng của thương hiệu Đồng Vị TongWei."
   },
 
-  // 2. Cơ Sở Hoàn Kiếm (CS-01 Flagship)
+  // 2. Cơ Sở Hoàn Kiếm (CS-01 Flagship 68A Trần Hưng Đạo)
   {
     id: 106,
     order: 6,
-    src: "assets/images/branches/fb_tongwei_branch_2.png",
-    title: "Mặt Tiền Flagship 68A Trần Hưng Đạo",
+    src: "assets/images/branches/hoan_kiem_fb_1.jpg",
+    title: "Đại Sảnh & Biển Đèn LED (68A Trần Hưng Đạo)",
     category: "space_hk",
     categoryName: "Cơ Sở Hoàn Kiếm",
-    desc: "Không gian nhà hàng sang trọng, phòng VIP tiếp khách và hội nghị đẳng cấp tại trung tâm Hoàn Kiếm."
+    desc: "Không gian sảnh đón khách sang trọng với biển LED nhận diện thương hiệu TongWei tại 68A Trần Hưng Đạo."
   },
   {
     id: 107,
     order: 7,
-    src: "assets/images/branches/fb_tongwei_branch_1.jpg",
-    title: "Phòng Tiệc VIP Hoàng Kim",
+    src: "assets/images/branches/hoan_kiem_fb_2.jpg",
+    title: "Quầy Dimsum Mái Ngói Xứ Cảng Thơm & Bếp Mở",
     category: "space_hk",
     categoryName: "Cơ Sở Hoàn Kiếm",
-    desc: "Không gian phòng VIP cách âm riêng biệt với bàn tròn xoay phong cách hoàng gia Quảng Đông."
+    desc: "Quầy hấp dimsum kính với hàng trăm xửng trúc bốc khói nghi ngút và mái ngói xanh Cảng Thơm độc bản."
   },
   {
     id: 108,
     order: 8,
-    src: "assets/images/branches/fb_tongwei_branch_13.jpg",
-    title: "Khu Bàn Ăn Gia Đình Hoàn Kiếm",
+    src: "assets/images/branches/hoan_kiem_fb_3.jpg",
+    title: "Mặt Tiền & Không Gian Đón Khách 68A Trần Hưng Đạo",
     category: "space_hk",
     categoryName: "Cơ Sở Hoàn Kiếm",
-    desc: "Thiết kế tao nhã mang đậm cảm hứng di sản, ánh đèn ấm áp cho bữa ăn sum vầy gia tộc."
+    desc: "Biển hiệu TongWei phong cách di sản rợp bóng cây xanh ngay tại mặt phố trung tâm quận Hoàn Kiếm."
   },
   {
     id: 109,
     order: 9,
-    src: "assets/images/branches/fb_tongwei_branch_14.jpg",
-    title: "Sảnh Tiếp Đón & Quầy Trà Đạo",
+    src: "assets/images/branches/hoan_kiem_fb_4.jpg",
+    title: "Góc Bàn Ăn Cửa Sổ View Phố Trần Hưng Đạo",
     category: "space_hk",
     categoryName: "Cơ Sở Hoàn Kiếm",
-    desc: "Không gian sảnh tiếp đón trang trọng với nghệ thuật pha trà truyền thống xứ Cảng Thơm."
+    desc: "Không gian bàn ăn đôi và nhóm bạn bên ô cửa sổ vòm Pháp cổ kính nhìn ra đường phố rợp bóng mát."
+  },
+  {
+    id: 110,
+    order: 10,
+    src: "assets/images/branches/hoan_kiem_fb_5.jpg",
+    title: "Bàn Tiệc Giao Hòa & Cuốn Menu Đồng Vị",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Không gian thưởng vị ấm cúng, bàn gỗ tự nhiên bài trí cuốn Menu Đồng Vị và gia vị truyền thống."
+  },
+  {
+    id: 111,
+    order: 11,
+    src: "assets/images/branches/hoan_kiem_fb_6.jpg",
+    title: "Bếp Lửa Wok Lửa Lớn & Nghệ Thuật Ẩm Thực",
+    category: "space_hk",
+    categoryName: "Cơ Sở Hoàn Kiếm",
+    desc: "Không gian khu bếp chuyên nghiệp với nghệ thuật lửa chảo Wok giữ trọn khí chảo tinh túy của món xào."
   },
 
   // 3. Dimsum Nghệ Nhân
@@ -1703,7 +1721,7 @@ function openAddMediaModal() {
   document.getElementById('photoCategory').value = defaultCat;
 
   let defaultSrc = 'assets/images/branches/nguyen_thi_thap_fb_1.jpg';
-  if (defaultCat === 'space_hk') defaultSrc = 'assets/images/branches/fb_tongwei_branch_2.png';
+  if (defaultCat === 'space_hk') defaultSrc = 'assets/images/branches/hoan_kiem_fb_1.jpg';
   
   if (defaultCat === 'dimsum') defaultSrc = 'assets/images/concept/concept_7.jpg';
   if (defaultCat === 'banquet') defaultSrc = 'assets/images/concept/concept_4.jpg';
