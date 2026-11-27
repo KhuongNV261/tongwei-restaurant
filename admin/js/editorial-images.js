@@ -16,10 +16,21 @@ export const catalog = {
   'Không gian nhà hàng': [
     ...images('home', numbered(4, n => ['home_gallery_' + n + '.jpg', 'Không gian nhà hàng ' + n])),
     ...images('branches', numbered(5, n => ['nguyen_thi_thap_fb_' + n + '.jpg', 'Nguyễn Thị Thập · ảnh ' + n])),
+    ...images('branches', [
+      ['hoan_kiem_fb_1.jpg', 'Hoàn Kiếm · góc bàn ăn dưới biển hiệu Tong Wei'],
+      ['hoan_kiem_fb_2.jpg', 'Hoàn Kiếm · quầy hấp dimsum']
+    ]),
     ...images('branches', numbered(18, n => ['fb_tongwei_branch_' + n + ([2, 3].includes(n) ? '.png' : '.jpg'), 'Cơ sở Tong Wei · ảnh ' + n]))
   ],
   'Trang thực đơn': images('menu', numbered(14, n => ['menu_page_' + String(n).padStart(2, '0') + '.jpg', 'Trang ' + n])),
-  'Hình ảnh Tong Wei': images('concept', numbered(25, n => ['concept_' + n + '.jpg', 'Bộ ảnh Tong Wei · ảnh ' + n])),
+  'Hình ảnh Tong Wei': [
+    ...images('concept', numbered(25, n => ['concept_' + n + '.jpg', 'Bộ ảnh Tong Wei · ảnh ' + n])),
+    ...images('branches', [
+      ['hoan_kiem_fb_3.jpg', 'Hoàn Kiếm · bảng khuyến mại trước cửa'],
+      ['hoan_kiem_fb_5.jpg', 'Hoàn Kiếm · thực đơn và bảng ưu đãi trên bàn'],
+      ['hoan_kiem_fb_6.jpg', 'Hoàn Kiếm · chảo trên bếp lửa']
+    ])
+  ],
   'Nhận diện thương hiệu': images('branding', [
     ['tv_tongwei_nguyen_thi_thap.jpg', 'Khai trương Nguyễn Thị Thập'], ['tongwei-intro.webp', 'Ảnh giới thiệu Đồng Vị'],
     ['tongwei_avatar.png', 'Ảnh đại diện'], ['fb_avatar_raw.png', 'Ảnh đại diện gốc'], ['fb_cover_banner.png', 'Ảnh bìa'],
@@ -35,7 +46,9 @@ export const catalog = {
     'Canh lê tiềm tuyết nhĩ', 'Canh rau trứng tam sắc', 'Cá lăng hấp tàu xì', 'Cá lăng hấp tỏi ớt',
     'Cá lăng nhúng cay', 'Cá lăng nấu cải chua', 'Cánh lưỡi vịt cay hồ nam', 'Cải chíp sốt nấm đông cô',
     'Cải Hongkong sốt bào ngư'
-  ].map(label => [label + '.png', label]))
+  ].map(label => [label + '.png', label])).concat(images('branches', [
+    ['hoan_kiem_fb_4.jpg', 'Hoàn Kiếm · bàn ăn với dimsum và các món Quảng Đông']
+  ]))
 };
 
 const uploaded = 'Ảnh đã tải lên';
