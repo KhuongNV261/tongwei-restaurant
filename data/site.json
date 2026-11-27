@@ -1,0 +1,148 @@
+{
+  "navIntro": "Giới thiệu",
+  "navFranchise": "Nhượng quyền",
+  "navNews": "Tin tức",
+  "navMenu": "Menu",
+  "navContact": "Liên hệ",
+  "brandTagline": "Ẩm thực Quảng Đông",
+  "introMenuLink": "Xem thực đơn",
+  "venuesTitle": "Cơ sở Tong Wei",
+  "franchiseContactLink": "Tư vấn nhượng quyền",
+  "benefitsTitle": "Quyền lợi đối tác",
+  "metricsTitle": "Phương án đầu tư",
+  "stepsTitle": "Lộ trình hợp tác",
+  "commitmentsTitle": "Cam kết của Tong Wei",
+  "closingTitle": "Trao đổi về nhượng quyền",
+  "closingContactLink": "Gửi lời nhắn",
+  "menuPdfLink": "Xem bản PDF",
+  "contactFormTitle": "Gửi lời nhắn",
+  "introTitle": "Đồng Vị",
+  "introText": "TONG WEI lấy cảm hứng từ tinh thần ẩm thực Quảng Đông - nơi mỗi bữa ăn trở thành ngôn ngữ chung để con người sẻ chia cảm xúc và gắn kết tình thân.\n\n同味 - Đồng Vị | “同” là sự hòa điệu giữa con người với nhau, và giữa hương vị với nguyên liệu khi được kết hợp hài hòa, còn “味” không chỉ là hương vị mà còn là dư vị đọng lại sau mỗi khoảnh khắc sum vầy quanh bàn ăn.",
+  "introImage": "/assets/images/editorial/brand.webp",
+  "heroImage": "/assets/images/editorial/hero.webp",
+  "spaces": [
+    {
+      "name": "5N7A Nguyễn Thị Thập, Cầu Giấy",
+      "image": "/assets/images/branches/nguyen_thi_thap_fb_4.jpg"
+    },
+    {
+      "name": "5N7A Nguyễn Thị Thập, Cầu Giấy",
+      "image": "/assets/images/branches/nguyen_thi_thap_fb_1.jpg"
+    },
+    {
+      "name": "68A Trần Hưng Đạo, Hoàn Kiếm",
+      "image": ""
+    }
+  ],
+  "franchiseIntro": "Từ căn bếp đến phòng ăn, Tong Wei cùng đối tác xây dựng và vận hành nhà hàng Quảng Đông theo quy trình chung.",
+  "franchiseImage": "/assets/images/editorial/partner.webp",
+  "benefitsImage": "/assets/images/editorial/benefits.webp",
+  "metricsImage": "/assets/images/editorial/investment.webp",
+  "stepsImage": "/assets/images/editorial/timeline.webp",
+  "closingImage": "/assets/images/editorial/closing.webp",
+  "benefits": [
+    "Lập kế hoạch hoàn vốn theo chi phí đầu tư và doanh thu dự kiến của từng mặt bằng.",
+    "Chuyển giao quy trình chuẩn (SOP) cho bếp, phục vụ và kiểm soát chất lượng.",
+    "Đào tạo đội ngũ bán hàng, hỗ trợ xây dựng chương trình thu hút thực khách.",
+    "Lập kế hoạch marketing từ khai trương đến các chương trình theo mùa.",
+    "Hướng dẫn quản lý nhà hàng, từ phân ca đến theo dõi hiệu quả kinh doanh."
+  ],
+  "metrics": [
+    {
+      "label": "Vốn đầu tư dự kiến",
+      "value": "1–1,2 tỷ đồng"
+    },
+    {
+      "label": "Chi phí đầu tư theo diện tích",
+      "value": "12 triệu đồng/m²"
+    },
+    {
+      "label": "Quy mô nhà hàng",
+      "value": "10–15 bàn"
+    },
+    {
+      "label": "Thời gian hoàn vốn tham khảo",
+      "value": "18 tháng"
+    },
+    {
+      "label": "Lượng khách trung bình",
+      "value": "Khoảng 100 khách/ngày"
+    },
+    {
+      "label": "Doanh thu dự kiến",
+      "value": "20–30 triệu đồng/ngày"
+    },
+    {
+      "label": "Chi tiêu trung bình mỗi khách",
+      "value": "230.000 đồng/suất"
+    },
+    {
+      "label": "Giá vốn nguyên liệu",
+      "value": "40% doanh thu"
+    },
+    {
+      "label": "Chi phí vận hành",
+      "value": "35% doanh thu"
+    },
+    {
+      "label": "Phí nhượng quyền",
+      "value": "500 triệu đồng"
+    },
+    {
+      "label": "Phí duy trì thương hiệu",
+      "value": "5% doanh thu"
+    },
+    {
+      "label": "Thời hạn hợp đồng",
+      "value": "5 năm"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Ký kết",
+      "text": "Hai bên thống nhất phương án đầu tư, quy mô nhà hàng và điều khoản hợp đồng."
+    },
+    {
+      "title": "Tìm mặt bằng",
+      "text": "Cùng khảo sát vị trí, chi phí thuê và nhu cầu ăn uống trong khu vực."
+    },
+    {
+      "title": "Thiết kế",
+      "text": "Bố trí bếp, phòng ăn và lối phục vụ theo mặt bằng thực tế và nhận diện Tong Wei."
+    },
+    {
+      "title": "Thi công",
+      "text": "Giám sát tiến độ, chất lượng hoàn thiện và nghiệm thu trước khi mở cửa."
+    },
+    {
+      "title": "Vận hành",
+      "text": "Đào tạo đội ngũ, hỗ trợ khai trương và đồng hành trong suốt thời hạn hợp đồng."
+    }
+  ],
+  "commitments": [
+    "Hỗ trợ tuyển dụng và đào tạo nhân sự để duy trì hoạt động của bếp và phòng ăn.",
+    "Cung cấp hệ thống báo cáo để đối tác theo dõi chi phí, công nợ và tồn kho.",
+    "Cung ứng hàng hóa, nguyên liệu trong 5 năm. Giá và biên độ điều chỉnh từng năm áp dụng theo hợp đồng.",
+    "Tong Wei cam kết thời gian hoàn vốn trong vòng 18 tháng theo các điều kiện của hợp đồng nhượng quyền."
+  ],
+  "phone": "087 9743888",
+  "menuUrl": "https://drive.google.com/file/d/1hZfj778CwFcFdWgarmmijPM4v5Cl2fzS/view",
+  "menuPages": [
+    "/assets/images/menu/menu_page_01.jpg",
+    "/assets/images/menu/menu_page_02.jpg",
+    "/assets/images/menu/menu_page_03.jpg",
+    "/assets/images/menu/menu_page_04.jpg",
+    "/assets/images/menu/menu_page_05.jpg",
+    "/assets/images/menu/menu_page_06.jpg",
+    "/assets/images/menu/menu_page_07.jpg",
+    "/assets/images/menu/menu_page_08.jpg",
+    "/assets/images/menu/menu_page_09.jpg",
+    "/assets/images/menu/menu_page_10.jpg",
+    "/assets/images/menu/menu_page_11.jpg",
+    "/assets/images/menu/menu_page_12.jpg",
+    "/assets/images/menu/menu_page_13.jpg",
+    "/assets/images/menu/menu_page_14.jpg"
+  ],
+  "contactIntro": "Để lại lời nhắn để Tong Wei liên hệ tư vấn.",
+  "contactImage": "/assets/images/branches/nguyen_thi_thap_fb_4.jpg"
+}

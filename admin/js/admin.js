@@ -11,7 +11,6 @@ const adminState = {
   dishFilterCat: 'all',
   dishSearchQuery: '',
   dishViewMode: 'table', // 'table' or 'grid'
-  events: [],
   photos: [],
   mediaFilterCat: 'all',
   candidates: [],
@@ -19,8 +18,7 @@ const adminState = {
   franchiseLeads: [],
   franchisePackages: [],
   branches: [],
-  users: [],
-  menuPages: []
+  users: []
 };
 
 // Format currency
@@ -82,98 +80,6 @@ async function initializeData() {
     } catch (err) {
       console.warn('Fallback dishes load:', err);
     }
-  }
-
-  // 2. Events
-  try {
-    const evRes = await fetch('/api/events');
-    if (evRes.ok) {
-      const dbEvents = await evRes.json();
-      if (Array.isArray(dbEvents) && dbEvents.length > 0) {
-        adminState.events = dbEvents;
-        localStorage.setItem('tongwei_events', JSON.stringify(dbEvents));
-      }
-    }
-  } catch (err) {
-    console.warn('API events fallback to local:', err);
-  }
-
-  if (!adminState.events || adminState.events.length === 0) {
-    const savedEvents = localStorage.getItem('tongwei_events');
-    if (savedEvents) {
-      try {
-        adminState.events = JSON.parse(savedEvents);
-      } catch (e) {}
-    }
-  }
-
-  if (!adminState.events || adminState.events.length === 0) {
-    adminState.events = [
-      {
-        id: 4,
-        title: '(SOFT OPENING) TONG WEI NGUYỄN THỊ THẬP — KHAI TRƯƠNG CƠ SỞ MỚI',
-        date: '15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy',
-        badge: '🏮 Soft Opening',
-        img: 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg',
-        desc: 'Tặng mỗi khách hàng 01 Xửng Đại Long Bao và giảm thêm 5% khi đăng ký Zalo OA. Trải nghiệm không gian Quảng Đông hoài cổ độc bản.',
-        detail: '• Tặng mỗi khách hàng 01 XỬNG ĐẠI LONG BAO.\n• Giảm thêm 5% cho khách hàng đăng ký mới Zalo OA.\n• Trải nghiệm 3 Phòng VIP Mạt Chược phong lưu, ẩm thực chuẩn vị Quảng Đông.\n• Thời gian áp dụng: 15.10 – 30.10.2026 tại 5N7A Nguyễn Thị Thập, Cầu Giấy.'
-      },
-      {
-        id: 1,
-        title: 'Đại Tiệc Khai Trương TongWei Hà Nội — Mỹ Vị Quảng Đông Giao Hòa',
-        date: '15 Tháng 06, 2026 • Chi Nhánh Hà Nội',
-        badge: 'Sự Kiện Nổi Bật',
-        img: 'assets/images/concept/concept_12.jpg',
-        desc: 'Ưu đãi 20% toàn bộ thực đơn điểm tâm và tặng ngay xửng bánh bao kim sa cho bàn tiệc đặt trước từ 4 khách.',
-        detail: '- Ưu đãi 20% tổng hóa đơn dimsum và cá lăng.\n- Tặng ngay 01 xửng Bánh Bao Kim Sa cho bàn từ 4 khách.\n- Miễn phí trà Thiết Quan Âm.'
-      },
-      {
-        id: 2,
-        title: 'Ra Mắt Bộ Sưu Tập Thức Uống Mùa Hè: Thanh Mát Dưỡng Nhan',
-        date: '01 Tháng 07, 2026 • Toàn Hệ Thống',
-        badge: 'Menu Mùa Hè',
-        img: 'assets/images/concept/concept_1.jpg',
-        desc: 'Dòng thức uống sáng tạo kết hợp lá dứa non, dưa lưới và thảo mộc thanh lọc giải nhiệt sau tiệc nướng.',
-        detail: '- Trà Dưa Lưới Sương Sáo Lá Dứa.\n- Nước Chanh Vàng Mật Ong Dưỡng Nhan.\n- Đồng Vị Trái Cây Nhiệt Đới.'
-      },
-      {
-        id: 3,
-        title: 'Đêm Tiệc Thưởng Vị & Giao Lưu Mạt Chược Truyền Thống',
-        date: 'Thứ 6 & Thứ 7 Hàng Tuần • Phòng VIP Cố Sự',
-        badge: 'Trải Nghiệm Độc Bản',
-        img: 'assets/images/concept/concept_2.jpg',
-        desc: 'Thưởng thức dimsum nóng hổi trong không gian hoài cổ, nhâm nhi trà cổ thụ và giao lưu mạt chược phong lưu.',
-        detail: '- Miễn phí bàn mạt chược tiêu chuẩn trong phòng VIP.\n- Set ẩm thực Cố Sự Thượng Phẩm phục vụ riêng.\n- Phòng cách âm riêng tư 8 - 14 khách.'
-      }
-    ];
-    localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-  } else {
-    // Tự động bổ sung sự kiện Nguyễn Thị Thập nếu chưa có
-    if (!adminState.events.some(e => e.id === 4 || (e.title && e.title.includes('Nguyễn Thị Thập')))) {
-      adminState.events.unshift({
-        id: 4,
-        title: '(SOFT OPENING) TONG WEI NGUYỄN THỊ THẬP — KHAI TRƯƠNG CƠ SỞ MỚI',
-        date: '15.10 – 30.10.2026 • 5N7A Nguyễn Thị Thập, P. Yên Hòa, Cầu Giấy',
-        badge: '🏮 Soft Opening',
-        img: 'assets/images/branding/tv_tongwei_nguyen_thi_thap.jpg',
-        desc: 'Tặng mỗi khách hàng 01 Xửng Đại Long Bao và giảm thêm 5% khi đăng ký Zalo OA. Trải nghiệm không gian Quảng Đông hoài cổ độc bản.',
-        detail: '• Tặng mỗi khách hàng 01 XỬNG ĐẠI LONG BAO.\n• Giảm thêm 5% cho khách hàng đăng ký mới Zalo OA.\n• Trải nghiệm 3 Phòng VIP Mạt Chược phong lưu, ẩm thực chuẩn vị Quảng Đông.\n• Thời gian áp dụng: 15.10 – 30.10.2026 tại 5N7A Nguyễn Thị Thập, Cầu Giấy.'
-      });
-      localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-    }
-  }
-
-  // 2.5 Menu Book Pages
-  const savedMenuPages = localStorage.getItem('tongwei_menu_pages');
-  if (savedMenuPages) {
-    try {
-      adminState.menuPages = JSON.parse(savedMenuPages);
-    } catch (e) {
-      adminState.menuPages = defaultMenuPages;
-    }
-  } else {
-    adminState.menuPages = defaultMenuPages;
-    localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
   }
 
   // 3. Space Gallery & Concept Photos
@@ -501,7 +407,6 @@ async function initializeData() {
   // Refresh KPIs and Views
   refreshDashboardStats();
   renderDishesTable();
-  renderEventsTable();
   renderAdminMedia();
   renderFranchiseView();
   renderCareersView();
@@ -539,9 +444,6 @@ function refreshDashboardStats() {
   if (applicantsEl) applicantsEl.textContent = adminState.candidates.length;
   const franchiseEl = document.getElementById('kpiFranchiseCount');
   if (franchiseEl) franchiseEl.textContent = adminState.franchiseLeads.length;
-
-  const eventBadge = document.getElementById('eventCountBadge');
-  if (eventBadge) eventBadge.textContent = adminState.events ? adminState.events.length : 0;
 
   // 1. Render Dashboard Branches Table
   const tbody = document.getElementById('dashboardBranchesTbody');
@@ -617,7 +519,14 @@ function refreshDashboardStats() {
 }
 
 // ==================== TAB NAVIGATION ====================
+function setSidebarOpen(open) {
+  document.getElementById('adminSidebar').classList.toggle('open', open);
+  document.getElementById('sidebarToggle').setAttribute('aria-expanded', String(open));
+  document.getElementById('navShade').hidden = !open;
+}
+
 function switchTab(tabId) {
+  setSidebarOpen(false);
   adminState.activeTab = tabId;
   document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
     item.classList.remove('active');
@@ -880,192 +789,6 @@ document.getElementById('dishImage')?.addEventListener('input', (e) => {
   const preview = document.getElementById('dishPreviewImg');
   if (preview && val) {
     preview.src = val.startsWith('assets') ? `../${val}` : val;
-  }
-});
-
-// ==================== EVENTS MANAGEMENT ====================
-function renderEventsTable() {
-  const tbody = document.getElementById('eventsTbody');
-  if (!tbody) return;
-
-  const today = new Date().toISOString().split('T')[0];
-
-  tbody.innerHTML = adminState.events.map(ev => {
-    const imgSrc = ev.img.startsWith('assets') ? `../${ev.img}` : ev.img;
-    const isHidden = ev.status === 'hidden';
-    const hasEndDate = ev.end_date && ev.end_date.trim() !== '';
-    const isExpired = hasEndDate && (today > ev.end_date.trim());
-
-    let statusHtml = '';
-    if (isHidden) {
-      statusHtml = '<span class="badge" style="background: #e2e8f0; color: #475569; padding: 0.25rem 0.5rem;">⚪ Đang ẩn</span>';
-    } else if (isExpired) {
-      statusHtml = `<span class="badge" style="background: #fee2e2; color: #dc2626; padding: 0.25rem 0.5rem;" title="Đã qua ngày kết thúc ${ev.end_date}">⏰ Hết hạn (Tự ẩn)</span>`;
-    } else if (hasEndDate) {
-      statusHtml = `<span class="badge badge-success" style="padding: 0.25rem 0.5rem;" title="Hiển thị đến hết ngày ${ev.end_date}">🟢 Đang hiện (Đến ${ev.end_date})</span>`;
-    } else {
-      statusHtml = '<span class="badge badge-success" style="padding: 0.25rem 0.5rem;" title="Luôn hiển thị (Không giới hạn ngày)">🟢 Luôn hiển thị</span>';
-    }
-
-    const toggleBtnText = isHidden ? '👁️ Hiện' : '👁️‍🗨️ Ẩn';
-    const toggleBtnStyle = isHidden 
-      ? 'background: #f1f5f9; color: #0284c7; border: 1px solid #cbd5e1;' 
-      : 'background: #fff; color: #64748b; border: 1px solid #e2e8f0;';
-
-    return `
-      <tr style="${(isHidden || isExpired) ? 'opacity: 0.75; background: #fafafa;' : ''}">
-        <td>
-          <img src="${imgSrc}" alt="${ev.title}" style="width: 70px; height: 45px; object-fit: cover; border-radius: var(--radius-sm);">
-        </td>
-        <td>
-          <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${ev.title}</div>
-          ${hasEndDate ? `<small style="color: #64748b; font-size: 0.78rem;">Hạn đến: <b>${ev.end_date}</b></small>` : '<small style="color: #10b981; font-size: 0.78rem;">Vô thời hạn</small>'}
-        </td>
-        <td>${ev.date}</td>
-        <td><span class="badge badge-success">${ev.badge}</span></td>
-        <td>${statusHtml}</td>
-        <td style="max-width: 240px; font-size: 0.85rem; color: var(--text-secondary);">${ev.desc}</td>
-        <td style="text-align: right;">
-          <div style="display: flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">
-            <button class="btn btn-sm" style="${toggleBtnStyle}" onclick="toggleEventStatus(${ev.id})" title="${isHidden ? 'Bấm để Hiện sự kiện' : 'Bấm để Ẩn sự kiện'}">${toggleBtnText}</button>
-            <button class="btn btn-outline btn-sm" onclick="editEvent(${ev.id})">✏️ Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteEvent(${ev.id})">🗑️</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-window.toggleEventStatus = async function(id) {
-  const ev = adminState.events.find(e => e.id === id);
-  if (!ev) return;
-
-  ev.status = (ev.status === 'hidden') ? 'active' : 'hidden';
-  localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-  renderEventsTable();
-
-  const msg = (ev.status === 'active') ? `Đã BẬT hiển thị sự kiện "${ev.title}"!` : `Đã ẨN sự kiện "${ev.title}" khỏi website!`;
-  showToast(msg, ev.status === 'active' ? 'success' : 'warning');
-
-  // Cập nhật lên Cloudflare D1
-  fetch('/api/events', {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: ev.id, status: ev.status })
-  }).catch(e => {
-    fetch('/api/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ev)
-    }).catch(err => console.warn('Sync status failed:', err));
-  });
-};
-
-function openEventModal(editId = null) {
-  const form = document.getElementById('eventForm');
-  form.reset();
-  const idInput = document.getElementById('eventEditId');
-  const title = document.getElementById('eventModalTitle');
-  const endDateInput = document.getElementById('eventEndDate');
-  const statusCheckbox = document.getElementById('eventStatusCheckbox');
-
-  if (editId) {
-    const ev = adminState.events.find(e => e.id === editId);
-    if (!ev) return;
-    title.textContent = 'Chỉnh Sửa Sự Kiện';
-    idInput.value = ev.id;
-    document.getElementById('eventTitle').value = ev.title;
-    document.getElementById('eventDate').value = ev.date;
-    document.getElementById('eventBadge').value = ev.badge;
-    document.getElementById('eventImg').value = ev.img;
-    document.getElementById('eventDesc').value = ev.desc;
-    document.getElementById('eventDetail').value = ev.detail || '';
-    if (endDateInput) endDateInput.value = ev.end_date || ev.endDate || '';
-    if (statusCheckbox) statusCheckbox.checked = (ev.status !== 'hidden');
-  } else {
-    title.textContent = 'Đăng Sự Kiện Mới';
-    idInput.value = '';
-    document.getElementById('eventImg').value = 'assets/images/concept/concept_10.jpg';
-    document.getElementById('eventBadge').value = 'Sự Kiện Mới';
-    if (endDateInput) endDateInput.value = '';
-    if (statusCheckbox) statusCheckbox.checked = true;
-  }
-
-  openModal('eventModal');
-}
-
-window.editEvent = openEventModal;
-
-window.deleteEvent = function(id) {
-  const ev = adminState.events.find(e => e.id === id);
-  if (!ev) return;
-  if (confirm(`Bạn có chắc chắn muốn xóa sự kiện "${ev.title}"?`)) {
-    adminState.events = adminState.events.filter(e => e.id !== id);
-    localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-    renderEventsTable();
-    showToast(`Đã xóa sự kiện thành công!`, 'danger');
-
-    // Đồng bộ xóa trên Cloudflare D1
-    fetch(`/api/events?id=${id}`, { method: 'DELETE' })
-      .catch(e => console.warn('Delete event from D1 failed:', e));
-  }
-};
-
-document.getElementById('eventForm')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const editId = document.getElementById('eventEditId').value;
-  const title = document.getElementById('eventTitle').value.trim();
-  const date = document.getElementById('eventDate').value.trim();
-  const badge = document.getElementById('eventBadge').value.trim();
-  const img = document.getElementById('eventImg').value.trim();
-  const desc = document.getElementById('eventDesc').value.trim();
-  const detail = document.getElementById('eventDetail').value.trim();
-  const endDate = document.getElementById('eventEndDate') ? document.getElementById('eventEndDate').value.trim() : '';
-  const status = (document.getElementById('eventStatusCheckbox') && !document.getElementById('eventStatusCheckbox').checked) ? 'hidden' : 'active';
-
-  let targetEvent = null;
-  if (editId) {
-    const ev = adminState.events.find(e => e.id == editId);
-    if (ev) {
-      ev.title = title;
-      ev.date = date;
-      ev.badge = badge;
-      ev.img = img;
-      ev.desc = desc;
-      ev.detail = detail;
-      ev.end_date = endDate;
-      ev.status = status;
-      targetEvent = ev;
-      showToast(`Đã cập nhật sự kiện <b>${title}</b>!`);
-    }
-  } else {
-    targetEvent = {
-      id: Date.now(),
-      title,
-      date,
-      badge,
-      img,
-      desc,
-      detail,
-      end_date: endDate,
-      status: status
-    };
-    adminState.events.unshift(targetEvent);
-    showToast(`Đã đăng sự kiện mới <b>${title}</b>!`);
-  }
-
-  localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-  closeModal('eventModal');
-  renderEventsTable();
-
-  // Đồng bộ lên Cloudflare D1
-  if (targetEvent) {
-    fetch('/api/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(targetEvent)
-    }).catch(e => console.warn('Sync event to D1 failed:', e));
   }
 });
 
@@ -1809,12 +1532,6 @@ function openMediaSelectorForDish() {
   openModal('mediaPickerModal');
 }
 
-function openMediaSelectorForEvent() {
-  mediaPickerTargetInput = document.getElementById('eventImg');
-  populateMediaPicker('concept');
-  openModal('mediaPickerModal');
-}
-
 function openMediaSelectorForGallery() {
   mediaPickerTargetInput = document.getElementById('photoSrc');
   populateMediaPicker('all_system_photos');
@@ -2325,7 +2042,10 @@ function checkAuthState() {
   const screen = document.getElementById('loginScreen');
   if (!screen) return;
 
-  if (authUser && authUser.status === 'active') {
+  const signedIn = authUser?.status === 'active';
+  document.querySelector('.admin-main').inert = !signedIn;
+  document.getElementById('adminSidebar').inert = !signedIn;
+  if (signedIn) {
     screen.classList.add('hidden');
     // Update sidebar profile
     const nameEl = document.getElementById('sidebarUserName');
@@ -2464,6 +2184,7 @@ function handleLoginSubmit(e) {
 }
 
 function handleLogout() {
+  switchTab('dashboard');
   localStorage.removeItem('tongwei_auth_user');
   sessionStorage.removeItem('tongwei_auth_user');
   checkAuthState();
@@ -2940,469 +2661,17 @@ window.toggleUserStatus = toggleUserStatus;
 window.deleteUser = deleteUser;
 window.handleChangePasswordSubmit = handleChangePasswordSubmit;
 
-// ==================== LOCAL STAGING & GITHUB PUBLISH ENGINE ====================
-const publishState = {
-  isPublishing: false,
-  lastPublished: localStorage.getItem('tongwei_last_published') || null,
-  scheduleTime: localStorage.getItem('tongwei_schedule_time') || '16:40',
-  autoPublish: localStorage.getItem('tongwei_auto_publish') !== 'false',
-  lastAutoFiredKey: localStorage.getItem('tongwei_last_auto_fired_key') || ''
-};
-
-function getBackendApiUrl(endpoint) {
-  // If running on local server, relative path works
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return endpoint;
-  }
-  // If accessed online (GitHub Pages), talk to local Node server on port 8088
-  return `http://localhost:8088${endpoint}`;
-}
-
-function updatePublishUI() {
-  const timeDisplay = document.getElementById('scheduleTimeDisplay');
-  if (timeDisplay) {
-    timeDisplay.textContent = publishState.autoPublish ? publishState.scheduleTime : 'Tắt';
-  }
-
-  const modalPreview = document.getElementById('modalSchedulePreview');
-  if (modalPreview) {
-    modalPreview.textContent = publishState.scheduleTime;
-  }
-
-  const timeInput = document.getElementById('scheduleTimeInput');
-  if (timeInput) {
-    timeInput.value = publishState.scheduleTime;
-  }
-
-  const autoToggle = document.getElementById('autoPublishToggle');
-  if (autoToggle) {
-    autoToggle.checked = publishState.autoPublish;
-  }
-}
-
-function openScheduleModal() {
-  const modal = document.getElementById('scheduleModal');
-  if (!modal) return;
-  updatePublishUI();
-  updateWebsiteMenuModeUI();
-  renderMenuPagesTable();
-  updateMediaCountBadge();
-  openModal('scheduleModal');
-}
-window.openScheduleModal = openScheduleModal;
-
-async function handleScheduleFormSubmit(e) {
-  if (e) e.preventDefault();
-  const timeInput = document.getElementById('scheduleTimeInput');
-  const toggle = document.getElementById('autoPublishToggle');
-  if (!timeInput) return;
-
-  publishState.scheduleTime = timeInput.value || '16:40';
-  publishState.autoPublish = toggle ? toggle.checked : true;
-
-  localStorage.setItem('tongwei_schedule_time', publishState.scheduleTime);
-  localStorage.setItem('tongwei_auto_publish', publishState.autoPublish);
-
-  updatePublishUI();
-  closeModal('scheduleModal');
-
-  // Sync schedule config with local server if running
-  try {
-    const url = getBackendApiUrl('/api/set-schedule');
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        scheduledTime: publishState.scheduleTime,
-        autoPublishEnabled: publishState.autoPublish
-      })
-    });
-  } catch (err) {
-    console.warn('Could not sync schedule with local server:', err);
-  }
-
-  showToast(`⏰ Đã lưu lịch hẹn: ${publishState.autoPublish ? `Tự động đẩy lúc ${publishState.scheduleTime}` : 'Đã tắt tự động'}!`);
-}
-window.handleScheduleFormSubmit = handleScheduleFormSubmit;
-
-async function triggerPublishToGithub(isAuto = false) {
-  if (publishState.isPublishing) {
-    showToast('⏳ Hệ thống đang tiến hành đẩy lên GitHub, vui lòng đợi trong giây lát...', 'info');
-    return;
-  }
-
-  const btn = document.getElementById('btnPublishOnline');
-  const origBtnContent = btn ? btn.innerHTML : '';
-
-  try {
-    publishState.isPublishing = true;
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = `<span>⏳ Đang đẩy code lên GitHub...</span>`;
-    }
-
-    // Always make sure local client website has latest data
-    syncDataToLiveWebsite(false);
-
-    showToast(isAuto ? `⏰ Lịch hẹn ${publishState.scheduleTime}: Đang tự động xuất bản lên GitHub...` : '🚀 Đang bắt đầu đẩy các thay đổi lên GitHub Pages...', 'info');
-
-    const url = getBackendApiUrl('/api/publish-github');
-    const payload = {
-      dishes: adminState.dishes,
-      events: adminState.events,
-      branches: adminState.branches,
-      franchisePackages: adminState.franchisePackages
-    };
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-    if (res.ok && data.success) {
-      const nowStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-      publishState.lastPublished = nowStr;
-      localStorage.setItem('tongwei_last_published', nowStr);
-      showToast(`🎉 Xuất bản thành công! Toàn bộ thay đổi đã được đẩy lên GitHub. Website online sẽ cập nhật sau 1-2 phút.`);
-
-      const stagingBadge = document.querySelector('.staging-badge span:last-child');
-      if (stagingBadge) {
-        stagingBadge.textContent = `Đã online (${nowStr})`;
-        setTimeout(() => {
-          stagingBadge.textContent = 'Lưu cục bộ (Local)';
-        }, 8000);
-      }
-    } else {
-      throw new Error(data.message || data.error || 'Server trả về lỗi không xác định');
-    }
-  } catch (err) {
-    console.error('Publish error:', err);
-    showToast(`❌ Không thể xuất bản: ${err.message || 'Lỗi kết nối'}. Vui lòng kiểm tra server local (http://localhost:8088/) có đang chạy không.`, 'danger');
-  } finally {
-    publishState.isPublishing = false;
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = origBtnContent;
-    }
-  }
-}
-window.triggerPublishToGithub = triggerPublishToGithub;
-
-// Background Timer for 16:40 or configured time
-function checkAutoPublishSchedule() {
-  if (!publishState.autoPublish) return;
-
-  const now = new Date();
-  const currentHour = String(now.getHours()).padStart(2, '0');
-  const currentMinute = String(now.getMinutes()).padStart(2, '0');
-  const currentTime = `${currentHour}:${currentMinute}`;
-  const todayStr = now.toISOString().split('T')[0];
-  const fireKey = `${todayStr}_${currentTime}`;
-
-  if (currentTime === publishState.scheduleTime && publishState.lastAutoFiredKey !== fireKey) {
-    publishState.lastAutoFiredKey = fireKey;
-    localStorage.setItem('tongwei_last_auto_fired_key', fireKey);
-    console.log(`[TongWei Scheduler] Kích hoạt tự động xuất bản đúng giờ hẹn ${currentTime}`);
-    triggerPublishToGithub(true);
-  }
-}
-
-// ==================== SYNC TO LIVE WEBSITE (LOCAL CLIENT) ====================
-function syncDataToLiveWebsite(showFeedback = true) {
-  localStorage.setItem('tongwei_dishes', JSON.stringify(adminState.dishes));
-  localStorage.setItem('tongwei_events', JSON.stringify(adminState.events));
-  localStorage.setItem('tongwei_photos', JSON.stringify(adminState.photos));
-  localStorage.setItem('tongwei_branches', JSON.stringify(adminState.branches));
-  localStorage.setItem('tongwei_franchise_packages', JSON.stringify(adminState.franchisePackages));
-  if (showFeedback) {
-    showToast(`🚀 Đã đồng bộ toàn bộ dữ liệu (Món ăn, Cơ sở, Gói nhượng quyền) sang Website khách hàng! Bấm "Xem web ↗" để kiểm tra.`);
-  }
-}
-window.syncDataToLiveWebsite = syncDataToLiveWebsite;
-
-// ==================== EVENT LISTENERS & SETUP ====================
-
-// ==================== WEBSITE MENU MODE & MENU BOOK PAGES ENGINE ====================
-const defaultMenuPages = [
-  { id: 1, page: 1, title: 'Bìa Menu Tong Wei Cantonese Flavours', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_01.jpg', desc: 'Thương hiệu ẩm thực Quảng Đông độc bản tại Hà Nội — 68A Trần Hưng Đạo & 5N7A Nguyễn Thị Thập' },
-  { id: 2, page: 2, title: 'Triết Lý Ẩm Thực Đồng Vị (同味)', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_02.jpg', desc: 'Sự hòa điệu giữa con người, hương vị và dư vị ngọt ngào sau mỗi bữa tiệc sum vầy' },
-  { id: 3, page: 3, title: 'Đại Yến Tinh Hoa Mỹ Vị Quảng Đông', category: 'intro', categoryName: 'Giới Thiệu', img: 'assets/images/menu/menu_page_03.jpg', desc: 'Mâm tiệc đại yến trứ danh với vịt quay, tháp xửng dimsum nghệ nhân và cháo nóng' },
-  { id: 4, page: 4, title: 'Khai Vị & Salad Khơi Mở Vị Giác', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_04.jpg', desc: 'Chân gà ngâm ớt xanh, nấm chiên kim sa, cánh lưỡi vịt cay Hồ Nam, salad rong biển trứng cua' },
-  { id: 5, page: 5, title: 'Súp Thượng Canh & Canh Tiềm Dưỡng Sinh', category: 'starter', categoryName: 'Khai Vị & Súp', img: 'assets/images/menu/menu_page_05.jpg', desc: 'Canh lê tiềm tuyết nhĩ, canh gà nấm dưỡng sinh, soup bào ngư kê vàng, soup cua hoàng bào' },
-  { id: 6, page: 6, title: 'Dimsum Hấp Nghệ Nhân & Bánh Cuốn', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_06.jpg', desc: 'Há cảo tôm tươi, há cảo sò điệp, xíu mại tôm thịt gạch cua, sủi cảo Bắc Kinh chuẩn vị' },
-  { id: 7, page: 7, title: 'Dimsum Chiên, Áp Chảo & Đại Long Bao', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_07.jpg', desc: 'Đại long bao truyền thống (Tặng khi khai trương), tiểu long bao, chả giò tôm phô mai, bánh xếp áp chảo' },
-  { id: 8, page: 8, title: 'Bánh Bao Thượng Hạng & Món Rau Thanh Vị', category: 'dimsum', categoryName: 'Dimsum', img: 'assets/images/menu/menu_page_08.jpg', desc: 'Bánh bao kim sa tan chảy, matcha, xá xíu & củ sen Triều Châu, cải chíp sốt nấm, đậu Tứ Xuyên' },
-  { id: 9, page: 9, title: 'Món Quay Nướng BBQ Quảng Đông', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_09.jpg', desc: 'Heo quay Macao da giòn, vịt quay Quảng Đông, thịt xá xíu mật ong rừng, sườn nướng Mai Quế Lộ' },
-  { id: 10, page: 10, title: 'Món Thịt Xào Lửa Lớn & Thố Nồi Đất', category: 'bbq', categoryName: 'Quay Nướng', img: 'assets/images/menu/menu_page_10.jpg', desc: 'Bò bằm cà tím thố đất, bò nhúng cay Trùng Khánh, gà xào bào ngư, ba chỉ cuộn sốt ô mai' },
-  { id: 11, page: 11, title: 'Hải Sản Tươi Sống & Cá Lăng Sông', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_11.jpg', desc: 'Cá lăng nhúng cay, cá lăng hấp tàu xì, mực tươi ngồng tỏi, tôm chiên trứng mặn, sò điệp măng tây' },
-  { id: 12, page: 12, title: 'Cơm Chiên Thượng Hạng, Mỳ Trộn & Cháo Nóng', category: 'main', categoryName: 'Cơm & Mỳ', img: 'assets/images/menu/menu_page_12.jpg', desc: 'Cơm chiên hải sản XO, cơm chiên heo quay Macau, mỳ sườn Quảng Đông, cháo tôm Quảng Châu' },
-  { id: 13, page: 13, title: 'Lẩu Trùng Khánh, Lẩu Cà Chua & Đồ Nhúng', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_13.jpg', desc: 'Nồi lẩu 2 ngăn cay nồng, lẩu khô vịt & ba chỉ bò, viên thả lẩu tổng hợp, rau tươi theo mùa' },
-  { id: 14, page: 14, title: 'Đồ Uống, Trà Trái Cây & Trà Sữa Dưỡng Nhan', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_14.jpg', desc: 'Trà Olong Bạch Lan, Trà hoa quả TongWei, Trà nho xanh Kale, Long Tỉnh sữa dưa lưới, bia Thanh Đảo' },
-  { id: 15, page: 15, title: 'Món Tráng Miệng Thanh Ngọt & Topping', category: 'drinks', categoryName: 'Lẩu & Tráng Miệng', img: 'assets/images/menu/menu_page_15.jpg', desc: 'Tàu hũ non trân châu đường đen, caramen, trân châu kim cương, thạch dừa giòn thanh mát' }
-];
-
-function setWebsiteMenuMode(mode) {
-  localStorage.setItem('tongwei_menu_display_mode', mode);
-  updateWebsiteMenuModeUI();
-  const msg = mode === 'book' 
-    ? 'Đã bật chế độ: <b>📖 Hiện Quyển Thực Đơn (Sách)</b> trên Website!' 
-    : 'Đã bật chế độ: <b>🍽️ Hiện Danh Sách Món Ăn (28 Món)</b> trên Website!';
-  showToast(msg, 'success');
-}
-window.setWebsiteMenuMode = setWebsiteMenuMode;
-
-function toggleMenuDescriptionMode() {
-  const current = localStorage.getItem('tongwei_hide_menu_description') !== 'false';
-  const nextVal = !current;
-  localStorage.setItem('tongwei_hide_menu_description', nextVal ? 'true' : 'false');
-  updateMenuDescriptionUI();
-  showToast(nextVal ? '✅ Đã kích hoạt: ẨN thông tin mô tả trang menu trên Website!' : '✅ Đã kích hoạt: HIỆN thông tin mô tả trang menu trên Website!');
-}
-window.toggleMenuDescriptionMode = toggleMenuDescriptionMode;
-
-function updateMenuDescriptionUI() {
-  const isHidden = localStorage.getItem('tongwei_hide_menu_description') !== 'false';
-  const btn = document.getElementById('btnToggleMenuDescription');
-  const icon = document.getElementById('menuDescToggleIcon');
-  const text = document.getElementById('menuDescToggleText');
-  if (btn && icon && text) {
-    if (isHidden) {
-      btn.className = 'btn btn-primary btn-sm';
-      btn.style.background = 'var(--color-brand-red)';
-      btn.style.borderColor = 'var(--color-brand-red)';
-      btn.style.color = '#ffffff';
-      icon.textContent = '🚫';
-      text.textContent = 'Đang ẨN thông tin mô tả (Bấm để Hiện)';
-    } else {
-      btn.className = 'btn btn-outline btn-sm';
-      btn.style.background = '#ffffff';
-      btn.style.borderColor = 'var(--border-color)';
-      btn.style.color = 'var(--color-indigo-dark)';
-      icon.textContent = '👁️';
-      text.textContent = 'Đang HIỆN thông tin mô tả (Bấm để Ẩn)';
-    }
-  }
-}
-window.updateMenuDescriptionUI = updateMenuDescriptionUI;
-
-function updateWebsiteMenuModeUI() {
-  const mode = localStorage.getItem('tongwei_menu_display_mode') || 'book';
-  const btnBook = document.getElementById('btnModeSelectBook');
-  const btnDishes = document.getElementById('btnModeSelectDishes');
-  const label = document.getElementById('currentMenuModeLabel');
-
-  if (btnBook) btnBook.classList.toggle('active', mode === 'book');
-  if (btnDishes) btnDishes.classList.toggle('active', mode === 'dishes');
-  updateMenuDescriptionUI();
-  if (label) {
-    label.textContent = mode === 'book' ? '📖 Quyển Thực Đơn (Sách ảnh thiết kế)' : '🍽️ Danh Sách Món Ăn Chi Tiết';
-  }
-}
-window.updateWebsiteMenuModeUI = updateWebsiteMenuModeUI;
-
-function switchDishSubtab(subtab) {
-  const btnDishes = document.getElementById('btnSubtabDishes');
-  const btnMenuPages = document.getElementById('btnSubtabMenuPages');
-  const contentDishes = document.getElementById('subtabDishesContent');
-  const contentMenuPages = document.getElementById('subtabMenuPagesContent');
-
-  if (subtab === 'menupages') {
-    if (btnDishes) btnDishes.classList.remove('active');
-    if (btnMenuPages) btnMenuPages.classList.add('active');
-    if (contentDishes) contentDishes.style.display = 'none';
-    if (contentMenuPages) contentMenuPages.style.display = 'block';
-    renderMenuPagesTable();
-  } else {
-    if (btnDishes) btnDishes.classList.add('active');
-    if (btnMenuPages) btnMenuPages.classList.remove('active');
-    if (contentDishes) contentDishes.style.display = 'block';
-    if (contentMenuPages) contentMenuPages.style.display = 'none';
-  }
-}
-window.switchDishSubtab = switchDishSubtab;
-
-function renderMenuPagesTable() {
-  const tbody = document.getElementById('menuPagesTbody');
-  if (!tbody) return;
-
-  const countEl = document.getElementById('countMenuPagesSubtab');
-  if (countEl) countEl.textContent = adminState.menuPages.length;
-
-  const catNames = {
-    intro: '📖 Giới Thiệu',
-    starter: '🥗 Khai Vị & Súp',
-    dimsum: '🥢 Dimsum',
-    bbq: '🍗 Quay Nướng',
-    main: '🐟 Cơm & Mỳ',
-    drinks: '🍲 Lẩu & Tráng Miệng'
-  };
-
-  tbody.innerHTML = adminState.menuPages.map((item, index) => {
-    const imgSrc = item.img.startsWith('http') || item.img.startsWith('/') ? item.img : `/${item.img}`;
-    const pageNum = item.page < 10 ? '0' + item.page : item.page;
-
-    return `
-      <tr>
-        <td style="font-weight: 800; color: var(--color-indigo); font-size: 1.05rem;">
-          #${pageNum}
-        </td>
-        <td>
-          <img src="${imgSrc}" alt="${item.title}" style="width: 80px; height: 55px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color); cursor: pointer;" onclick="openMenuPageModal(${item.id})">
-        </td>
-        <td>
-          <div style="font-weight: 700; color: var(--color-indigo-dark); font-size: 0.95rem;">${item.title}</div>
-          <small style="color: var(--text-secondary); font-size: 0.78rem;">Tệp: ${item.img}</small>
-        </td>
-        <td>
-          <span class="badge badge-indigo" style="background: rgba(29, 61, 116, 0.08); color: var(--color-indigo); border: 1px solid rgba(29, 61, 116, 0.2); font-weight: 700;">
-            ${catNames[item.category] || item.categoryName || item.category}
-          </span>
-        </td>
-        <td style="max-width: 320px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
-          ${item.desc}
-        </td>
-        <td style="text-align: right;">
-          <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="openMenuPageModal(${item.id})" title="Chỉnh sửa trang này">
-              ✏️ Sửa
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="deleteMenuPage(${item.id})" title="Xóa trang này">
-              🗑️
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-window.renderMenuPagesTable = renderMenuPagesTable;
-
-function openMenuPageModal(editId = null) {
-  const form = document.getElementById('menuPageForm');
-  if (form) form.reset();
-
-  const titleEl = document.getElementById('menuPageModalTitle');
-  const btnDelete = document.getElementById('btnDeleteMenuPageInModal');
-  const preview = document.getElementById('menuPageModalPreview');
-
-  if (editId) {
-    const item = adminState.menuPages.find(p => p.id === editId);
-    if (!item) return;
-
-    if (titleEl) titleEl.textContent = `Chỉnh Sửa Trang ${item.page}: ${item.title}`;
-    if (btnDelete) btnDelete.style.display = 'inline-block';
-
-    document.getElementById('menuPageEditId').value = item.id;
-    document.getElementById('menuPageNumber').value = item.page;
-    document.getElementById('menuPageCategory').value = item.category;
-    document.getElementById('menuPageTitleInput').value = item.title;
-    document.getElementById('menuPageImgInput').value = item.img;
-    document.getElementById('menuPageDescInput').value = item.desc;
-    if (preview) preview.src = item.img.startsWith('http') || item.img.startsWith('/') ? item.img : `/${item.img}`;
-  } else {
-    if (titleEl) titleEl.textContent = 'Thêm Trang Menu Mới Vào Quyển';
-    if (btnDelete) btnDelete.style.display = 'none';
-
-    const nextId = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.id)) + 1 : 1;
-    const nextPage = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.page)) + 1 : 1;
-
-    document.getElementById('menuPageEditId').value = '';
-    document.getElementById('menuPageNumber').value = nextPage;
-    document.getElementById('menuPageCategory').value = 'dimsum';
-    document.getElementById('menuPageTitleInput').value = '';
-    document.getElementById('menuPageImgInput').value = 'assets/images/menu/menu_page_01.jpg';
-    document.getElementById('menuPageDescInput').value = '';
-    if (preview) preview.src = '/assets/images/menu/menu_page_01.jpg';
-  }
-
-  openModal('menuPageModal');
-}
-window.openMenuPageModal = openMenuPageModal;
-
-function handleSaveMenuPage(e) {
-  if (e && e.preventDefault) e.preventDefault();
-
-  const editIdStr = document.getElementById('menuPageEditId').value;
-  const page = parseInt(document.getElementById('menuPageNumber').value, 10) || 1;
-  const category = document.getElementById('menuPageCategory').value;
-  const title = document.getElementById('menuPageTitleInput').value.trim();
-  const img = document.getElementById('menuPageImgInput').value.trim();
-  const desc = document.getElementById('menuPageDescInput').value.trim();
-
-  const catNames = {
-    intro: 'Giới Thiệu',
-    starter: 'Khai Vị & Súp',
-    dimsum: 'Dimsum',
-    bbq: 'Quay Nướng',
-    main: 'Cơm & Mỳ',
-    drinks: 'Lẩu & Tráng Miệng'
-  };
-
-  if (editIdStr) {
-    const editId = parseInt(editIdStr, 10);
-    const item = adminState.menuPages.find(p => p.id === editId);
-    if (item) {
-      item.page = page;
-      item.category = category;
-      item.categoryName = catNames[category] || category;
-      item.title = title;
-      item.img = img;
-      item.desc = desc;
-      showToast(`Đã cập nhật trang <b>${item.title}</b>!`);
-    }
-  } else {
-    const newId = adminState.menuPages.length > 0 ? Math.max(...adminState.menuPages.map(p => p.id)) + 1 : 1;
-    const newPage = {
-      id: newId,
-      page,
-      category,
-      categoryName: catNames[category] || category,
-      title,
-      img,
-      desc
-    };
-    adminState.menuPages.push(newPage);
-    showToast(`Đã thêm trang mới <b>${newPage.title}</b> vào quyển menu!`);
-  }
-
-  // Sort pages by page number
-  adminState.menuPages.sort((a, b) => a.page - b.page);
-
-  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
-  closeModal('menuPageModal');
-  renderMenuPagesTable();
-}
-window.handleSaveMenuPage = handleSaveMenuPage;
-
-function deleteMenuPage(id) {
-  const item = adminState.menuPages.find(p => p.id === id);
-  if (!item) return;
-  if (!confirm(`Bạn có chắc chắn muốn xóa "Trang ${item.page}: ${item.title}" khỏi quyển menu không?`)) return;
-
-  adminState.menuPages = adminState.menuPages.filter(p => p.id !== id);
-  localStorage.setItem('tongwei_menu_pages', JSON.stringify(adminState.menuPages));
-  closeModal('menuPageModal');
-  renderMenuPagesTable();
-  showToast(`Đã xóa trang thực đơn <b>${item.title}</b>!`, 'warning');
-}
-window.deleteMenuPage = deleteMenuPage;
-
-function deleteMenuPageFromModal() {
-  const id = parseInt(document.getElementById('menuPageEditId')?.value, 10);
-  if (id) deleteMenuPage(id);
-}
-window.deleteMenuPageFromModal = deleteMenuPageFromModal;
-
-
 document.addEventListener('DOMContentLoaded', () => {
   initializeData();
-  updatePublishUI();
-
-  // Auto-publish schedule interval disabled per user request
-  // setInterval(checkAutoPublishSchedule, 15000);
-
+  const toggle = document.getElementById('sidebarToggle');
+  toggle.addEventListener('click', () => setSidebarOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.getElementById('navShade').addEventListener('click', () => setSidebarOpen(false));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      setSidebarOpen(false);
+      toggle.focus();
+    }
+  });
   // Sidebar Menu Clicks
   document.querySelectorAll('.sidebar-menu .menu-item').forEach(btn => {
     btn.addEventListener('click', () => {

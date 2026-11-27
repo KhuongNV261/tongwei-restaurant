@@ -3,11 +3,60 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { execFile } = require('child_process');
+const { homedir } = require('node:os');
+const { Readable } = require('node:stream');
+const { DatabaseSync } = require('node:sqlite');
+const { cmsPath, handleCms } = require('./functions/lib/cms.mjs');
 
 const PORT = process.env.PORT || 8088;
 const ROOT = __dirname;
-const LOG_FILE = path.join(ROOT, 'server.log');
+const DATA_DIR = path.resolve(process.env.TONGWEI_DATA_DIR || path.join(homedir(), '.tongwei'));
+const LOG_FILE = path.join(DATA_DIR, 'server.log');
 const SCHEDULER_INTERVAL_MS = 15000; // Kiểm tra lịch hẹn mỗi 15 giây
+const disableScheduler = require.main !== module || process.env.NODE_ENV === 'test'
+  || process.env.TONGWEI_DISABLE_SCHEDULER === '1';
+
+function within(directory, file) {
+  const relative = path.relative(directory, file);
+  return relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative);
+}
+
+function openCmsStore() {
+  const root = fs.realpathSync(ROOT);
+  if (within(root, DATA_DIR)) throw new Error('TONGWEI_DATA_DIR must be outside the website directory');
+  fs.mkdirSync(DATA_DIR, { recursive: true, mode: 0o700 });
+  const realDirectory = fs.realpathSync(DATA_DIR);
+  if (within(root, realDirectory)) throw new Error('TONGWEI_DATA_DIR resolves inside the website directory');
+  const file = path.join(realDirectory, 'cms.sqlite');
+  for (const candidate of [file, file + '-wal', file + '-shm', file + '-journal']) {
+    if (fs.lstatSync(candidate, { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error('Expected a regular database file');
+  }
+  const sqlite = new DatabaseSync(file);
+  try {
+    sqlite.exec('PRAGMA busy_timeout = 10000; PRAGMA journal_mode = WAL; BEGIN IMMEDIATE');
+    if (!sqlite.prepare("SELECT 1 FROM sqlite_schema WHERE type='table' AND name='events'").get()) {
+      sqlite.exec(fs.readFileSync(path.join(ROOT, 'schema.sql'), 'utf8'));
+    } else {
+      if (!sqlite.prepare('PRAGMA table_info(events)').all().some(column => column.name === 'end_date')) {
+        sqlite.exec('ALTER TABLE events ADD COLUMN end_date TEXT');
+      }
+      sqlite.exec(fs.readFileSync(path.join(ROOT, 'migrations', '0001_site_and_contacts.sql'), 'utf8'));
+      sqlite.exec(fs.readFileSync(path.join(ROOT, 'migrations', '0002_cms_media.sql'), 'utf8'));
+    }
+    sqlite.exec('COMMIT');
+  } catch (err) {
+    sqlite.close(); // Rolls back an incomplete initialization.
+    throw err;
+  }
+  return {
+    one: (sql, ...args) => sqlite.prepare(sql).get(...args),
+    all: (sql, ...args) => sqlite.prepare(sql).all(...args),
+    run: (sql, ...args) => sqlite.prepare(sql).run(...args),
+    close: () => sqlite.close()
+  };
+}
+
+let cmsStore;
 
 // ==================== MIME TYPES DICTIONARY ====================
 const MIME_TYPES = {
@@ -135,7 +184,7 @@ function getVietnamTimeParts(date = new Date()) {
 // ==================== PUBLISH STATE ====================
 const publishState = {
   scheduledTime: '16:40', // Mặc định 4h40 chiều giờ Việt Nam
-  autoPublishEnabled: true,
+  autoPublishEnabled: !disableScheduler,
   lastPublishedAt: null,
   lastCommitMessage: null,
   isPublishing: false,
@@ -320,7 +369,7 @@ async function executePublish(triggerSource = 'Manual trigger', customData = nul
 }
 
 // ==================== AUTO-PUBLISH SCHEDULER (16:40 Task) ====================
-const schedulerTimer = setInterval(async () => {
+const schedulerTimer = !disableScheduler && setInterval(async () => {
   if (!publishState.autoPublishEnabled) return;
 
   const vt = getVietnamTimeParts(new Date());
@@ -353,7 +402,7 @@ if (schedulerTimer && typeof schedulerTimer.unref === 'function') {
 // ==================== HTTP HELPERS ====================
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 };
 
@@ -407,6 +456,28 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ==================== API ROUTES ====================
+
+  if (cmsPath(parsedUrl)) {
+    try {
+      cmsStore ??= openCmsStore();
+      const init = { method: req.method, headers: req.headers };
+      if (!['GET', 'HEAD'].includes(req.method)) {
+        init.body = Readable.toWeb(req);
+        init.duplex = 'half';
+      }
+      const request = new Request('http://localhost' + req.url, init);
+      const response = await handleCms(request, process.env.TONGWEI_ADMIN_TOKEN, cmsStore);
+      if (init.body && !req.readableEnded) {
+        res.setHeader('Connection', 'close');
+        req.resume();
+      }
+      res.writeHead(response.status, Object.fromEntries(response.headers));
+      return res.end(Buffer.from(await response.arrayBuffer()));
+    } catch (err) {
+      metrics.errors++;
+      return sendJsonResponse(res, 503, { error: 'CMS unavailable. Check the private data directory.' });
+    }
+  }
 
   // 2. GET /health & GET /api/health
   if (req.method === 'GET' && (parsedUrl === '/health' || parsedUrl === '/api/health')) {
@@ -638,6 +709,14 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
+  // The repository also contains deployment configuration, local secrets and logs.
+  // Follow real paths before approving a public asset (including directory junctions).
+  const publicPath = path.relative(fs.realpathSync(ROOT), fs.realpathSync(targetPath)).split(path.sep).join('/');
+  if (!/^(?:index\.html|data\/(?:site|dishes)\.json|(?:assets|css|js|admin)\/[^:]+)$/.test(publicPath)
+    || publicPath.split('/').some(segment => segment.startsWith('.'))) {
+    return sendJsonResponse(res, 404, { error: 'Not found' });
+  }
+
   // Serve static file with Gzip compression support
   const ext = path.extname(targetPath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
@@ -688,12 +767,19 @@ const server = http.createServer(async (req, res) => {
 });
 
 if (require.main === module) {
-  server.listen(PORT, () => {
-    logger.info(`TongWei Restaurant Server running at http://localhost:${PORT}/`);
-    logger.info(`Admin Portal available at http://localhost:${PORT}/admin/`);
-    logger.info(`Auto-publish timer initialized: Every day at ${publishState.scheduledTime} (Asia/Ho_Chi_Minh).`);
+  cmsStore = openCmsStore();
+  server.listen(PORT, process.env.TONGWEI_HOST || undefined, () => {
+    const { port } = server.address();
+    logger.info(`TongWei Restaurant Server running at http://localhost:${port}/`);
+    logger.info(`Admin Portal available at http://localhost:${port}/admin/`);
+    if (!disableScheduler) logger.info(`Auto-publish timer initialized: Every day at ${publishState.scheduledTime} (Asia/Ho_Chi_Minh).`);
   });
 }
+
+server.on('close', () => {
+  cmsStore?.close();
+  cmsStore = undefined;
+});
 
 module.exports = {
   server,
