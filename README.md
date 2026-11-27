@@ -31,7 +31,9 @@ Mở `http://localhost:8088/` hoặc `http://localhost:8088/admin/`. Với dịc
 
 ### Cloudflare Workers và Pages Functions
 
-Dùng Wrangler 4 với runtime hỗ trợ ngày tương thích trong `wrangler.toml`. Với Workers, chọn D1 hiện có hoặc tạo bằng `wrangler d1 create tongwei`, rồi điền `database_name` và `database_id` thực vào mục `[[d1_databases]]`. Giữ tên binding là `DB`. Lệnh `wrangler secret put TONGWEI_ADMIN_TOKEN` nhận token tại dấu nhắc. Cấu hình từng môi trường với database và secret tương ứng.
+Website chính thức dùng Worker `tongwei-restaurant` tại [tongweivn.com](https://tongweivn.com/). Quản trị viên nhập mã production tại [trang biên tập](https://tongweivn.com/admin/). Các liên kết trang chủ và quản trị trên GitHub Pages chuyển đến cùng trang trên tên miền chính thức.
+
+`wrangler.toml` khai báo tài khoản production và binding `DB` cho D1 hiện có `tongwei-db`. Wrangler 4 dùng D1 giả lập khi chạy với `--local`. Cấu hình cơ sở dữ liệu và secret riêng cho các môi trường khác. Secret `TONGWEI_ADMIN_TOKEN` có thể đặt qua dấu nhắc của `wrangler secret put`.
 
 Với Pages, chọn thư mục gốc của repo làm project root để Pages biên dịch `functions/api/`. Đặt build command là `node functions/lib/prepare-assets.cjs` và build output directory là `node_modules/.cache/tongwei-public`. Trong **Settings → Bindings**, thêm binding D1 tên `DB` tới cùng database nếu muốn chia sẻ nội dung với Worker. Đặt secret bằng `wrangler pages secret put TONGWEI_ADMIN_TOKEN --project-name <ten-du-an>` hoặc qua **Settings → Variables and Secrets**. Cấu hình binding và secret riêng cho Preview khi dùng môi trường đó.
 

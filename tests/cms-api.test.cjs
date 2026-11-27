@@ -239,6 +239,44 @@ test('Node refuses a private data directory under the static root', () => {
   assert.equal(fs.existsSync(dir), false);
 });
 
+const booking = { id: 'test-booking', name: 'Test guest', phone: '0000000000' };
+const bookingEdit = { id: booking.id, status: 'confirmed' };
+const dish = { id: 'test-dish', name: 'Test dish', tags: ['test'], isSignature: true };
+const privateOperations = [
+  ['/api/bookings/', { method: 'GET' }],
+  ['/api/bookings', { method: 'PATCH', body: bookingEdit }],
+  ['/api/dishes/', { method: 'POST', body: dish }]
+];
+
+async function bookingAndDishContract(dispatch, call) {
+  const created = await dispatch('/api/bookings/', { method: 'POST',
+    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(booking) });
+  assert.equal(created.status, 200);
+  assert.equal((await created.json()).bookingId, booking.id);
+  for (const [path, options] of privateOperations) {
+    for (const auth of [false, 'wrong-token']) {
+      assert.deepEqual(await call(path, { ...options, auth, status: 401 }), { error: 'Unauthorized' });
+    }
+  }
+  const getBooking = async () => (await call('/api/bookings', { auth: true })).find(row => row.id === booking.id);
+  const getDish = async () => {
+    const response = await dispatch('/api/dishes');
+    assert.equal(response.status, 200);
+    return (await response.json()).find(row => row.id === dish.id);
+  };
+  assert.equal((await getBooking()).status, 'pending');
+  assert.equal(await getDish(), undefined);
+  assert.equal((await call('/api/bookings/', { auth: true, method: 'PATCH', body: bookingEdit })).success, true);
+  assert.equal((await getBooking()).status, 'confirmed');
+  for (const name of ['Test dish', 'Updated dish']) {
+    assert.equal((await call('/api/dishes', { auth: true, method: 'POST', body: { ...dish, name } })).success, true);
+    const saved = await getDish();
+    assert.equal(saved.name, name);
+    assert.equal(saved.isSignature, true);
+    assert.deepEqual(saved.tags, dish.tags);
+  }
+}
+
 // Wrangler supplies the same workerd, local D1 implementation and Pages compiler used by wrangler dev.
 let wranglerPath;
 try { wranglerPath = require.resolve('wrangler/package.json'); } catch {}
@@ -265,6 +303,7 @@ for (const entry of ['Worker', 'Pages Functions']) {
       await db.batch(statements.map(s => db.prepare(s)));
       const dispatch = (url, init) => mf.dispatchFetch('http://local' + url, init);
       const call = client(dispatch);
+      await bookingAndDishContract(dispatch, call);
       await contract(call);
       await db.exec('DROP TABLE cms_media');
       await db.prepare(mediaMigration).run();
@@ -282,6 +321,9 @@ for (const entry of ['Worker', 'Pages Functions']) {
       assert.equal(events[0].end_date, entry === 'Worker' ? '' : '2099-12-31');
       assert.equal((await call('/api/contacts', { auth: true })).length, 10);
       await mf.setOptions(convertV4MiniflareOptions(options));
+      for (const [url, options] of privateOperations) {
+        await call(url, { ...options, auth: true, status: 401 });
+      }
       await call('/api/events?admin=1', { auth: true, status: 401 });
       await call('/api/contacts', { auth: true, status: 401 });
       assert.deepEqual(await call('/api/site'), editedSite);

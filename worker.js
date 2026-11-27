@@ -13,7 +13,7 @@ export default {
     }
 
     if (url.pathname === '/api/bookings' || url.pathname === '/api/bookings/') {
-      if (request.method === 'GET') return getBookings({ env });
+      if (request.method === 'GET') return getBookings({ request, env });
       if (request.method === 'POST') return postBookings({ request, env });
       if (request.method === 'PATCH') return patchBookings({ request, env });
     }

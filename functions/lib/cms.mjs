@@ -249,6 +249,14 @@ async function media(request, db, id) {
   return json({ url: mediaPrefix + hash }, inserted ? 201 : 200);
 }
 
+export function requireAdmin(request, token) {
+  const bearer = /^Bearer (\S+)$/i.exec(request.headers.get('Authorization') || '');
+  if (!token || !bearer || bearer[1] !== token) {
+    return json({ error: 'Unauthorized' }, 401, { 'WWW-Authenticate': 'Bearer' });
+  }
+  return null;
+}
+
 export async function handleCms(request, token, db) {
   const url = new URL(request.url);
   const path = cmsPath(url.pathname);
@@ -257,10 +265,8 @@ export async function handleCms(request, token, db) {
   const publicRequest = request.method === 'GET' && (path === '/api/site' || (path === '/api/events' && url.searchParams.get('admin') !== '1'))
     || request.method === 'POST' && path === '/api/contacts' || path === '/api/media/:id';
   if (!publicRequest) {
-    const bearer = /^Bearer (\S+)$/i.exec(request.headers.get('Authorization') || '');
-    if (!token || !bearer || bearer[1] !== token) {
-      return json({ error: 'Unauthorized' }, 401, { 'WWW-Authenticate': 'Bearer' });
-    }
+    const denied = requireAdmin(request, token);
+    if (denied) return denied;
   }
   if (!db) return json({ error: 'Database unavailable' }, 503);
   try {

@@ -1,3 +1,5 @@
+import { requireAdmin } from '../lib/cms.mjs';
+
 export async function onRequestGet({ env }) {
   try {
     if (!env.DB) {
@@ -41,6 +43,8 @@ export async function onRequestGet({ env }) {
 }
 
 export async function onRequestPost({ request, env }) {
+  const denied = requireAdmin(request, env.TONGWEI_ADMIN_TOKEN);
+  if (denied) return denied;
   try {
     if (!env.DB) {
       return new Response(JSON.stringify({ error: "Chưa cấu hình D1 Database (Binding: DB)" }), {
@@ -92,7 +96,7 @@ export async function onRequestPost({ request, env }) {
     ).run();
 
     return new Response(JSON.stringify({ success: true, message: `Đã lưu món ${dish.name} vào Cloudflare D1!` }), {
-      headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*" }
+      headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*", "Cache-Control": "no-store" }
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {

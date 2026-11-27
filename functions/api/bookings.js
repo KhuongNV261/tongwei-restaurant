@@ -1,4 +1,8 @@
-export async function onRequestGet({ env }) {
+import { requireAdmin } from '../lib/cms.mjs';
+
+export async function onRequestGet({ request, env }) {
+  const denied = requireAdmin(request, env.TONGWEI_ADMIN_TOKEN);
+  if (denied) return denied;
   try {
     if (!env.DB) {
       return new Response(JSON.stringify({ error: "Chưa cấu hình D1 Database (Binding: DB)" }), {
@@ -10,6 +14,7 @@ export async function onRequestGet({ env }) {
     const { results } = await env.DB.prepare("SELECT * FROM bookings ORDER BY created_at DESC").all();
     return new Response(JSON.stringify(results), {
       headers: {
+        "Cache-Control": "no-store",
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*"
       }
@@ -73,6 +78,8 @@ export async function onRequestPost({ request, env }) {
 }
 
 export async function onRequestPatch({ request, env }) {
+  const denied = requireAdmin(request, env.TONGWEI_ADMIN_TOKEN);
+  if (denied) return denied;
   try {
     if (!env.DB) {
       return new Response(JSON.stringify({ error: "Chưa cấu hình D1 Database" }), { status: 500 });
@@ -86,7 +93,7 @@ export async function onRequestPatch({ request, env }) {
     await env.DB.prepare("UPDATE bookings SET status = ? WHERE id = ?").bind(status, id).run();
 
     return new Response(JSON.stringify({ success: true, message: `Đã cập nhật trạng thái đơn ${id} thành ${status}` }), {
-      headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*" }
+      headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*", "Cache-Control": "no-store" }
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });

@@ -1,4 +1,5 @@
 name = "tongwei-restaurant"
+account_id = "0bfa9a89a79407f251cf7f9bddf5cb1f"
 main = "worker.js"
 compatibility_date = "2026-10-22"
 
@@ -13,7 +14,6 @@ run_worker_first = ["/api/*"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "tongwei"
-# Replace this local placeholder with the D1 database_id for your environment.
-database_id = "00000000-0000-0000-0000-000000000000"
+database_name = "tongwei-db"
+database_id = "3a6bd44b-0fec-4a2e-92a1-51a3ff2e70d3"
 migrations_dir = "migrations"
